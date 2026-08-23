@@ -1,0 +1,8 @@
+node_modules/
+dist/
+.DS_Store
+
+# Design-reference-only images, not used by the site (see README) — one of
+# them carries another couple's names, so keep it out of a public repo.
+public/assets/HomepageBackground.jpg
+public/assets/Shiv-Parvati-Vivah.jpeg

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Wedding Invitation</title>
+<meta name="description" content="You're invited — join us to celebrate our wedding." />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%94%3C/text%3E%3C/svg%3E" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&family=Yeseva+One&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+
+  <!-- Live falling petals — decorative, sits above content, ignores pointer events -->
+  <div class="petal-field" id="petalField" aria-hidden="true"></div>
+
+  <!-- ===== Invitation opening: carved doors ===== -->
+  <div class="intro-screen" id="introScreen" role="button" tabindex="0" aria-label="Tap to open your invitation">
+    <div class="door-scene">
+
+      <p class="door-eyebrow" id="doorEyebrow">Together with their families</p>
+      <h1 class="door-title" id="doorTitle">Anushka <em>weds</em> Saurabh</h1>
+      <div class="door-rule" aria-hidden="true"></div>
+
+      <!-- Engraved pelmet spanning the doorway -->
+      <div class="door-valance" id="doorValance" aria-hidden="true"></div>
+
+      <div class="doorway" id="doorway">
+        <!-- Warm light spilling out from behind the doors as they part -->
+        <div class="doorway-glow" aria-hidden="true"></div>
+
+        <div class="door-panel door-left" id="doorLeft">
+          <div class="door-inner">
+            <span class="door-handle" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <div class="door-panel door-right" id="doorRight">
+          <div class="door-inner">
+            <span class="door-handle" aria-hidden="true"></span>
+          </div>
+        </div>
+
+        <!-- Monogram medallion sits on the seam and splits with the doors -->
+        <div class="door-medallion" id="doorMedallion">
+          <span id="doorMonogram">A&amp;S</span>
+        </div>
+      </div>
+
+      <p class="tap-hint" id="tapHint">Tap to open</p>
+    </div>
+  </div>
+
+  <!-- ===== Site content ===== -->
+  <div id="siteContent" class="site-content">
+
+    <nav class="site-nav" id="siteNav">
+      <span class="nav-monogram" id="navMonogram">S &amp; V</span>
+      <div class="nav-links">
+        <a href="#story" data-nav-optional="story">Our Story</a>
+        <a href="#festivities">Festivities</a>
+        <a href="#rsvp">RSVP</a>
+      </div>
+    </nav>
+
+    <!-- Hero: cream cusped-arch card on an ornate red ground -->
+    <header class="hero" id="hero">
+      <!-- Decorative: hanging toran, flanking kalash -->
+      <div class="hero-garland" id="heroGarland" aria-hidden="true"></div>
+      <div class="hero-kalash hero-kalash-left" id="heroKalashLeft" aria-hidden="true"></div>
+      <div class="hero-kalash hero-kalash-right" id="heroKalashRight" aria-hidden="true"></div>
+
+      <div class="hero-card reveal">
+        <!-- Cusped Mughal arch head; the SVG is generated in main.js -->
+        <div class="hero-card-arch" id="heroCardArch" aria-hidden="true">
+          <div class="ganesh-mark" id="heroGanesh"></div>
+        </div>
+        <div class="hero-card-body">
+      <div class="hero-inner">
+        <p class="hero-pretitle" id="heroPreTitle">Together with their families</p>
+        <h1 class="hero-names">
+          <span id="brideName">Saanvi</span>
+          <span class="hero-parents" id="brideParents"></span>
+          <span class="amp" aria-hidden="true">&amp;</span>
+          <span id="groomName">Vihaan</span>
+          <span class="hero-parents" id="groomParents"></span>
+        </h1>
+        <p class="hero-tagline" id="heroTagline">Request the honour of your presence</p>
+        <p class="hero-date" id="heroDate">Friday, 11th December 2026</p>
+        <div class="hero-divider" aria-hidden="true"><span></span><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1 L12.5 7.5 L19 10 L12.5 12.5 L10 19 L7.5 12.5 L1 10 L7.5 7.5 Z" fill="currentColor"/></svg><span></span></div>
+        <div class="hero-glance">
+          <div class="glance-item">
+            <span class="glance-label">When</span>
+            <span class="glance-value" id="glanceWhen"></span>
+          </div>
+          <div class="glance-sep" aria-hidden="true"></div>
+          <div class="glance-item">
+            <span class="glance-label">Where</span>
+            <span class="glance-value" id="glanceWhere"></span>
+          </div>
+        </div>
+        <a class="ghost-button small" id="heroDirectionsBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+      </div>
+        </div>
+      </div>
+      <a class="scroll-cue" href="#countdown" aria-label="Scroll for more">
+        <svg width="22" height="34" viewBox="0 0 22 34"><rect x="1" y="1" width="20" height="32" rx="10" fill="none" stroke="currentColor" stroke-width="1.4"/><circle class="scroll-dot" cx="11" cy="10" r="2.4" fill="currentColor"/></svg>
+      </a>
+    </header>
+
+    <!-- Countdown -->
+    <section class="countdown-section" id="countdown">
+      <div class="reveal countdown-inner">
+        <p class="section-kicker" id="countdownKicker">Counting Down to the Muhurtham</p>
+        <div class="countdown-grid" id="countdownGrid">
+          <div class="countdown-cell"><span class="countdown-num" id="cdDays">00</span><span class="countdown-label">Days</span></div>
+          <div class="countdown-cell"><span class="countdown-num" id="cdHours">00</span><span class="countdown-label">Hours</span></div>
+          <div class="countdown-cell"><span class="countdown-num" id="cdMinutes">00</span><span class="countdown-label">Minutes</span></div>
+          <div class="countdown-cell"><span class="countdown-num" id="cdSeconds">00</span><span class="countdown-label">Seconds</span></div>
+        </div>
+        <button class="ghost-button" id="addToCalendarBtn" type="button">+ Add to Calendar</button>
+      </div>
+    </section>
+
+    <!-- Story + couple photo (optional) -->
+    <section class="story-section" id="story" hidden>
+      <div class="reveal story-inner">
+        <p class="section-kicker">Our Story</p>
+        <figure class="photo-card" id="photoCard" hidden>
+          <div class="photo-frame">
+            <img id="couplePhoto" src="" alt="" loading="lazy" />
+          </div>
+          <figcaption class="photo-caption" id="photoCaption"></figcaption>
+        </figure>
+        <p class="story-text" id="storyText"></p>
+      </div>
+    </section>
+
+    <!-- Festivities: flip cards (replaces the old FAQ + venue-details sections) -->
+    <section class="festivities-section" id="festivities">
+      <div class="reveal">
+        <p class="section-kicker">Four Days of Celebration</p>
+        <h2 class="section-title">The Festivities</h2>
+        <p class="festivities-hint">Tap a card to reveal the details</p>
+      </div>
+      <div class="festivity-cards" id="festivityCards"></div>
+    </section>
+
+    <!-- RSVP -->
+    <section class="rsvp-section" id="rsvp">
+      <div class="reveal rsvp-inner">
+        <p class="section-kicker">Kindly Reply</p>
+        <h2 class="section-title">Will You Join Us?</h2>
+        <p class="rsvp-deadline" id="rsvpDeadline"></p>
+
+        <div class="rsvp-actions">
+          <button class="ghost-button" id="rsvpAddCalendarBtn" type="button">+ Add Wedding to Calendar</button>
+          <a class="ghost-button" id="rsvpDirectionsBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+        </div>
+
+        <div class="rsvp-cta-card">
+          <div class="rsvp-cta-icon" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M8 30 Q24 40 40 30" stroke-linecap="round"/><ellipse cx="24" cy="28" rx="16" ry="5"/><path d="M24 22 C21 18 21 14 24 10 C27 14 27 18 24 22 Z" fill="currentColor" stroke="none"/></svg>
+          </div>
+          <p class="rsvp-cta-text">Your response means the world to us — it takes less than a minute.</p>
+          <a class="submit-button rsvp-open-link" id="rsvpOpenLink" href="#" target="_blank" rel="noopener">Open RSVP Form</a>
+          <p class="rsvp-cta-note">Opens in a new tab</p>
+        </div>
+
+        <p class="rsvp-call-fallback" id="rsvpCallFallback"></p>
+      </div>
+    </section>
+
+    <!-- Accommodations (optional) -->
+    <section class="accommodations-section" id="accommodations" hidden>
+      <div class="reveal">
+        <p class="section-kicker">Getting Comfortable</p>
+        <h2 class="section-title">Accommodations</h2>
+        <div class="accommodation-list" id="accommodationList"></div>
+      </div>
+    </section>
+
+    <!-- Registry (optional) -->
+    <section class="registry-section" id="registry" hidden>
+      <div class="reveal">
+        <p class="section-kicker">With Gratitude</p>
+        <h2 class="section-title">Registry</h2>
+        <p class="registry-note" id="registryNote"></p>
+        <div class="registry-links" id="registryLinks"></div>
+      </div>
+    </section>
+
+    <footer class="site-footer">
+      <span class="footer-om" aria-hidden="true">&#2384;</span>
+      <p class="footer-blessing" id="footerBlessing"></p>
+      <div class="ganesh-mark small" id="footerGanesh"></div>
+      <p class="footer-names" id="footerNames">Saanvi &amp; Vihaan</p>
+      <p class="footer-hashtag" id="footerHashtag"></p>
+      <p class="footer-note">Made with love</p>
+    </footer>
+
+  </div>
+
+  <script src="/js/main.js"></script>
+</body>
+</html>

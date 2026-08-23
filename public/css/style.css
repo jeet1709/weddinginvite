@@ -1,0 +1,1097 @@
+/* ============ Theme tokens (overridden at runtime from config) ============ */
+:root {
+  --color-primary: #c1121f;
+  --color-accent: #f4a300;
+  --color-deep: #7a0b12;
+  --color-bg: #fff6e5;
+  --color-surface: #ffe3a8;
+  --color-text: #4a1010;
+  --color-muted: #8c5a3c;
+  --color-green: #1f7a3d;
+  --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
+  --font-script: 'Great Vibes', cursive;
+  --font-display: 'Yeseva One', 'Playfair Display', serif;
+  --font-body: 'Cormorant Garamond', Georgia, serif;
+  --max-width: 780px;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+/* One carved red damask ground for the whole page, so the hero and the
+   sections below it read as a single invitation rather than two designs.
+   Content sits on it as cream/gold cards. */
+body {
+  margin: 0;
+  background-color: #9e1f2c;
+  background-image:
+    radial-gradient(circle at 50% 50%, rgba(255,222,170,0.16) 0 2px, transparent 3px),
+    radial-gradient(circle at 0 0,     rgba(255,222,170,0.10) 0 3px, transparent 4px),
+    radial-gradient(circle at 100% 100%, rgba(255,222,170,0.10) 0 3px, transparent 4px),
+    repeating-linear-gradient(45deg,  rgba(0,0,0,0.10) 0 1px, transparent 1px 22px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 1px, transparent 1px 22px),
+    linear-gradient(170deg, #b32834 0%, #9e1f2c 45%, #7d1522 100%);
+  background-size: 44px 44px, 44px 44px, 44px 44px, auto, auto, auto;
+  background-attachment: fixed;
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-size: 19px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+body.intro-open {
+  overflow-y: auto;
+}
+body:not(.intro-open) {
+  height: 100vh;
+  overflow: hidden;
+}
+
+img { max-width: 100%; display: block; }
+a { color: inherit; }
+h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
+
+/* Section headings sit directly on the red ground, so they run gold/cream */
+.section-kicker {
+  font-family: var(--font-body);
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  color: var(--color-accent);
+  margin: 0 0 0.5rem;
+  text-align: center;
+}
+
+.section-title {
+  text-align: center;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  margin-bottom: 1rem;
+  color: #fff4d6;
+}
+
+/* ============ Live falling petals ============ */
+.petal-field {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 30;
+  overflow: hidden;
+}
+.petal {
+  position: absolute;
+  top: -5vh;
+  will-change: transform, opacity;
+  animation-name: petal-fall;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  opacity: 0.85;
+}
+.petal svg { display: block; filter: drop-shadow(0 2px 3px rgba(58,36,28,0.15)); }
+
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -8vh, 0) rotate(0deg); }
+  100% { transform: translate3d(var(--drift, 40px), 112vh, 0) rotate(var(--spin, 320deg)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .petal-field { display: none; }
+}
+
+/* ============ Scroll reveal ============ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.9s ease, transform 0.9s ease;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* ============ Invitation opening: carved doors ============
+   Restrained palette (oxblood + antique gold), engraved linework and a
+   typographic title. No photography, no glossy fills — the elegance comes
+   from proportion, fine rules and negative space. */
+.intro-screen {
+  --gold: #c9a227;
+  --gold-lt: #e9d08a;
+  --cream: #f4e9d4;
+
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  background:
+    radial-gradient(ellipse at 50% 34%, #4a1020 0%, #2e0813 52%, #1a050b 100%);
+  cursor: pointer;
+  transition: opacity 1s ease 0.7s, visibility 1s ease 0.7s;
+  padding: 2rem 1.5rem;
+}
+.intro-screen.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.door-scene {
+  position: relative;
+  perspective: 2200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: min(84vw, 400px);
+  max-height: 100%;
+}
+
+/* ---- Typographic lockup ---- */
+.door-eyebrow {
+  margin: 0 0 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.66rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(233, 208, 138, 0.72);
+  text-indent: 0.42em; /* balance the trailing letter-space */
+}
+
+.door-title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-weight: 500;
+  font-size: clamp(1.45rem, 5.6vw, 2.1rem);
+  line-height: 1.25;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--cream);
+  text-indent: 0.14em;
+}
+.door-title em {
+  display: block;
+  margin: 0.18em 0;
+  font-family: var(--font-body);
+  font-size: 0.62em;
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  text-transform: lowercase;
+  color: var(--gold-lt);
+}
+
+/* hairline rule with a lozenge at its centre */
+.door-rule {
+  position: relative;
+  width: 116px;
+  height: 1px;
+  margin: 1.15rem 0 1.5rem;
+  background: linear-gradient(90deg, transparent, rgba(201,162,39,0.85), transparent);
+}
+.door-rule::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 7px;
+  height: 7px;
+  transform: translate(-50%, -50%) rotate(45deg);
+  background: var(--gold);
+}
+
+/* ---- Engraved pelmet above the doorway ---- */
+/* Sits flush to the doorway's own width so it reads as a lintel, not a
+   detached bar hanging past the jambs. */
+.door-valance {
+  width: 100%;
+  height: 38px;
+  background-repeat: repeat-x;
+  background-position: center top;
+  background-size: auto 38px;
+  margin-bottom: 6px;
+  z-index: 4;
+  filter: drop-shadow(0 4px 7px rgba(0,0,0,0.5));
+}
+
+/* ---- The doorway ---- */
+.doorway {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 0.72;
+  flex: 0 1 auto;
+  min-height: 0;
+  transform-style: preserve-3d;
+  border-radius: 168px 168px 3px 3px;
+  padding: 7px;
+  /* slim gold frame over a dark reveal */
+  background: linear-gradient(160deg, #7d5a16, #c9a227 34%, #6d4d12 100%);
+  box-shadow:
+    0 34px 70px -28px rgba(0,0,0,0.85),
+    0 0 0 1px rgba(233,208,138,0.35);
+}
+
+.doorway-glow {
+  position: absolute;
+  inset: 7px;
+  border-radius: 164px 164px 2px 2px;
+  background: radial-gradient(ellipse at 50% 62%, #fff6e2 0%, #f2d089 42%, #c9992f 100%);
+  opacity: 0;
+  transition: opacity 1s ease 0.35s;
+}
+.doorway.is-open .doorway-glow { opacity: 1; }
+
+.door-panel {
+  position: absolute;
+  top: 7px;
+  bottom: 7px;
+  width: calc(50% - 7px);
+  transform-style: preserve-3d;
+  transition: transform 1.7s cubic-bezier(0.62, 0, 0.2, 1);
+  z-index: 2;
+}
+.door-left  { left: 7px;  transform-origin: left center;  border-radius: 164px 0 0 2px; }
+.door-right { right: 7px; transform-origin: right center; border-radius: 0 164px 2px 0; }
+
+.doorway.is-open .door-left  { transform: rotateY(-112deg); }
+.doorway.is-open .door-right { transform: rotateY(112deg); }
+
+.door-inner {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  backface-visibility: hidden;
+  /* deep oxblood timber; the jali lattice is set from JS as a background */
+  background-color: #4a0f1c;
+  background-repeat: repeat;
+  background-position: center top;
+  box-shadow:
+    inset 0 0 0 1px rgba(233,208,138,0.42),
+    inset 0 0 0 9px rgba(0,0,0,0.16),
+    inset 0 0 0 10px rgba(233,208,138,0.22),
+    inset 0 0 90px rgba(0,0,0,0.55);
+}
+/* light falls from the centre seam outward */
+.door-left  .door-inner { background-image: var(--jali); box-shadow: inset 0 0 0 1px rgba(233,208,138,0.42), inset 0 0 0 9px rgba(0,0,0,0.16), inset 0 0 0 10px rgba(233,208,138,0.22), inset -22px 0 44px -16px rgba(0,0,0,0.7); }
+.door-right .door-inner { background-image: var(--jali); box-shadow: inset 0 0 0 1px rgba(233,208,138,0.42), inset 0 0 0 9px rgba(0,0,0,0.16), inset 0 0 0 10px rgba(233,208,138,0.22), inset  22px 0 44px -16px rgba(0,0,0,0.7); }
+
+/* slim ring pulls */
+.door-handle {
+  position: absolute;
+  top: 52%;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  border: 2px solid var(--gold);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.25);
+}
+.door-left  .door-handle { right: 15px; }
+.door-right .door-handle { left: 15px; }
+
+/* ---- Monogram medallion: engraved ring, not a glossy seal ---- */
+.door-medallion {
+  position: absolute;
+  top: 52%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 74px;
+  height: 74px;
+  border-radius: 50%;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at 50% 40%, #5c1424 0%, #3d0c17 100%);
+  border: 1px solid var(--gold);
+  box-shadow:
+    0 0 0 4px rgba(26,5,11,0.9),
+    0 0 0 5px rgba(201,162,39,0.55),
+    0 6px 18px rgba(0,0,0,0.55);
+  color: var(--gold-lt);
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-indent: 0.14em;
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform 0.6s ease, opacity 0.6s ease;
+}
+.doorway.is-open .door-medallion {
+  transform: translate(-50%, -50%) scale(1.5);
+  opacity: 0;
+}
+
+.door-caption {
+  margin: 1.5rem 0 0.5rem;
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.95rem;
+  color: rgba(244,233,212,0.72);
+  text-align: center;
+}
+
+.tap-hint {
+  margin: 1.5rem 0 0;
+  font-family: var(--font-body);
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  font-size: 0.66rem;
+  color: rgba(233,208,138,0.85);
+  text-indent: 0.32em;
+  animation: pulse 2.6s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 1; }
+}
+
+/* The doorway itself already flex-shrinks to fit (see `.doorway`'s
+   `flex: 0 1 auto`), so on short screens we only need to trim the fixed-size
+   text elements around it — never hide the eyebrow line entirely. */
+@media (max-height: 720px) {
+  .door-eyebrow { margin-bottom: 0.5rem; font-size: 0.58rem; }
+  .door-title { font-size: clamp(1.25rem, 5.2vw, 1.9rem); }
+  .door-rule { margin: 0.7rem 0 0.85rem; }
+  .door-valance { height: 30px; background-size: auto 30px; margin-bottom: 4px; }
+  .tap-hint { margin-top: 1rem; }
+}
+
+@media (max-height: 620px) {
+  .door-eyebrow { font-size: 0.52rem; letter-spacing: 0.34em; text-indent: 0.34em; }
+  .door-title { font-size: clamp(1.1rem, 4.8vw, 1.6rem); }
+}
+/* ============ Site content ============ */
+.site-content {
+  position: relative;
+  z-index: 5;
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 1s ease, transform 1s ease;
+}
+.site-content.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.5rem;
+  background: rgba(94, 8, 18, 0.86);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(244,163,0,0.45);
+  gap: 1rem;
+}
+.nav-monogram {
+  font-family: var(--font-script);
+  font-size: 1.4rem;
+  color: var(--color-accent);
+  flex-shrink: 0;
+}
+.nav-links {
+  display: flex;
+  gap: 1.25rem;
+  overflow-x: auto;
+  scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  text-decoration: none;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #fff4d6;
+  white-space: nowrap;
+  opacity: 0.82;
+}
+.nav-links a:hover { opacity: 1; color: var(--color-accent); }
+
+/* ---- Hero ---- */
+.hero {
+  min-height: 100vh;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* top padding clears the hanging toran, bottom clears the kalash */
+  padding: clamp(4.5rem, 14vw, 8rem) clamp(1rem, 4vw, 2.5rem) clamp(3rem, 8vw, 5rem);
+  position: relative;
+  overflow: hidden;
+  /* background inherited from the page ground on <body> */
+}
+/* Double gold rule inset from the edge, like the border of a printed card */
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: clamp(8px, 2vw, 18px);
+  border: 2px solid rgba(244,163,0,0.75);
+  border-radius: 6px;
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute;
+  inset: calc(clamp(8px, 2vw, 18px) + 5px);
+  border: 1px solid rgba(255,226,168,0.45);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+/* ---- Hero decorations: toran across the top, kalash flanking ---- */
+.hero-garland {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 165px;
+  background-repeat: repeat-x;
+  background-position: center top;
+  background-size: auto 165px;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0.96;
+  animation: garland-sway 6s ease-in-out infinite;
+  transform-origin: top center;
+}
+@keyframes garland-sway {
+  0%, 100% { transform: rotate(-0.5deg); }
+  50%      { transform: rotate(0.5deg); }
+}
+
+.hero-kalash {
+  position: absolute;
+  bottom: 0;
+  width: 124px;
+  height: 190px;
+  background-repeat: no-repeat;
+  background-position: bottom center;
+  background-size: contain;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(0 8px 14px rgba(50,4,10,0.5));
+}
+.hero-kalash-left  { left: clamp(0.5rem, 4vw, 4rem); }
+.hero-kalash-right { right: clamp(0.5rem, 4vw, 4rem); transform: scaleX(-1); }
+
+/* ---- Cream cusped-arch invitation card ---- */
+.hero-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 520px;
+  filter: drop-shadow(0 18px 40px rgba(60,6,14,0.45));
+}
+.hero-card-arch {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 400 / 210;
+  margin-bottom: -1px;
+}
+.hero-card-arch svg { width: 100%; height: 100%; display: block; }
+/* Ganesha sits in the belly of the arch, not down at the springing line */
+.hero-card-arch .ganesh-mark {
+  position: absolute;
+  left: 50%;
+  top: 46%;
+  transform: translate(-50%, -50%);
+}
+.hero-card-body {
+  /* warm ivory→champagne wash with a faint gold mandala watermark, so the
+     panel reads as printed card stock rather than plain white */
+  background:
+    repeating-conic-gradient(from 0deg at 50% 10%,
+      rgba(244,163,0,0.028) 0deg 2.5deg, transparent 2.5deg 10deg),
+    radial-gradient(ellipse at 50% 0%, rgba(244,163,0,0.13), transparent 62%),
+    linear-gradient(180deg, #fffdf6 0%, #fdf1da 55%, #f8e6c4 100%);
+  border: 3px solid var(--color-accent);
+  border-top: none;
+  border-radius: 0 0 10px 10px;
+  padding: 0.5rem clamp(1.1rem, 4vw, 2.25rem) clamp(1.75rem, 4vw, 2.5rem);
+  position: relative;
+}
+/* inner hairline, mirroring the arch's double outline */
+.hero-card-body::before {
+  content: '';
+  position: absolute;
+  inset: 0 5px 5px;
+  border: 1px solid rgba(244,163,0,0.55);
+  border-top: none;
+  border-radius: 0 0 6px 6px;
+  pointer-events: none;
+}
+
+.hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
+
+/* ---- Ganesha mark ---- */
+/* The source art is red line-work on solid white; `multiply` drops the white
+   so it sits on the cream disc without a visible square. */
+.ganesh-mark {
+  width: 104px;
+  height: 104px;
+  border-radius: 50%;
+  background: #fffaf0;
+  box-shadow:
+    0 0 0 3px var(--color-accent),
+    0 0 0 6px rgba(255,255,255,0.8),
+    0 0 0 8px rgba(244,163,0,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  margin: 0 auto;
+}
+.ganesh-mark img {
+  width: 78%;
+  height: 78%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.ganesh-mark.small { width: 74px; height: 74px; margin-bottom: 1rem; }
+/* Monogram roundel: double gold ring, kumkum-red fill.
+   `white-space: nowrap` + line-height 1 keep "A&S" on one line and optically
+   centred — without them the script face wraps and sits low in the circle. */
+.monogram-badge {
+  width: 86px;
+  height: 86px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-script);
+  font-size: 2.05rem;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+  color: #fff4d6;
+  background: radial-gradient(circle at 35% 30%, #e0473a, var(--color-primary) 55%, #7a0b12 100%);
+  box-shadow:
+    0 0 0 3px var(--color-accent),
+    0 0 0 6px rgba(255,255,255,0.65),
+    0 0 0 8px rgba(244,163,0,0.55),
+    0 8px 18px -8px rgba(74,16,16,0.6);
+  margin: 0 auto 1.75rem;
+  /* nudge the script baseline to the optical centre of the circle */
+  padding-bottom: 0.14em;
+}
+.monogram-badge.small {
+  width: 62px;
+  height: 62px;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.hero-pretitle {
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.78rem;
+  color: var(--color-muted);
+  margin-bottom: 1.25rem;
+}
+.hero-names {
+  font-family: var(--font-script);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 8.5vw, 4.6rem);
+  color: var(--color-text);
+  line-height: 1.25;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: center;
+  gap: 0 0.5rem;
+}
+.hero-names > span:first-child,
+.hero-names > span:nth-child(3) { line-height: 1; }
+/* The "&" sits on its own centred line between the two names, rather than
+   inline before the groom's name — reads as a divider, not punctuation. */
+.hero-names .amp {
+  display: block;
+  width: 100%;
+  text-align: center;
+  color: var(--color-accent);
+  font-size: 0.62em;
+  line-height: 1;
+  margin: 0.05em 0 0.15em;
+}
+.hero-parents {
+  display: block;
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  font-style: italic;
+  color: var(--color-muted);
+  margin: -0.1rem 0 0.6rem;
+  line-height: 1.3;
+}
+.hero-tagline {
+  font-style: italic;
+  color: var(--color-muted);
+  margin-top: 1.25rem;
+  font-size: 1.15rem;
+}
+.hero-date {
+  margin-top: 0.6rem;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.hero-divider {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 2rem auto 0;
+  color: var(--color-accent);
+  max-width: 220px;
+}
+.hero-divider span { flex: 1; height: 1px; background: currentColor; opacity: 0.4; }
+
+.hero-glance {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  margin: 1.75rem 0 1.25rem;
+  flex-wrap: wrap;
+}
+.glance-item { display: flex; flex-direction: column; align-items: center; }
+.glance-label {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.68rem;
+  color: var(--color-muted);
+  margin-bottom: 0.25rem;
+}
+.glance-value {
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--color-text);
+}
+.glance-sep {
+  width: 1px;
+  height: 34px;
+  background: rgba(200,148,31,0.4);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 1.25rem;
+  z-index: 2;
+  color: var(--color-accent);
+  opacity: 0.9;
+}
+.scroll-dot { animation: scrollDot 1.8s ease-in-out infinite; }
+@keyframes scrollDot {
+  0% { transform: translateY(0); opacity: 1; }
+  60% { transform: translateY(14px); opacity: 0; }
+  61% { transform: translateY(0); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+/* ---- Generic section spacing ---- */
+section {
+  padding: 5.5rem 1.5rem;
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+/* ---- Countdown ---- */
+/* Deep kumkum band — the page's strongest colour block, so the countdown
+   reads as the focal point the way the red band does in the reference. */
+.countdown-section {
+  text-align: center;
+  max-width: none;
+  width: 100%;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+  background:
+    radial-gradient(circle at 12% 20%, rgba(244,163,0,0.22), transparent 45%),
+    radial-gradient(circle at 88% 80%, rgba(244,163,0,0.18), transparent 45%),
+    linear-gradient(160deg, #9c1119 0%, var(--color-deep) 55%, #5e0810 100%);
+  border-top: 4px solid var(--color-accent);
+  border-bottom: 4px solid var(--color-accent);
+}
+.countdown-section .section-kicker { color: #ffd77a; }
+.countdown-inner { max-width: 900px; margin: 0 auto; }
+.countdown-grid {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.6rem, 2.5vw, 1.5rem);
+  margin: 1.5rem 0 2rem;
+  flex-wrap: wrap;
+}
+.countdown-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 74px;
+  padding: 0.85rem 0.65rem;
+  border-radius: 12px;
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(244,163,0,0.5);
+}
+.countdown-num {
+  font-family: var(--font-heading);
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: #ffd77a;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.countdown-label {
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  font-size: 0.68rem;
+  color: rgba(255,244,214,0.8);
+  margin-top: 0.35rem;
+}
+.countdown-section .ghost-button {
+  border-color: #ffd77a;
+  color: #ffd77a;
+}
+.countdown-section .ghost-button:hover {
+  background: #ffd77a;
+  color: var(--color-deep);
+}
+.ghost-button {
+  display: inline-block;
+  border: 1px solid var(--color-accent);
+  background: transparent;
+  color: var(--color-accent);
+  padding: 0.7rem 1.6rem;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s ease, color 0.25s ease;
+}
+.ghost-button:hover { background: var(--color-accent); color: #fff; }
+.ghost-button.small { padding: 0.5rem 1.2rem; font-size: 0.85rem; }
+
+/* ---- Story ---- */
+.story-section { text-align: center; }
+.story-text { font-size: 1.2rem; font-style: italic; color: rgba(255,244,214,0.94); }
+
+/* ---- Couple photo card ---- */
+.photo-card {
+  margin: 2rem auto 2.25rem;
+  max-width: 340px;
+}
+.photo-frame {
+  position: relative;
+  padding: 12px;
+  border-radius: 200px 200px 14px 14px;
+  background: linear-gradient(150deg, #f7b733 0%, var(--color-accent) 45%, #b9700a 100%);
+  box-shadow: 0 18px 40px -20px rgba(74,16,16,0.6);
+}
+/* inner hairline so the gold frame reads as two nested mouldings */
+.photo-frame::after {
+  content: '';
+  position: absolute;
+  inset: 5px;
+  border-radius: 196px 196px 10px 10px;
+  border: 1px solid rgba(255,255,255,0.55);
+  pointer-events: none;
+}
+.photo-frame img {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: center 22%;
+  border-radius: 190px 190px 8px 8px;
+  display: block;
+}
+/* Reads as a hashtag, so it takes the body face rather than the script one —
+   Great Vibes renders "#" poorly. */
+.photo-caption {
+  margin-top: 1rem;
+  font-family: var(--font-body);
+  font-size: 1.15rem;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+}
+
+/* ---- Festivities: flip cards ---- */
+.festivities-section { text-align: center; max-width: 960px; }
+.festivities-hint {
+  text-align: center;
+  color: rgba(255,244,214,0.8);
+  font-style: italic;
+  font-size: 0.95rem;
+  margin: -0.5rem 0 2rem;
+}
+.festivity-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 1.5rem;
+}
+.festivity-card {
+  perspective: 1400px;
+  height: 320px;
+}
+.festivity-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: left;
+  transition: transform 0.7s cubic-bezier(0.65, 0, 0.35, 1);
+  transform-style: preserve-3d;
+  cursor: pointer;
+}
+.festivity-card.is-flipped .festivity-card-inner {
+  transform: rotateY(180deg);
+}
+.festivity-card-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+  border-radius: 18px;
+  padding: 1.75rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  border: 2px solid var(--color-accent);
+  box-shadow: 0 14px 34px -18px rgba(74,16,16,0.5);
+}
+.festivity-card-front {
+  background:
+    radial-gradient(circle at 50% 0%, rgba(244,163,0,0.28), transparent 60%),
+    linear-gradient(165deg, #ffd98a 0%, var(--color-surface) 45%, #fff3d2 100%);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.festivity-icon {
+  width: 46px;
+  height: 46px;
+  color: var(--color-primary);
+  margin-bottom: 1rem;
+}
+.festivity-card-front .festivity-title {
+  font-family: var(--font-script);
+  font-size: 2.1rem;
+  color: var(--color-text);
+  margin-bottom: 0.3rem;
+}
+.festivity-card-front .festivity-subtitle {
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--color-muted);
+  margin-bottom: 0.9rem;
+}
+.festivity-card-front .festivity-date {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  font-weight: 600;
+}
+.festivity-tap-hint {
+  margin-top: 1rem;
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-muted);
+  opacity: 0.75;
+}
+
+.festivity-card-back {
+  background:
+    radial-gradient(circle at 80% 10%, rgba(244,163,0,0.22), transparent 55%),
+    linear-gradient(165deg, #9c1119 0%, var(--color-deep) 60%, #5e0810 100%);
+  color: #fff4d6;
+  transform: rotateY(180deg);
+  justify-content: center;
+}
+.festivity-card-back .festivity-back-title {
+  font-family: var(--font-heading);
+  font-size: 1.3rem;
+  margin-bottom: 0.75rem;
+  color: #fddc86;
+}
+.festivity-back-row {
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.92;
+}
+.festivity-back-row strong {
+  display: block;
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-bottom: 0.1rem;
+}
+.festivity-quote {
+  margin-top: 0.75rem;
+  font-style: italic;
+  font-size: 0.92rem;
+  opacity: 0.9;
+  border-top: 1px solid rgba(253,240,216,0.25);
+  padding-top: 0.75rem;
+}
+
+/* ---- RSVP ---- */
+.rsvp-section { max-width: 640px; }
+.rsvp-inner { text-align: center; }
+.rsvp-deadline { color: rgba(255,244,214,0.82); font-size: 0.95rem; margin-bottom: 1.75rem; }
+.rsvp-actions {
+  display: flex;
+  gap: 0.85rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+.rsvp-cta-card {
+  background: linear-gradient(165deg, var(--color-surface), #fff6e1);
+  border: 1px solid rgba(200,148,31,0.35);
+  border-radius: 18px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 12px 30px -20px rgba(58,36,28,0.4);
+}
+.rsvp-cta-icon {
+  width: 52px;
+  height: 52px;
+  color: var(--color-primary);
+  margin: 0 auto 1.25rem;
+}
+.rsvp-cta-text {
+  color: var(--color-text);
+  font-size: 1.05rem;
+  margin: 0 auto 1.5rem;
+  max-width: 380px;
+}
+.rsvp-open-link {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  max-width: 320px;
+  margin: 0 auto;
+}
+.rsvp-cta-note {
+  margin: 0.9rem 0 0;
+  font-size: 0.8rem;
+  color: var(--color-muted);
+}
+.rsvp-call-fallback {
+  margin-top: 1.25rem;
+  color: rgba(255,244,214,0.82);
+  font-size: 0.9rem;
+}
+.rsvp-call-fallback a {
+  color: var(--color-accent);
+  text-decoration: underline;
+}
+
+.submit-button {
+  display: inline-block;
+  width: 100%;
+  padding: 0.95rem;
+  border: none;
+  border-radius: 999px;
+  background: var(--color-primary);
+  color: #fff;
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.25s ease, transform 0.15s ease;
+}
+.submit-button:hover { background: #8a2222; }
+.submit-button:active { transform: scale(0.98); }
+
+/* ---- Accommodations ---- */
+.accommodation-list { display: grid; gap: 1.25rem; margin-top: 1.5rem; }
+.accommodation-item {
+  background: var(--color-surface);
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  text-align: center;
+}
+.accommodation-item h4 { font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 0.35rem; }
+.accommodation-item p { color: var(--color-muted); font-size: 0.95rem; margin: 0; }
+.accommodation-item a { color: var(--color-primary); font-size: 0.9rem; }
+
+/* ---- Registry ---- */
+.registry-section { text-align: center; }
+.registry-note { color: rgba(255,244,214,0.85); margin-bottom: 1.5rem; }
+.registry-links { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.registry-links a {
+  border: 1px solid var(--color-accent);
+  border-radius: 999px;
+  padding: 0.6rem 1.4rem;
+  text-decoration: none;
+  font-size: 0.9rem;
+  color: var(--color-accent);
+}
+
+/* ---- Footer ---- */
+.site-footer {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(244,163,0,0.25), transparent 55%),
+    linear-gradient(170deg, #9c1119 0%, var(--color-deep) 55%, #4d060d 100%);
+  border-top: 4px solid var(--color-accent);
+  color: #fff4d6;
+}
+.footer-om {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-accent);
+  margin-bottom: 0.75rem;
+}
+.footer-blessing {
+  max-width: 420px;
+  margin: 0 auto 1.75rem;
+  font-style: italic;
+  color: rgba(255,244,214,0.92);
+  font-size: 1rem;
+}
+.site-footer .monogram-badge {
+  box-shadow:
+    0 0 0 3px var(--color-accent),
+    0 0 0 6px rgba(255,255,255,0.35),
+    0 0 0 8px rgba(244,163,0,0.45);
+}
+.footer-names { font-family: var(--font-script); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
+.footer-hashtag { color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
+.footer-note { color: rgba(255,244,214,0.6); font-style: italic; font-size: 0.9rem; }
+
+/* ============ Responsive ============ */
+
+/* Below this the card fills the width, so the kalash would sit on top of it —
+   tuck them behind as a low, partially-cropped flourish instead. */
+@media (max-width: 900px) {
+  .hero-kalash { width: 84px; height: 122px; opacity: 0.9; }
+  .hero-kalash-left  { left: -14px; }
+  .hero-kalash-right { right: -14px; }
+}
+@media (max-width: 620px) {
+  .hero-kalash { display: none; }
+  .hero-garland { height: 96px; background-size: auto 96px; }
+  .hero { padding-top: clamp(3.5rem, 18vw, 5.5rem); }
+}
+
+@media (max-width: 560px) {
+  body { font-size: 17px; }
+  section { padding: 4rem 1.25rem; }
+  .site-nav { padding: 0.75rem 1rem; }
+  .nav-links { gap: 0.9rem; }
+  .festivity-card { height: 300px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}

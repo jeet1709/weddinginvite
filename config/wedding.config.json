@@ -1,0 +1,114 @@
+{
+  "couple": {
+    "bride": {
+      "name": "Anushka",
+      "parents": "Daughter of Neelam & Ashok"
+    },
+    "groom": {
+      "name": "Saurabh",
+      "parents": "Son of Babita & Shiv"
+    },
+    "monogram": "A & S",
+    "hashtag": "#AnushkaWedsSaurabh",
+    "photo": "/assets/roka1.jpeg",
+    "photoCaption": "#Pyaar Dosti Hai"
+  },
+  "intro": {
+    "eyebrow": "Together with their families",
+    "joiner": "weds",
+    "tapHint": "Tap to open"
+  },
+  "branding": {
+    "ganeshLogo": "/assets/wedding-ganesh-logo.jpg"
+  },
+  "hero": {
+    "preTitle": "Together with their families",
+    "tagline": "Request the honour of your presence",
+    "blessingLine": "With the blessings of our elders and the warmth of your presence."
+  },
+  "wedding": {
+    "date": "2026-12-05",
+    "time": "18:00",
+    "displayDate": "Friday, 5th December 2026",
+    "venueName": "Taj Palace",
+    "venueCity": "Hyderabad",
+    "address": "Road No. 12, Banjara Hills, Hyderabad, Telangana 500034",
+    "mapQuery": "Taj Palace Hyderabad",
+    "countdownLabel": "Counting Down to the Muhurtham"
+  },
+  "story": "From a chance meeting on a rainy afternoon to a lifetime of promises — we can't wait to celebrate the next chapter with the people we love most.",
+  "schedule": [
+    {
+      "id": "haldi",
+      "date": "2026-12-08",
+      "time": "6:00 PM onwards",
+      "title": "Haldi",
+      "subtitle": "Manjal Neerattu Vizha",
+      "location": "Taj Palace, Hyderabad",
+      "dressCode": "Yellow & Marigold",
+      "quote": "Turmeric, laughter and the very first blessings."
+    },
+    {
+      "id": "mehndi",
+      "date": "2026-12-09",
+      "time": "5:30 PM onwards",
+      "title": "Mehndi",
+      "subtitle": "Where henna meets hearts",
+      "location": "Taj Palace, Hyderabad",
+      "dressCode": "Pastel & Floral",
+      "quote": "The deeper the mehndi, the deeper the love."
+    },
+    {
+      "id": "sangeet",
+      "date": "2026-12-10",
+      "time": "6:00 PM onwards",
+      "title": "Sangeet",
+      "subtitle": "An evening of song",
+      "location": "Taj Palace, Hyderabad",
+      "dressCode": "Indo-Western Glam",
+      "quote": "Music, dance and the whole family on its feet."
+    },
+    {
+      "id": "wedding",
+      "date": "2026-12-11",
+      "time": "6:00 PM onwards",
+      "title": "The Wedding",
+      "subtitle": "The Muhurtham",
+      "location": "Taj Palace, Hyderabad",
+      "dressCode": "Traditional",
+      "quote": "The sacred vows, with your blessings."
+    }
+  ],
+  "rsvp": {
+    "enabled": true,
+    "deadline": "2026-11-15",
+    "googleFormUrl": "https://forms.gle/fJpFPPjkCuxC4QBa8",
+    "contactName": "The Family",
+    "contactPhone": ""
+  },
+  "accommodations": [
+    {
+      "name": "Taj Palace",
+      "notes": "A block of rooms is held under 'Anushka & Saurabh Wedding' until 20 November 2026.",
+      "link": ""
+    },
+    {
+      "name": "Taj Krishna",
+      "notes": "10 minutes from the venue, recommended for families.",
+      "link": ""
+    }
+  ],
+  "registry": {
+    "enabled": false,
+    "note": "Your presence is the only present we need. If you'd still like to send something, a small note is below.",
+    "links": []
+  },
+  "theme": {
+    "primaryColor": "#c1121f",
+    "accentColor": "#f4a300",
+    "deepColor": "#7a0b12",
+    "backgroundColor": "#fff6e5",
+    "surfaceColor": "#ffe3a8",
+    "textColor": "#4a1010"
+  }
+}

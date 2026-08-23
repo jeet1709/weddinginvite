@@ -15,7 +15,7 @@
   };
 
   async function loadConfig() {
-    const res = await fetch('/config/wedding.config.json', { cache: 'no-store' });
+    const res = await fetch('config/wedding.config.json', { cache: 'no-store' });
     if (!res.ok) throw new Error('Could not load wedding.config.json');
     return res.json();
   }

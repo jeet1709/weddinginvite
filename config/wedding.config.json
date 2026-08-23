@@ -10,7 +10,7 @@
     },
     "monogram": "A & S",
     "hashtag": "#AnushkaWedsSaurabh",
-    "photo": "/assets/roka1.jpeg",
+    "photo": "assets/roka1.jpeg",
     "photoCaption": "#Pyaar Dosti Hai"
   },
   "intro": {
@@ -19,7 +19,7 @@
     "tapHint": "Tap to open"
   },
   "branding": {
-    "ganeshLogo": "/assets/wedding-ganesh-logo.jpg"
+    "ganeshLogo": "assets/wedding-ganesh-logo.jpg"
   },
   "hero": {
     "preTitle": "Together with their families",

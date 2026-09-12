@@ -108,27 +108,24 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   opacity: 1;
   transform: translateY(0);
 }
-/* ============ Invitation opening: carved doors ============
-   Restrained palette (oxblood + antique gold), engraved linework and a
-   typographic title. No photography, no glossy fills — the elegance comes
-   from proportion, fine rules and negative space. */
+/* ============ Invitation opening: X-fold envelope ============
+   Four triangular flaps meet at a wax seal. On tap, light ignites in the
+   seam beneath the seal, the embossed filigree gilds outward from the
+   centre, a starburst blooms, then the whole envelope dissolves into a
+   warm flare to reveal the invitation already sitting underneath. */
 .intro-screen {
   --gold: #c9a227;
   --gold-lt: #e9d08a;
+  --gold-hi: #fff0c4;
   --cream: #f4e9d4;
 
   position: fixed;
   inset: 0;
   z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  background:
-    radial-gradient(ellipse at 50% 34%, #4a1020 0%, #2e0813 52%, #1a050b 100%);
+  overflow: hidden;
   cursor: pointer;
-  transition: opacity 1s ease 0.7s, visibility 1s ease 0.7s;
-  padding: 2rem 1.5rem;
+  background: #1a050b;
+  transition: opacity 0.7s ease, visibility 0.7s ease;
 }
 .intro-screen.is-hidden {
   opacity: 0;
@@ -136,44 +133,207 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   pointer-events: none;
 }
 
-.door-scene {
-  position: relative;
-  perspective: 2200px;
+/* ---- The envelope ---- */
+/* The envelope holds while the light builds, then dissolves late — the fade
+   is delayed so the gilding and starburst play out on a lit envelope. */
+.envelope {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+  transition: transform 1.8s cubic-bezier(0.3, 0, 0.2, 1),
+              opacity 0.75s ease 1.15s;
+}
+.intro-screen.is-opening .envelope {
+  transform: scale(1.16);
+  opacity: 0;
+}
+
+/* Each flap is a triangle pinned to one edge, apex at the centre.
+   Slightly different gradients so the four planes read as folded paper. */
+.env-flap {
+  position: absolute;
+  inset: 0;
+  background-color: #4a0f1c;
+}
+.env-flap-top {
+  clip-path: polygon(0 0, 100% 0, 50% 50%);
+  background-image: linear-gradient(180deg, #631627 0%, #4a0f1c 62%, #3a0a15 100%);
+}
+.env-flap-bottom {
+  clip-path: polygon(0 100%, 100% 100%, 50% 50%);
+  background-image: linear-gradient(0deg, #5a1323 0%, #460e1a 60%, #380a14 100%);
+}
+.env-flap-left {
+  clip-path: polygon(0 0, 0 100%, 50% 50%);
+  background-image: linear-gradient(90deg, #521121 0%, #400c18 70%, #340913 100%);
+}
+.env-flap-right {
+  clip-path: polygon(100% 0, 100% 100%, 50% 50%);
+  background-image: linear-gradient(270deg, #521121 0%, #400c18 70%, #340913 100%);
+}
+
+/* Gold hairlines tracing the two diagonals */
+.env-folds {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    linear-gradient(to bottom right, transparent calc(50% - 0.6px), rgba(233,208,138,0.55) 50%, transparent calc(50% + 0.6px)),
+    linear-gradient(to bottom left,  transparent calc(50% - 0.6px), rgba(233,208,138,0.55) 50%, transparent calc(50% + 0.6px));
+}
+
+/* Embossed filigree. Each sprig starts as a barely-there deboss and is
+   lit to gold by JS, staggered by its distance from the centre. */
+.env-filigree { position: absolute; inset: 0; pointer-events: none; }
+.env-sprig {
+  position: absolute;
+  transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
+  color: rgba(255, 226, 168, 0.07);
+  filter: none;
+  transition: color 0.75s ease, filter 0.75s ease, opacity 0.75s ease;
+}
+.env-sprig svg { display: block; width: 100%; height: 100%; }
+.intro-screen.is-opening .env-sprig {
+  color: var(--gold-lt);
+  filter: drop-shadow(0 0 7px rgba(244, 190, 90, 0.85));
+}
+
+/* ---- Light in the seam ---- */
+.env-core {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 46vmin;
+  height: 46vmin;
+  z-index: 2;
+  transform: translate(-50%, -50%) scale(0.12);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle,
+    #fffdf5 0%, #ffeec0 14%, rgba(248, 197, 92, 0.85) 34%,
+    rgba(214, 140, 40, 0.35) 58%, transparent 74%);
+  transition: opacity 0.5s ease, transform 1.5s cubic-bezier(0.22, 0.7, 0.3, 1);
+}
+.intro-screen.is-opening .env-core {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1.9);
+}
+
+/* Starburst rays radiating from the seam */
+.env-rays {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 190vmax;
+  height: 190vmax;
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    rgba(255, 231, 170, 0.5) 0deg 1.1deg,
+    transparent 1.1deg 7deg);
+  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 2%, rgba(0,0,0,0.55) 16%, transparent 42%);
+          mask-image: radial-gradient(circle at 50% 50%, #000 2%, rgba(0,0,0,0.55) 16%, transparent 42%);
+  transition: opacity 0.8s ease 0.35s, transform 1.9s cubic-bezier(0.2, 0.6, 0.3, 1) 0.25s;
+}
+.intro-screen.is-opening .env-rays {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1) rotate(14deg);
+}
+
+/* ---- Wax seal ---- */
+.env-seal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 23vmin;
+  height: 23vmin;
+  max-width: 132px;
+  max-height: 132px;
+  border-radius: 50%;
   display: flex;
-  flex-direction: column;
   align-items: center;
-  width: min(84vw, 400px);
-  max-height: 100%;
+  justify-content: center;
+  z-index: 3;
+  background:
+    radial-gradient(circle at 38% 30%, #f6d9c4 0%, #e2ae94 42%, #b97d63 78%, #8d5540 100%);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.5),
+    inset 0 -4px 9px rgba(94, 45, 28, 0.55),
+    0 8px 22px rgba(0,0,0,0.5);
+  color: #7a4229;
+  font-family: var(--font-heading);
+  font-size: clamp(1.1rem, 3.4vmin, 1.6rem);
+  letter-spacing: 0.06em;
+  text-indent: 0.06em;
+  white-space: nowrap;
+  transition: transform 1.8s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.7s ease 1.2s,
+              box-shadow 0.9s ease;
+}
+/* scalloped wax edge */
+.env-seal::before {
+  content: '';
+  position: absolute;
+  inset: -6%;
+  border-radius: 50%;
+  background: inherit;
+  clip-path: polygon(
+    50% 0%, 61% 5%, 73% 3%, 80% 13%, 91% 18%, 92% 30%, 99% 39%, 96% 50%,
+    99% 61%, 92% 70%, 91% 82%, 80% 87%, 73% 97%, 61% 95%, 50% 100%,
+    39% 95%, 27% 97%, 20% 87%, 9% 82%, 8% 70%, 1% 61%, 4% 50%,
+    1% 39%, 8% 30%, 9% 18%, 20% 13%, 27% 3%, 39% 5%);
+  z-index: -1;
+}
+.env-seal span { position: relative; z-index: 1; }
+.intro-screen.is-opening .env-seal {
+  transform: translate(-50%, -50%) scale(1.35);
+  opacity: 0;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,0.6),
+    inset 0 -4px 9px rgba(94, 45, 28, 0.4),
+    0 0 60px rgba(255, 214, 130, 0.9);
 }
 
-/* ---- Typographic lockup ---- */
-.door-eyebrow {
-  margin: 0 0 0.85rem;
+/* ---- Typographic lockup + hint ---- */
+.env-lockup {
+  position: absolute;
+  top: clamp(4vh, 8vh, 11vh);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  text-align: center;
+  padding: 0 1.5rem;
+  transition: opacity 0.55s ease;
+}
+.env-eyebrow {
+  margin: 0 0 0.7rem;
   font-family: var(--font-body);
-  font-size: 0.66rem;
-  letter-spacing: 0.42em;
+  font-size: clamp(0.52rem, 1.55vmin, 0.66rem);
+  letter-spacing: 0.4em;
+  text-indent: 0.4em;
   text-transform: uppercase;
-  color: rgba(233, 208, 138, 0.72);
-  text-indent: 0.42em; /* balance the trailing letter-space */
+  color: rgba(233, 208, 138, 0.75);
 }
-
-.door-title {
+.env-title {
   margin: 0;
   font-family: var(--font-heading);
   font-weight: 500;
-  font-size: clamp(1.45rem, 5.6vw, 2.1rem);
-  line-height: 1.25;
+  font-size: clamp(1.15rem, 4.6vmin, 2rem);
+  line-height: 1.28;
   letter-spacing: 0.14em;
-  text-transform: uppercase;
-  text-align: center;
-  color: var(--cream);
   text-indent: 0.14em;
+  text-transform: uppercase;
+  color: var(--cream);
+  text-shadow: 0 2px 14px rgba(0,0,0,0.55);
 }
-.door-title em {
+.env-title em {
   display: block;
-  margin: 0.18em 0;
+  margin: 0.16em 0;
   font-family: var(--font-body);
-  font-size: 0.62em;
+  font-size: 0.6em;
   font-style: italic;
   font-weight: 400;
   letter-spacing: 0.16em;
@@ -181,186 +341,56 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   color: var(--gold-lt);
 }
 
-/* hairline rule with a lozenge at its centre */
-.door-rule {
-  position: relative;
-  width: 116px;
-  height: 1px;
-  margin: 1.15rem 0 1.5rem;
-  background: linear-gradient(90deg, transparent, rgba(201,162,39,0.85), transparent);
-}
-.door-rule::after {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 7px;
-  height: 7px;
-  transform: translate(-50%, -50%) rotate(45deg);
-  background: var(--gold);
-}
-
-/* ---- Engraved pelmet above the doorway ---- */
-/* Sits flush to the doorway's own width so it reads as a lintel, not a
-   detached bar hanging past the jambs. */
-.door-valance {
-  width: 100%;
-  height: 38px;
-  background-repeat: repeat-x;
-  background-position: center top;
-  background-size: auto 38px;
-  margin-bottom: 6px;
-  z-index: 4;
-  filter: drop-shadow(0 4px 7px rgba(0,0,0,0.5));
-}
-
-/* ---- The doorway ---- */
-.doorway {
-  position: relative;
-  width: 100%;
-  aspect-ratio: 0.72;
-  flex: 0 1 auto;
-  min-height: 0;
-  transform-style: preserve-3d;
-  border-radius: 168px 168px 3px 3px;
-  padding: 7px;
-  /* slim gold frame over a dark reveal */
-  background: linear-gradient(160deg, #7d5a16, #c9a227 34%, #6d4d12 100%);
-  box-shadow:
-    0 34px 70px -28px rgba(0,0,0,0.85),
-    0 0 0 1px rgba(233,208,138,0.35);
-}
-
-.doorway-glow {
-  position: absolute;
-  inset: 7px;
-  border-radius: 164px 164px 2px 2px;
-  background: radial-gradient(ellipse at 50% 62%, #fff6e2 0%, #f2d089 42%, #c9992f 100%);
-  opacity: 0;
-  transition: opacity 1s ease 0.35s;
-}
-.doorway.is-open .doorway-glow { opacity: 1; }
-
-.door-panel {
-  position: absolute;
-  top: 7px;
-  bottom: 7px;
-  width: calc(50% - 7px);
-  transform-style: preserve-3d;
-  transition: transform 1.7s cubic-bezier(0.62, 0, 0.2, 1);
-  z-index: 2;
-}
-.door-left  { left: 7px;  transform-origin: left center;  border-radius: 164px 0 0 2px; }
-.door-right { right: 7px; transform-origin: right center; border-radius: 0 164px 2px 0; }
-
-.doorway.is-open .door-left  { transform: rotateY(-112deg); }
-.doorway.is-open .door-right { transform: rotateY(112deg); }
-
-.door-inner {
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-  border-radius: inherit;
-  backface-visibility: hidden;
-  /* deep oxblood timber; the jali lattice is set from JS as a background */
-  background-color: #4a0f1c;
-  background-repeat: repeat;
-  background-position: center top;
-  box-shadow:
-    inset 0 0 0 1px rgba(233,208,138,0.42),
-    inset 0 0 0 9px rgba(0,0,0,0.16),
-    inset 0 0 0 10px rgba(233,208,138,0.22),
-    inset 0 0 90px rgba(0,0,0,0.55);
-}
-/* light falls from the centre seam outward */
-.door-left  .door-inner { background-image: var(--jali); box-shadow: inset 0 0 0 1px rgba(233,208,138,0.42), inset 0 0 0 9px rgba(0,0,0,0.16), inset 0 0 0 10px rgba(233,208,138,0.22), inset -22px 0 44px -16px rgba(0,0,0,0.7); }
-.door-right .door-inner { background-image: var(--jali); box-shadow: inset 0 0 0 1px rgba(233,208,138,0.42), inset 0 0 0 9px rgba(0,0,0,0.16), inset 0 0 0 10px rgba(233,208,138,0.22), inset  22px 0 44px -16px rgba(0,0,0,0.7); }
-
-/* slim ring pulls */
-.door-handle {
-  position: absolute;
-  top: 52%;
-  width: 17px;
-  height: 17px;
-  border-radius: 50%;
-  border: 2px solid var(--gold);
-  box-shadow: 0 1px 3px rgba(0,0,0,0.6), inset 0 1px 1px rgba(255,255,255,0.25);
-}
-.door-left  .door-handle { right: 15px; }
-.door-right .door-handle { left: 15px; }
-
-/* ---- Monogram medallion: engraved ring, not a glossy seal ---- */
-.door-medallion {
-  position: absolute;
-  top: 52%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 74px;
-  height: 74px;
-  border-radius: 50%;
-  z-index: 3;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: radial-gradient(circle at 50% 40%, #5c1424 0%, #3d0c17 100%);
-  border: 1px solid var(--gold);
-  box-shadow:
-    0 0 0 4px rgba(26,5,11,0.9),
-    0 0 0 5px rgba(201,162,39,0.55),
-    0 6px 18px rgba(0,0,0,0.55);
-  color: var(--gold-lt);
-  font-family: var(--font-heading);
-  font-size: 0.95rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-indent: 0.14em;
-  line-height: 1;
-  white-space: nowrap;
-  transition: transform 0.6s ease, opacity 0.6s ease;
-}
-.doorway.is-open .door-medallion {
-  transform: translate(-50%, -50%) scale(1.5);
-  opacity: 0;
-}
-
-.door-caption {
-  margin: 1.5rem 0 0.5rem;
-  font-family: var(--font-body);
-  font-style: italic;
-  font-size: 0.95rem;
-  color: rgba(244,233,212,0.72);
-  text-align: center;
-}
-
 .tap-hint {
-  margin: 1.5rem 0 0;
+  position: absolute;
+  bottom: clamp(4vh, 7vh, 10vh);
+  left: 0;
+  right: 0;
+  z-index: 4;
+  margin: 0;
+  text-align: center;
   font-family: var(--font-body);
   letter-spacing: 0.32em;
+  text-indent: 0.32em;
   text-transform: uppercase;
   font-size: 0.66rem;
-  color: rgba(233,208,138,0.85);
-  text-indent: 0.32em;
+  color: rgba(233, 208, 138, 0.9);
+  text-shadow: 0 2px 10px rgba(0,0,0,0.6);
   animation: pulse 2.6s ease-in-out infinite;
+  transition: opacity 0.4s ease;
 }
 @keyframes pulse {
-  0%, 100% { opacity: 0.4; }
+  0%, 100% { opacity: 0.42; }
   50% { opacity: 1; }
 }
-
-/* The doorway itself already flex-shrinks to fit (see `.doorway`'s
-   `flex: 0 1 auto`), so on short screens we only need to trim the fixed-size
-   text elements around it — never hide the eyebrow line entirely. */
-@media (max-height: 720px) {
-  .door-eyebrow { margin-bottom: 0.5rem; font-size: 0.58rem; }
-  .door-title { font-size: clamp(1.25rem, 5.2vw, 1.9rem); }
-  .door-rule { margin: 0.7rem 0 0.85rem; }
-  .door-valance { height: 30px; background-size: auto 30px; margin-bottom: 4px; }
-  .tap-hint { margin-top: 1rem; }
+.intro-screen.is-opening .env-lockup,
+.intro-screen.is-opening .tap-hint {
+  opacity: 0;
+  animation: none;
 }
 
-@media (max-height: 620px) {
-  .door-eyebrow { font-size: 0.52rem; letter-spacing: 0.34em; text-indent: 0.34em; }
-  .door-title { font-size: clamp(1.1rem, 4.8vw, 1.6rem); }
+/* ---- Reveal flare ---- */
+.env-flare {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(circle at 50% 50%,
+    #fffaf0 0%, rgba(255, 233, 176, 0.92) 26%, rgba(246, 195, 96, 0.5) 52%, transparent 78%);
+}
+.intro-screen.is-flaring .env-flare {
+  animation: env-flare-wash 1.15s ease-out forwards;
+}
+@keyframes env-flare-wash {
+  0%   { opacity: 0; }
+  38%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .envelope, .env-core, .env-rays, .env-seal, .env-sprig { transition: none; }
+  .intro-screen.is-flaring .env-flare { animation: none; }
 }
 /* ============ Site content ============ */
 .site-content {

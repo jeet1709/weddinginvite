@@ -1,7 +1,7 @@
 # Wedding Invite
 
-A self-hosted, animated Hindu wedding invitation: tap-to-open carved doors,
-live falling petals, scroll-reveal sections, flip cards for each day of
+A self-hosted, animated Hindu wedding invitation: a tap-to-open wax-sealed
+envelope, live falling petals, scroll-reveal sections, flip cards for each day of
 celebration, a live countdown to the muhurtham, and an RSVP that links out to
 a Google Form (so responses land in a Google Sheet you already own — no
 custom backend needed).
@@ -46,18 +46,25 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 
 ### The opening screen
 
-The invitation opens on a pair of carved doors, drawn entirely in CSS/SVG —
-deep oxblood leaves with a pierced **jali lattice** (`buildJaliSvg()`), a slim
-antique-gold frame, ring pulls, an engraved **pelmet** above
-(`buildValanceSvg()`) and a monogram medallion on the seam that parts with the
-doors. The title is a typographic lockup: names in tracked capitals with the
-joiner word in italic.
+The invitation opens on a full-bleed **X-fold envelope** — four triangular
+flaps meeting at a wax seal — drawn entirely in CSS/SVG. Tapping runs a
+four-beat sequence:
 
-There is deliberately **no photograph on the doors**. A photoreal image sat
-badly against flat vector woodwork and pushed the screen toward devotional
-imagery rather than invitation; the restraint reads as more formal. The
-Shiva–Parvati image is therefore no longer referenced by the page (the
-`intro.deityImage` setting has been removed).
+1. **Ignition** — light kindles in the seam beneath the seal.
+2. **Gilding** — the embossed filigree lights to gold, staggered by each
+   sprig's distance from the centre so the gold visibly travels outward.
+3. **Starburst** — a ray burst blooms and rotates out of the seam.
+4. **Dissolve** — the envelope fades and scales away through a warm flare,
+   revealing the invitation already sitting underneath.
+
+The light layers (`.env-core`, `.env-rays`) are siblings of `.envelope`, not
+children — so they keep burning at full strength while the envelope itself
+dissolves behind them. Sprig placement and stagger live in `SPRIG_LAYOUT`
+in `public/js/main.js`; the ornament is a marigold rosette, a leafy spray and
+a paisley, all stroke art in `currentColor` so one CSS colour change lights
+them.
+
+Reduced-motion users skip straight to the revealed invitation.
 
 ### Where the images live
 
@@ -124,10 +131,20 @@ Then upload `dist/` to any free static host:
 - **Vercel / Cloudflare Pages / GitHub Pages**: same idea — point any of
   these at the `dist/` folder (or run their CLI's deploy command against it).
 
-**Whenever you edit `config/wedding.config.json` or anything in `public/`
-after deploying, re-run `npm run build` and re-upload `dist/`** — unlike
-`npm start` (which reads the config fresh on every request), a static deploy
-is a snapshot and won't pick up changes until you redeploy it.
+**This repo is already wired to GitHub Pages** via
+`.github/workflows/deploy.yml`: every push to `main` runs `npm run build` and
+publishes `dist/`, so updating the live invite is just
+
+```bash
+git add -A && git commit -m "Update details" && git push
+```
+
+Live at **https://jeet1709.github.io/weddinginvite/**.
+
+If you deploy somewhere without CI instead (e.g. Netlify Drop), remember a
+static deploy is a snapshot: re-run `npm run build` and re-upload `dist/`
+after each content change. Only `npm start` reads the config fresh on every
+request.
 
 ## Project structure
 

@@ -16,41 +16,41 @@
   <!-- Live falling petals — decorative, sits above content, ignores pointer events -->
   <div class="petal-field" id="petalField" aria-hidden="true"></div>
 
-  <!-- ===== Invitation opening: carved doors ===== -->
+  <!-- ===== Invitation opening: X-fold envelope ===== -->
   <div class="intro-screen" id="introScreen" role="button" tabindex="0" aria-label="Tap to open your invitation">
-    <div class="door-scene">
 
-      <p class="door-eyebrow" id="doorEyebrow">Together with their families</p>
-      <h1 class="door-title" id="doorTitle">Anushka <em>weds</em> Saurabh</h1>
-      <div class="door-rule" aria-hidden="true"></div>
+    <!-- Full-bleed envelope: four triangular flaps meeting at the centre seal -->
+    <div class="envelope" id="envelope">
+      <div class="env-flap env-flap-top" aria-hidden="true"></div>
+      <div class="env-flap env-flap-bottom" aria-hidden="true"></div>
+      <div class="env-flap env-flap-left" aria-hidden="true"></div>
+      <div class="env-flap env-flap-right" aria-hidden="true"></div>
 
-      <!-- Engraved pelmet spanning the doorway -->
-      <div class="door-valance" id="doorValance" aria-hidden="true"></div>
+      <!-- Gold hairlines along the diagonal folds -->
+      <div class="env-folds" aria-hidden="true"></div>
 
-      <div class="doorway" id="doorway">
-        <!-- Warm light spilling out from behind the doors as they part -->
-        <div class="doorway-glow" aria-hidden="true"></div>
-
-        <div class="door-panel door-left" id="doorLeft">
-          <div class="door-inner">
-            <span class="door-handle" aria-hidden="true"></span>
-          </div>
-        </div>
-
-        <div class="door-panel door-right" id="doorRight">
-          <div class="door-inner">
-            <span class="door-handle" aria-hidden="true"></span>
-          </div>
-        </div>
-
-        <!-- Monogram medallion sits on the seam and splits with the doors -->
-        <div class="door-medallion" id="doorMedallion">
-          <span id="doorMonogram">A&amp;S</span>
-        </div>
-      </div>
-
-      <p class="tap-hint" id="tapHint">Tap to open</p>
+      <!-- Embossed filigree that gilds outward from the centre -->
+      <div class="env-filigree" id="envFiligree" aria-hidden="true"></div>
     </div>
+
+    <!-- Light escaping the seam sits ABOVE the envelope, so it keeps burning
+         at full strength while the envelope itself dissolves behind it. -->
+    <div class="env-rays" id="envRays" aria-hidden="true"></div>
+    <div class="env-core" id="envCore" aria-hidden="true"></div>
+
+    <div class="env-seal" id="envSeal">
+      <span id="envMonogram">A&amp;S</span>
+    </div>
+
+    <div class="env-lockup" id="envLockup">
+      <p class="env-eyebrow" id="doorEyebrow">Together with their families</p>
+      <h1 class="env-title" id="doorTitle">Anushka <em>weds</em> Saurabh</h1>
+    </div>
+
+    <p class="tap-hint" id="tapHint">Tap to open</p>
+
+    <!-- Warm flare that washes over at the moment of reveal -->
+    <div class="env-flare" id="envFlare" aria-hidden="true"></div>
   </div>
 
   <!-- ===== Site content ===== -->

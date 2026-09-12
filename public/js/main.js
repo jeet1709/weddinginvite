@@ -70,7 +70,7 @@
     const monogramFull = couple.monogram || `${couple.bride.name} & ${couple.groom.name}`;
     const monogramCompact = (couple.monogram || `${couple.bride.name[0]}&${couple.groom.name[0]}`).replace(/\s+/g, '');
 
-    $('#doorMonogram').textContent = monogramCompact;
+    $('#envMonogram').textContent = monogramCompact;
     $('#navMonogram').textContent = monogramFull;
     $('#heroPreTitle').textContent = hero.preTitle || '';
 
@@ -208,78 +208,135 @@
       fallback.hidden = true;
     }
   }
-  /* ============ Invitation opening: carved doors ============ */
+  /* ============ Invitation opening: X-fold envelope ============ */
   const svgUrl = (svg) => `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}")`;
 
-  /* ---- Jali: a fine pierced lattice, tiled across each door leaf ---- */
-  function buildJaliSvg() {
-    const S = 46; // tile size
-    const g = 'rgba(233,208,138,0.30)';
-    const gs = 'rgba(233,208,138,0.16)';
-    return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${S} ${S}" width="${S}" height="${S}">
-  <g fill="none" stroke="${g}" stroke-width="0.9">
-    <path d="M23 2 L44 23 L23 44 L2 23 Z"/>
-    <path d="M23 11 L35 23 L23 35 L11 23 Z"/>
-  </g>
-  <g fill="none" stroke="${gs}" stroke-width="0.7">
-    <path d="M0 0 L11 11 M46 0 L35 11 M0 46 L11 35 M46 46 L35 35"/>
-    <circle cx="23" cy="23" r="3.2"/>
-  </g>
-  <g fill="${g}">
-    <circle cx="23" cy="2" r="1"/><circle cx="44" cy="23" r="1"/>
-    <circle cx="23" cy="44" r="1"/><circle cx="2" cy="23" r="1"/>
+  /* ---- Filigree sprigs embossed into the flaps ----
+     A rosette (marigold/lotus read) and a leafy spray, drawn as stroke art in
+     `currentColor` so a single CSS colour change lights them from a faint
+     deboss to glowing gold. */
+  const SPRIG_ROSETTE = `
+<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2">
+  <circle cx="50" cy="50" r="8"/>
+  <circle cx="50" cy="50" r="15.5"/>
+  <g>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(45 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(90 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(135 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(180 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(225 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(270 50 50)"/>
+    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(315 50 50)"/>
   </g>
 </svg>`.trim();
-  }
 
-  /* ---- Pelmet: a scalloped, engraved valance above the doorway ---- */
-  function buildValanceSvg() {
-    const W = 68;
-    return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} 60" width="${W}" height="60">
-  <defs>
-    <linearGradient id="vg" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#e9d08a"/><stop offset="46%" stop-color="#c9a227"/><stop offset="100%" stop-color="#8a6614"/>
-    </linearGradient>
-  </defs>
-  <!-- band with a scalloped lower edge -->
-  <path d="M0 0 H${W} V15 A${W / 2} 15 0 0 1 0 15 Z" fill="url(#vg)"/>
-  <path d="M0 5.5 H${W}" stroke="rgba(26,5,11,0.35)" stroke-width="1"/>
-  <!-- pendant drop at each scallop junction -->
-  <g fill="url(#vg)">
-    <path d="M0 15 v11" stroke="url(#vg)" stroke-width="1.6"/>
-    <circle cx="0" cy="29" r="3.4"/>
-    <path d="M${W} 15 v11" stroke="url(#vg)" stroke-width="1.6"/>
-    <circle cx="${W}" cy="29" r="3.4"/>
-  </g>
-  <!-- small teardrop under the scallop -->
-  <path d="M${W / 2} 30 q4 5 0 10 q-4 -5 0 -10 z" fill="url(#vg)"/>
+  const SPRIG_SPRAY = `
+<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+  <path d="M50 92 C50 64 50 40 50 12"/>
+  <path d="M50 74 C38 70 30 60 28 48 C40 50 48 60 50 74 z"/>
+  <path d="M50 62 C62 58 70 48 72 36 C60 38 52 48 50 62 z"/>
+  <path d="M50 46 C38 42 30 32 28 20 C40 22 48 32 50 46 z"/>
+  <circle cx="50" cy="12" r="4.5"/>
 </svg>`.trim();
-  }
 
-  function setupDoorArt(cfg) {
+  const SPRIG_PAISLEY = `
+<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2">
+  <path d="M62 14 C86 32 84 68 56 86 C30 96 12 76 20 56 C27 38 48 40 52 56 C55 68 44 74 38 66"/>
+  <path d="M62 30 C76 42 74 64 58 74" stroke-width="1.6"/>
+</svg>`.trim();
+
+  // Laid out symmetrically about the centre. `d` is the normalised distance
+  // from the seal, which drives the gilding stagger.
+  const SPRIG_LAYOUT = [
+    { x: 24, y: 34, s: 15, r: -18, t: 'rosette' },
+    { x: 76, y: 34, s: 15, r: 18, t: 'rosette' },
+    { x: 15, y: 50, s: 12, r: -8, t: 'paisley' },
+    { x: 85, y: 50, s: 12, r: 8, t: 'paisley' },
+    { x: 27, y: 62, s: 13, r: -12, t: 'rosette' },
+    { x: 73, y: 62, s: 13, r: 12, t: 'rosette' },
+    { x: 12, y: 70, s: 10, r: -22, t: 'spray' },
+    { x: 88, y: 70, s: 10, r: 22, t: 'spray' },
+    { x: 50, y: 16, s: 12, r: 0, t: 'paisley' },
+    { x: 36, y: 22, s: 9, r: -30, t: 'spray' },
+    { x: 64, y: 22, s: 9, r: 30, t: 'spray' },
+    { x: 38, y: 82, s: 11, r: 180, t: 'spray' },
+    { x: 62, y: 82, s: 11, r: 180, t: 'spray' },
+    { x: 50, y: 90, s: 10, r: 180, t: 'spray' },
+    { x: 20, y: 86, s: 9, r: -160, t: 'rosette' },
+    { x: 80, y: 86, s: 9, r: 160, t: 'rosette' },
+  ];
+
+  const SPRIG_ART = { rosette: SPRIG_ROSETTE, spray: SPRIG_SPRAY, paisley: SPRIG_PAISLEY };
+
+  function setupEnvelopeArt(cfg) {
     const intro = (cfg && cfg.intro) || {};
+    const field = $('#envFiligree');
 
-    // jali lattice on both leaves, pelmet above the doorway
-    $('#introScreen').style.setProperty('--jali', svgUrl(buildJaliSvg()));
-    const valance = $('#doorValance');
-    if (valance) valance.style.backgroundImage = svgUrl(buildValanceSvg());
+    if (field) {
+      // Stagger each sprig by its distance from the seal so the gilding
+      // visibly travels outward from the centre, as in the reference.
+      const withDist = SPRIG_LAYOUT.map((p) => ({
+        ...p,
+        d: Math.hypot(p.x - 50, (p.y - 50) * 0.85),
+      }));
+      const maxD = Math.max(...withDist.map((p) => p.d));
 
-    // Title is set as a lockup — names in tracked caps, "weds" in italic —
-    // rather than one run of script type.
-    const couple = cfg && cfg.couple;
-    const titleEl = $('#doorTitle');
-    if (couple) {
-      titleEl.innerHTML =
-        `${escapeHtml(couple.bride.name)}<em>${escapeHtml(intro.joiner || 'weds')}</em>${escapeHtml(couple.groom.name)}`;
-    } else if (intro.title) {
-      titleEl.textContent = intro.title;
+      field.innerHTML = withDist.map((p) => {
+        const delay = 0.18 + (p.d / maxD) * 0.72;
+        return `<span class="env-sprig" style="
+          left:${p.x}%; top:${p.y}%;
+          width:${p.s}vmin; height:${p.s}vmin;
+          --rot:${p.r}deg;
+          transition-delay:${delay.toFixed(2)}s">${SPRIG_ART[p.t]}</span>`;
+      }).join('');
     }
 
+    const couple = cfg && cfg.couple;
+    if (couple) {
+      $('#doorTitle').innerHTML =
+        `${escapeHtml(couple.bride.name)}<em>${escapeHtml(intro.joiner || 'weds')}</em>${escapeHtml(couple.groom.name)}`;
+    }
     if (intro.eyebrow) $('#doorEyebrow').textContent = intro.eyebrow;
     if (intro.tapHint) $('#tapHint').textContent = intro.tapHint;
   }
+
+  /* ---- Opening sequence ----
+     ignite in the seam → gild outward → starburst → dissolve into a flare,
+     with the invitation already in place underneath. */
+  function setupEnvelope() {
+    const screen = $('#introScreen');
+    const siteContent = $('#siteContent');
+    if (!screen) return;
+    let opened = false;
+
+    function open() {
+      if (opened) return;
+      opened = true;
+
+      // ignition + gilding + burst all run off this one class
+      screen.classList.add('is-opening');
+
+      // the reveal washes through a flare while the envelope dissolves
+      setTimeout(() => {
+        screen.classList.add('is-flaring');
+        document.body.classList.add('intro-open');
+        siteContent.classList.add('is-visible');
+      }, 1500);
+
+      setTimeout(() => screen.classList.add('is-hidden'), 2250);
+      setTimeout(() => screen.remove(), 3200);
+    }
+
+    screen.addEventListener('click', open);
+    screen.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        open();
+      }
+    });
+  }
+
 
   /* ---- Hanging toran: a repeating tile of leaves and marigolds ----
      Beads are spaced tighter than their diameter so each strand reads as a
@@ -453,37 +510,6 @@
     });
   }
 
-  function setupDoor() {
-    const screen = $('#introScreen');
-    const doorway = $('#doorway');
-    const tapHint = $('#tapHint');
-    const siteContent = $('#siteContent');
-    let opened = false;
-
-    function open() {
-      if (opened) return;
-      opened = true;
-      tapHint.style.opacity = '0';
-      doorway.classList.add('is-open');
-
-      setTimeout(() => {
-        document.body.classList.add('intro-open');
-        siteContent.classList.add('is-visible');
-      }, 1000);
-
-      setTimeout(() => screen.classList.add('is-hidden'), 1150);
-      setTimeout(() => screen.remove(), 2600);
-    }
-
-    screen.addEventListener('click', open);
-    screen.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        open();
-      }
-    });
-  }
-
   /* ============ Scroll reveal ============ */
   function setupScrollReveal() {
     const io = new IntersectionObserver((entries) => {
@@ -618,16 +644,16 @@
       populateRsvpSection(cfg);
       setupCountdown(cfg);
       setupAddToCalendar(cfg);
-      setupDoorArt(cfg);
+      setupEnvelopeArt(cfg);
       setupGanesh(cfg);
     } catch (err) {
       console.error(err);
       // Config failed to load — still draw the door so the page is openable.
-      setupDoorArt(null);
+      setupEnvelopeArt(null);
     }
     setupHeroArch();
     setupHeroDecor();
-    setupDoor();
+    setupEnvelope();
     setupScrollReveal();
     setupPetals();
   }

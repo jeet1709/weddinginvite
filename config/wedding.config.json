@@ -16,7 +16,8 @@
   "intro": {
     "eyebrow": "Together with their families",
     "joiner": "weds",
-    "tapHint": "Tap to open"
+    "tapHint": "Tap to open",
+    "musicUrl": ""
   },
   "branding": {
     "ganeshLogo": "assets/wedding-ganesh-logo.jpg"

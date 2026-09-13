@@ -109,23 +109,40 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   transform: translateY(0);
 }
 /* ============ Invitation opening: X-fold envelope ============
-   Four triangular flaps meet at a wax seal. On tap, light ignites in the
-   seam beneath the seal, the embossed filigree gilds outward from the
-   centre, a starburst blooms, then the whole envelope dissolves into a
-   warm flare to reveal the invitation already sitting underneath. */
+   A real envelope has exactly one flap that opens — the top one, hinged
+   along its own base — while the other three folds form a fixed pocket
+   underneath. That's the physical action here, not an abstract dissolve:
+
+     1. The seal cracks and releases (0 → ~0.4s).
+     2. The top flap lifts open on a 3D hinge, rotating up and away from
+        the viewer, like actually opening a letter (~0.15s → ~1.5s).
+     3. At the same moment, a spark of light races outward along each of
+        the four crease lines, from the seal to each corner — light
+        traveling the diagonals, which is the actual fold geometry, rather
+        than a glow blooming from the middle of nowhere.
+     4. Once the flap is open, the whole envelope dissolves to reveal the
+        invitation already sitting beneath it.
+
+   Every light element here is a small, thin shape (a spark, a hairline) —
+   deliberately never a large gradient needing to be clipped to a shape,
+   which sidesteps a genuine Chromium bug where clip-path (or an ancestor's
+   overflow:hidden) silently stops containing a sufficiently large blurred
+   or transformed descendant once deviceScaleFactor is 2 or 3 — i.e. on the
+   large majority of actual phones. Small shapes never trigger it. */
 .intro-screen {
-  --gold: #c9a227;
-  --gold-lt: #e9d08a;
-  --gold-hi: #fff0c4;
-  --cream: #f4e9d4;
+  --gold: #b3872f;
+  --gold-lt: #d9b46a;
+  --gold-hi: #f0d9a0;
+  --cream: #ece0c8;
+  --wax: #e7d2b8;
 
   position: fixed;
   inset: 0;
   z-index: 1000;
   overflow: hidden;
   cursor: pointer;
-  background: #1a050b;
-  transition: opacity 0.7s ease, visibility 0.7s ease;
+  background: #0d0403;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
 }
 .intro-screen.is-hidden {
   opacity: 0;
@@ -133,168 +150,187 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   pointer-events: none;
 }
 
-/* ---- The envelope ---- */
-/* The envelope holds while the light builds, then dissolves late — the fade
-   is delayed so the gilding and starburst play out on a lit envelope. */
 .envelope {
   position: absolute;
   inset: 0;
-  transform-origin: 50% 50%;
-  transition: transform 1.8s cubic-bezier(0.3, 0, 0.2, 1),
-              opacity 0.75s ease 1.15s;
+  perspective: 1500px;
+  /* the envelope itself only ever fades, late, once the flap has opened */
+  transition: opacity 0.6s ease 1.55s;
 }
 .intro-screen.is-opening .envelope {
-  transform: scale(1.16);
   opacity: 0;
 }
 
-/* Each flap is a triangle pinned to one edge, apex at the centre.
-   Slightly different gradients so the four planes read as folded paper. */
+/* Each flap is a triangle pinned to one edge, apex at the centre — a near-
+   black chocolate leather, not a bright saturated maroon. */
 .env-flap {
   position: absolute;
   inset: 0;
-  background-color: #4a0f1c;
+  background-color: #200a09;
 }
 .env-flap-top {
   clip-path: polygon(0 0, 100% 0, 50% 50%);
-  background-image: linear-gradient(180deg, #631627 0%, #4a0f1c 62%, #3a0a15 100%);
+  background-image: linear-gradient(180deg, #2c0f0d 0%, #1c0808 65%, #150605 100%);
+  box-shadow: 0 6px 18px -4px rgba(0,0,0,0.6);
 }
 .env-flap-bottom {
   clip-path: polygon(0 100%, 100% 100%, 50% 50%);
-  background-image: linear-gradient(0deg, #5a1323 0%, #460e1a 60%, #380a14 100%);
+  background-image: linear-gradient(0deg, #200b0a 0%, #170706 60%, #110504 100%);
 }
 .env-flap-left {
   clip-path: polygon(0 0, 0 100%, 50% 50%);
-  background-image: linear-gradient(90deg, #521121 0%, #400c18 70%, #340913 100%);
+  background-image: linear-gradient(90deg, #260d0b 0%, #190807 68%, #130605 100%);
 }
 .env-flap-right {
   clip-path: polygon(100% 0, 100% 100%, 50% 50%);
-  background-image: linear-gradient(270deg, #521121 0%, #400c18 70%, #340913 100%);
+  background-image: linear-gradient(270deg, #260d0b 0%, #190807 68%, #130605 100%);
 }
 
-/* Gold hairlines tracing the two diagonals */
+/* ---- The hinge: only the top flap moves ----
+   Rotated on its own base (the top edge of the screen), away from the
+   viewer, like a letter actually being opened. backface-visibility hides
+   the artwork once it's rotated past 90° so it doesn't read as a mirrored
+   ghost — at that point we're meant to see the pocket underneath instead. */
+.env-flap-top-wrap {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  transform-origin: 50% 0%;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  transition: transform 1.3s cubic-bezier(0.5, 0, 0.18, 1) 0.22s;
+}
+.intro-screen.is-opening .env-flap-top-wrap {
+  transform: rotateX(-165deg);
+}
+
+/* Gold hairlines tracing the two lower diagonals (the fixed pocket's own
+   folds — the top flap's edges travel with it, drawn by its own clip). */
 .env-folds {
   position: absolute;
   inset: 0;
   pointer-events: none;
+}
+.env-folds::before {
   background:
-    linear-gradient(to bottom right, transparent calc(50% - 0.6px), rgba(233,208,138,0.55) 50%, transparent calc(50% + 0.6px)),
-    linear-gradient(to bottom left,  transparent calc(50% - 0.6px), rgba(233,208,138,0.55) 50%, transparent calc(50% + 0.6px));
+    linear-gradient(to bottom right, transparent calc(50% - 0.6px), rgba(179,135,47,0.42) 50%, transparent calc(50% + 0.6px)),
+    linear-gradient(to bottom left,  transparent calc(50% - 0.6px), rgba(179,135,47,0.42) 50%, transparent calc(50% + 0.6px));
+  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+  content: '';
+  position: absolute;
+  inset: 0;
 }
 
-/* Embossed filigree. Each sprig starts as a barely-there deboss and is
-   lit to gold by JS, staggered by its distance from the centre. */
-.env-filigree { position: absolute; inset: 0; pointer-events: none; }
+/* ---- Sparks: light travelling outward along each crease ----
+   Four thin streaks, each pinned at the seal and aimed at one screen
+   corner via a static rotation on the wrapper; the inner element handles
+   the actual grow-and-fade via `scaleY`, so the two transforms never fight
+   inside a single animated value. Deliberately tiny (2px wide) — nothing
+   here is large enough to hit the clip/overflow bug described above. */
+.env-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+}
+.env-spark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 62vmax;
+  transform-origin: top center;
+}
+.env-spark-tl { transform: translate(-50%, 0) rotate(-45deg); }
+.env-spark-tr { transform: translate(-50%, 0) rotate(45deg); }
+.env-spark-bl { transform: translate(-50%, 0) rotate(-135deg); }
+.env-spark-br { transform: translate(-50%, 0) rotate(135deg); }
+.env-spark i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  transform-origin: top center;
+  transform: scaleY(0);
+  opacity: 0;
+  background: linear-gradient(to bottom,
+    rgba(255, 246, 227, 0.95) 0%, rgba(240, 217, 160, 0.5) 6%, transparent 16%);
+}
+.intro-screen.is-opening .env-spark i {
+  animation: spark-travel 1.05s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+}
+.intro-screen.is-opening .env-spark-tr i,
+.intro-screen.is-opening .env-spark-tl i { animation-delay: 0.08s; }
+.intro-screen.is-opening .env-spark-br i,
+.intro-screen.is-opening .env-spark-bl i { animation-delay: 0.16s; }
+@keyframes spark-travel {
+  0%   { opacity: 0; transform: scaleY(0); }
+  14%  { opacity: 1; }
+  55%  { opacity: 0.85; transform: scaleY(1); }
+  100% { opacity: 0; transform: scaleY(1); }
+}
+
+/* ---- Rose sprays, side flaps only ---- */
+/* Each spray starts as a near-invisible deboss and rim-lights to a muted,
+   desaturated amber — never the flat saturated marigold-orange a first pass
+   at this reaches for. */
+.env-filigree { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .env-sprig {
   position: absolute;
   transform: translate(-50%, -50%) rotate(var(--rot, 0deg));
-  color: rgba(255, 226, 168, 0.07);
-  filter: none;
-  transition: color 0.75s ease, filter 0.75s ease, opacity 0.75s ease;
+  color: rgba(217, 180, 106, 0.045);
+  transition: color 1s ease, filter 1s ease;
 }
 .env-sprig svg { display: block; width: 100%; height: 100%; }
 .intro-screen.is-opening .env-sprig {
-  color: var(--gold-lt);
-  filter: drop-shadow(0 0 7px rgba(244, 190, 90, 0.85));
+  color: #c99a5c;
+  filter: drop-shadow(0 0 3px rgba(201, 154, 92, 0.5));
 }
 
-/* ---- Light in the seam ---- */
-.env-core {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 46vmin;
-  height: 46vmin;
-  z-index: 2;
-  transform: translate(-50%, -50%) scale(0.12);
-  border-radius: 50%;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(circle,
-    #fffdf5 0%, #ffeec0 14%, rgba(248, 197, 92, 0.85) 34%,
-    rgba(214, 140, 40, 0.35) 58%, transparent 74%);
-  transition: opacity 0.5s ease, transform 1.5s cubic-bezier(0.22, 0.7, 0.3, 1);
-}
-.intro-screen.is-opening .env-core {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1.9);
-}
-
-/* Starburst rays radiating from the seam */
-.env-rays {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 190vmax;
-  height: 190vmax;
-  z-index: 2;
-  pointer-events: none;
-  opacity: 0;
-  transform: translate(-50%, -50%) scale(0.3) rotate(0deg);
-  background: repeating-conic-gradient(from 0deg at 50% 50%,
-    rgba(255, 231, 170, 0.5) 0deg 1.1deg,
-    transparent 1.1deg 7deg);
-  -webkit-mask-image: radial-gradient(circle at 50% 50%, #000 2%, rgba(0,0,0,0.55) 16%, transparent 42%);
-          mask-image: radial-gradient(circle at 50% 50%, #000 2%, rgba(0,0,0,0.55) 16%, transparent 42%);
-  transition: opacity 0.8s ease 0.35s, transform 1.9s cubic-bezier(0.2, 0.6, 0.3, 1) 0.25s;
-}
-.intro-screen.is-opening .env-rays {
-  opacity: 1;
-  transform: translate(-50%, -50%) scale(1) rotate(14deg);
-}
-
-/* ---- Wax seal ---- */
+/* ---- Wax seal: smooth 22-lobe scallop (clip-path defined once in the
+   HTML, in objectBoundingBox units, so it scales cleanly at any size) ----
+   Cracks and releases right at the start — the thing that lets the flap
+   above it lift open a beat later. */
 .env-seal {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 23vmin;
-  height: 23vmin;
-  max-width: 132px;
-  max-height: 132px;
+  width: 21vmin;
+  height: 21vmin;
+  max-width: 122px;
+  max-height: 122px;
+  z-index: 5;
+  transition: transform 0.55s cubic-bezier(0.3, 0, 0.4, 1), opacity 0.5s ease 0.05s;
+}
+.env-seal-ring {
+  position: absolute;
+  inset: 0;
+  clip-path: url(#sealClip);
+  background: radial-gradient(circle at 36% 30%, #f2e2c4 0%, #d9bd8f 45%, #b3925f 78%, #8f7048 100%);
+  box-shadow: inset 0 2px 4px rgba(255,255,255,0.4), inset 0 -5px 10px rgba(70, 45, 20, 0.5);
+}
+.env-seal-face {
+  position: absolute;
+  inset: 13%;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 3;
-  background:
-    radial-gradient(circle at 38% 30%, #f6d9c4 0%, #e2ae94 42%, #b97d63 78%, #8d5540 100%);
-  box-shadow:
-    inset 0 2px 5px rgba(255,255,255,0.5),
-    inset 0 -4px 9px rgba(94, 45, 28, 0.55),
-    0 8px 22px rgba(0,0,0,0.5);
-  color: #7a4229;
+  background: radial-gradient(circle at 38% 32%, #f7ecd6 0%, #e6d0a8 60%, #cdad7c 100%);
+  box-shadow: inset 0 1px 3px rgba(255,255,255,0.55), inset 0 -3px 6px rgba(80, 55, 25, 0.35),
+              0 1px 2px rgba(0,0,0,0.25);
+}
+.env-seal-face span {
   font-family: var(--font-heading);
-  font-size: clamp(1.1rem, 3.4vmin, 1.6rem);
-  letter-spacing: 0.06em;
-  text-indent: 0.06em;
+  font-size: clamp(0.98rem, 3vmin, 1.4rem);
+  letter-spacing: 0.05em;
+  text-indent: 0.05em;
   white-space: nowrap;
-  transition: transform 1.8s cubic-bezier(0.3, 0, 0.2, 1), opacity 0.7s ease 1.2s,
-              box-shadow 0.9s ease;
+  color: #6b4b2a;
 }
-/* scalloped wax edge */
-.env-seal::before {
-  content: '';
-  position: absolute;
-  inset: -6%;
-  border-radius: 50%;
-  background: inherit;
-  clip-path: polygon(
-    50% 0%, 61% 5%, 73% 3%, 80% 13%, 91% 18%, 92% 30%, 99% 39%, 96% 50%,
-    99% 61%, 92% 70%, 91% 82%, 80% 87%, 73% 97%, 61% 95%, 50% 100%,
-    39% 95%, 27% 97%, 20% 87%, 9% 82%, 8% 70%, 1% 61%, 4% 50%,
-    1% 39%, 8% 30%, 9% 18%, 20% 13%, 27% 3%, 39% 5%);
-  z-index: -1;
-}
-.env-seal span { position: relative; z-index: 1; }
 .intro-screen.is-opening .env-seal {
-  transform: translate(-50%, -50%) scale(1.35);
+  transform: translate(-50%, -50%) scale(1.18) rotate(-8deg);
   opacity: 0;
-  box-shadow:
-    inset 0 2px 5px rgba(255,255,255,0.6),
-    inset 0 -4px 9px rgba(94, 45, 28, 0.4),
-    0 0 60px rgba(255, 214, 130, 0.9);
 }
 
 /* ---- Typographic lockup + hint ---- */
@@ -303,10 +339,10 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   top: clamp(4vh, 8vh, 11vh);
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 6;
   text-align: center;
   padding: 0 1.5rem;
-  transition: opacity 0.55s ease;
+  transition: opacity 0.5s ease;
 }
 .env-eyebrow {
   margin: 0 0 0.7rem;
@@ -315,7 +351,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   letter-spacing: 0.4em;
   text-indent: 0.4em;
   text-transform: uppercase;
-  color: rgba(233, 208, 138, 0.75);
+  color: rgba(217, 180, 106, 0.75);
 }
 .env-title {
   margin: 0;
@@ -327,7 +363,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   text-indent: 0.14em;
   text-transform: uppercase;
   color: var(--cream);
-  text-shadow: 0 2px 14px rgba(0,0,0,0.55);
+  text-shadow: 0 2px 14px rgba(0,0,0,0.5);
 }
 .env-title em {
   display: block;
@@ -346,7 +382,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   bottom: clamp(4vh, 7vh, 10vh);
   left: 0;
   right: 0;
-  z-index: 4;
+  z-index: 6;
   margin: 0;
   text-align: center;
   font-family: var(--font-body);
@@ -354,9 +390,9 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   text-indent: 0.32em;
   text-transform: uppercase;
   font-size: 0.66rem;
-  color: rgba(233, 208, 138, 0.9);
+  color: rgba(217, 180, 106, 0.9);
   text-shadow: 0 2px 10px rgba(0,0,0,0.6);
-  animation: pulse 2.6s ease-in-out infinite;
+  animation: pulse 2.8s ease-in-out infinite;
   transition: opacity 0.4s ease;
 }
 @keyframes pulse {
@@ -369,28 +405,36 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   animation: none;
 }
 
-/* ---- Reveal flare ---- */
-.env-flare {
+/* ---- Mute toggle ---- */
+.mute-toggle {
   position: absolute;
-  inset: 0;
-  z-index: 5;
-  pointer-events: none;
+  top: max(1.1rem, env(safe-area-inset-top));
+  right: 1.1rem;
+  z-index: 7;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1px solid rgba(217, 180, 106, 0.4);
+  background: rgba(13, 4, 3, 0.55);
+  color: rgba(236, 224, 200, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: opacity 0.4s ease, border-color 0.2s ease;
+}
+.mute-toggle:hover { border-color: rgba(217, 180, 106, 0.75); }
+.mute-toggle .icon-on,
+.mute-toggle .icon-off { display: block; }
+.mute-toggle[data-muted="true"] .icon-on { display: none; }
+.mute-toggle[data-muted="false"] .icon-off { display: none; }
+.intro-screen.is-opening .mute-toggle {
   opacity: 0;
-  background: radial-gradient(circle at 50% 50%,
-    #fffaf0 0%, rgba(255, 233, 176, 0.92) 26%, rgba(246, 195, 96, 0.5) 52%, transparent 78%);
-}
-.intro-screen.is-flaring .env-flare {
-  animation: env-flare-wash 1.15s ease-out forwards;
-}
-@keyframes env-flare-wash {
-  0%   { opacity: 0; }
-  38%  { opacity: 1; }
-  100% { opacity: 0; }
+  pointer-events: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .envelope, .env-core, .env-rays, .env-seal, .env-sprig { transition: none; }
-  .intro-screen.is-flaring .env-flare { animation: none; }
+  .envelope, .env-flap-top-wrap, .env-seal, .env-sprig, .env-spark i { transition: none; animation: none; }
 }
 /* ============ Site content ============ */
 .site-content {

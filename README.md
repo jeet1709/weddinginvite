@@ -47,22 +47,40 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 ### The opening screen
 
 The invitation opens on a full-bleed **X-fold envelope** — four triangular
-flaps meeting at a wax seal — drawn entirely in CSS/SVG. Tapping runs a
-four-beat sequence:
+flaps meeting at a wax seal, drawn entirely in CSS/SVG. The mechanic is
+modelled on how a real envelope actually opens, not an abstract dissolve:
+only the top flap moves. The bottom/left/right folds are the fixed pocket
+and never animate. Tapping runs:
 
-1. **Ignition** — light kindles in the seam beneath the seal.
-2. **Gilding** — the embossed filigree lights to gold, staggered by each
-   sprig's distance from the centre so the gold visibly travels outward.
-3. **Starburst** — a ray burst blooms and rotates out of the seam.
-4. **Dissolve** — the envelope fades and scales away through a warm flare,
-   revealing the invitation already sitting underneath.
+1. **The seal cracks** and releases (`.env-seal`, ~0–0.5s).
+2. **The top flap lifts open** on a real 3D hinge along its own base
+   (`.env-flap-top-wrap`, `rotateX`, `transform-origin: 50% 0%`), rotating
+   up and away from the viewer like a letter actually being opened
+   (~0.2–1.5s). `backface-visibility: hidden` means it simply isn't there
+   once it's rotated past 90°, revealing the pocket underneath.
+3. **A spark of light races along each of the four crease lines** at the
+   same moment, from the seal out to each corner (`.env-spark-tl/tr/bl/br`,
+   ~0.1–1.2s) — light traveling the actual fold geometry, forming a bright
+   X for a moment, rather than a glow blooming from nowhere.
+4. **The envelope dissolves** (~1.6–2.2s), cross-fading directly into the
+   invitation already sitting beneath it.
 
-The light layers (`.env-core`, `.env-rays`) are siblings of `.envelope`, not
-children — so they keep burning at full strength while the envelope itself
-dissolves behind them. Sprig placement and stagger live in `SPRIG_LAYOUT`
-in `public/js/main.js`; the ornament is a marigold rosette, a leafy spray and
-a paisley, all stroke art in `currentColor` so one CSS colour change lights
-them.
+Every light element here is a small, thin shape — a 2px-wide streak, a
+hairline — never a large gradient that needs to be clipped to a shape. That
+matters: a large blurred or transformed element clipped by `clip-path` (or
+even a plain ancestor `overflow: hidden`) has a genuine Chromium rendering
+bug where the clip silently stops being honoured once `devicePixelRatio` is
+2 or 3 — i.e. on the large majority of real phones. It renders correctly at
+DPR 1, which is exactly the trap: it looks fine on a standard desktop
+screenshot and breaks on the retina display it's actually viewed on. Small
+shapes never trigger it, which is part of why this version is built the way
+it is rather than as a single large glowing blob.
+
+`#introScreen` itself (not just `.envelope`) has its own near-black
+background at `z-index: 1000` over the full viewport — its own fade and the
+site content's reveal are triggered on the same timer in `setupEnvelope()`
+in `public/js/main.js`, specifically to avoid a dead black gap between "the
+envelope's gone" and "the screen's gone."
 
 Reduced-motion users skip straight to the revealed invitation.
 

@@ -211,84 +211,75 @@
   /* ============ Invitation opening: X-fold envelope ============ */
   const svgUrl = (svg) => `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}")`;
 
-  /* ---- Filigree sprigs embossed into the flaps ----
-     A rosette (marigold/lotus read) and a leafy spray, drawn as stroke art in
-     `currentColor` so a single CSS colour change lights them from a faint
-     deboss to glowing gold. */
-  const SPRIG_ROSETTE = `
-<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2">
-  <circle cx="50" cy="50" r="8"/>
-  <circle cx="50" cy="50" r="15.5"/>
-  <g>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(45 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(90 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(135 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(180 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(225 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(270 50 50)"/>
-    <path d="M50 34.5 q7 -12 0 -22 q-7 10 0 22 z" transform="rotate(315 50 50)"/>
-  </g>
-</svg>`.trim();
+  /* ---- Rose spray, embossed on the side flaps only ----
+     A filled silhouette (not stroke-only line art) reads as an engraving
+     when rim-lit — the earlier stroked circles read as a schematic flower
+     icon rather than a rose. Built from overlapping almond petals in two
+     rings plus a stem and a pair of leaves, all in `currentColor` so one
+     CSS colour change carries the whole gilding transition. */
+  function buildRoseSpray() {
+    const petal = (len, w) =>
+      `M50 38 C${50 - w} ${38 - len * 0.55}, ${50 - w} ${38 - len}, 50 ${38 - len - 4} ` +
+      `C${50 + w} ${38 - len}, ${50 + w} ${38 - len * 0.55}, 50 38 Z`;
 
-  const SPRIG_SPRAY = `
-<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
-  <path d="M50 92 C50 64 50 40 50 12"/>
-  <path d="M50 74 C38 70 30 60 28 48 C40 50 48 60 50 74 z"/>
-  <path d="M50 62 C62 58 70 48 72 36 C60 38 52 48 50 62 z"/>
-  <path d="M50 46 C38 42 30 32 28 20 C40 22 48 32 50 46 z"/>
-  <circle cx="50" cy="12" r="4.5"/>
-</svg>`.trim();
+    const outerPetal = petal(24, 9);
+    const innerPetal = petal(15, 6.5);
 
-  const SPRIG_PAISLEY = `
-<svg viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="2.2">
-  <path d="M62 14 C86 32 84 68 56 86 C30 96 12 76 20 56 C27 38 48 40 52 56 C55 68 44 74 38 66"/>
-  <path d="M62 30 C76 42 74 64 58 74" stroke-width="1.6"/>
-</svg>`.trim();
+    let outer = '';
+    for (let i = 0; i < 6; i++) {
+      outer += `<path d="${outerPetal}" transform="rotate(${i * 60} 50 38)"/>`;
+    }
+    let inner = '';
+    for (let i = 0; i < 5; i++) {
+      inner += `<path d="${innerPetal}" transform="rotate(${i * 72 + 20} 50 38)" opacity="0.92"/>`;
+    }
 
-  // Laid out symmetrically about the centre. `d` is the normalised distance
-  // from the seal, which drives the gilding stagger.
+    return `
+<svg viewBox="0 0 100 150" fill="currentColor" stroke="none">
+  <path d="M50 60 C48 78 47 98 49 122" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.85"/>
+  <path d="M49 88 C40 84 32 86 25 94 C33 92 41 93 49 98 Z" opacity="0.85"/>
+  <path d="M49 104 C58 99 66 100 74 107 C65 106 57 108 49 114 Z" opacity="0.85"/>
+  <g>${outer}</g>
+  <g>${inner}</g>
+  <circle cx="50" cy="38" r="4.5"/>
+</svg>`.trim();
+  }
+  const ROSE_SPRAY = buildRoseSpray();
+
+  // Confined to the two side flaps, arranged as a loose descending vine —
+  // matching the reference, where the top and bottom flaps carry no
+  // ornament at all and only the sides are embossed.
   const SPRIG_LAYOUT = [
-    { x: 24, y: 34, s: 15, r: -18, t: 'rosette' },
-    { x: 76, y: 34, s: 15, r: 18, t: 'rosette' },
-    { x: 15, y: 50, s: 12, r: -8, t: 'paisley' },
-    { x: 85, y: 50, s: 12, r: 8, t: 'paisley' },
-    { x: 27, y: 62, s: 13, r: -12, t: 'rosette' },
-    { x: 73, y: 62, s: 13, r: 12, t: 'rosette' },
-    { x: 12, y: 70, s: 10, r: -22, t: 'spray' },
-    { x: 88, y: 70, s: 10, r: 22, t: 'spray' },
-    { x: 50, y: 16, s: 12, r: 0, t: 'paisley' },
-    { x: 36, y: 22, s: 9, r: -30, t: 'spray' },
-    { x: 64, y: 22, s: 9, r: 30, t: 'spray' },
-    { x: 38, y: 82, s: 11, r: 180, t: 'spray' },
-    { x: 62, y: 82, s: 11, r: 180, t: 'spray' },
-    { x: 50, y: 90, s: 10, r: 180, t: 'spray' },
-    { x: 20, y: 86, s: 9, r: -160, t: 'rosette' },
-    { x: 80, y: 86, s: 9, r: 160, t: 'rosette' },
+    { x: 22, y: 27, s: 20, r: -14, mirror: false },
+    { x: 16, y: 50, s: 24, r: -6, mirror: false },
+    { x: 21, y: 73, s: 19, r: -18, mirror: false },
+    { x: 78, y: 27, s: 20, r: 14, mirror: true },
+    { x: 84, y: 50, s: 24, r: 6, mirror: true },
+    { x: 79, y: 73, s: 19, r: 18, mirror: true },
   ];
-
-  const SPRIG_ART = { rosette: SPRIG_ROSETTE, spray: SPRIG_SPRAY, paisley: SPRIG_PAISLEY };
 
   function setupEnvelopeArt(cfg) {
     const intro = (cfg && cfg.intro) || {};
     const field = $('#envFiligree');
 
     if (field) {
-      // Stagger each sprig by its distance from the seal so the gilding
-      // visibly travels outward from the centre, as in the reference.
+      // Stagger by distance from the seal so the gilding visibly travels
+      // outward from the ignition point, same logic as the light itself.
       const withDist = SPRIG_LAYOUT.map((p) => ({
         ...p,
-        d: Math.hypot(p.x - 50, (p.y - 50) * 0.85),
+        d: Math.hypot(p.x - 50, (p.y - 42) * 0.9),
       }));
       const maxD = Math.max(...withDist.map((p) => p.d));
 
       field.innerHTML = withDist.map((p) => {
-        const delay = 0.18 + (p.d / maxD) * 0.72;
+        const delay = 0.25 + (p.d / maxD) * 0.55;
+        const scaleX = p.mirror ? -1 : 1;
         return `<span class="env-sprig" style="
           left:${p.x}%; top:${p.y}%;
           width:${p.s}vmin; height:${p.s}vmin;
           --rot:${p.r}deg;
-          transition-delay:${delay.toFixed(2)}s">${SPRIG_ART[p.t]}</span>`;
+          transform:translate(-50%,-50%) rotate(${p.r}deg) scaleX(${scaleX});
+          transition-delay:${delay.toFixed(2)}s">${ROSE_SPRAY}</span>`;
       }).join('');
     }
 
@@ -301,10 +292,47 @@
     if (intro.tapHint) $('#tapHint').textContent = intro.tapHint;
   }
 
+  /* ---- Background music ----
+     Silent no-op unless config.intro.musicUrl is set — this repo ships no
+     audio file (see README: sourcing a properly licensed track is a
+     decision for the site owner, not something to embed sight-unseen).
+     play() is called synchronously inside the click handler, in the same
+     tick as the user gesture, which is what lets browsers allow audio to
+     start unmuted without a prior interaction. */
+  function setupIntroAudio(cfg) {
+    const intro = (cfg && cfg.intro) || {};
+    const audio = $('#introMusic');
+    const toggle = $('#muteToggle');
+    if (!audio || !intro.musicUrl) return null;
+
+    audio.src = intro.musicUrl;
+    audio.volume = 0.55;
+
+    let muted = false;
+    try { muted = localStorage.getItem('weddinginvite:muted') === 'true'; } catch { /* ignore */ }
+    audio.muted = muted;
+
+    if (toggle) {
+      toggle.hidden = false;
+      toggle.dataset.muted = String(muted);
+      toggle.addEventListener('click', (e) => {
+        e.stopPropagation();
+        muted = !muted;
+        audio.muted = muted;
+        toggle.dataset.muted = String(muted);
+        try { localStorage.setItem('weddinginvite:muted', String(muted)); } catch { /* ignore */ }
+      });
+    }
+    return audio;
+  }
+
   /* ---- Opening sequence ----
-     ignite in the seam → gild outward → starburst → dissolve into a flare,
-     with the invitation already in place underneath. */
-  function setupEnvelope() {
+     ignite → beam pours down through the lower fold only → a brief hold at
+     full light → the envelope dissolves through a contained bloom, with the
+     invitation already in place underneath. Paced deliberately slower than
+     a typical CSS reveal — the hold beat is what keeps it from feeling
+     rushed or "snappy" in the way cheaper transitions do. */
+  function setupEnvelope(music) {
     const screen = $('#introScreen');
     const siteContent = $('#siteContent');
     if (!screen) return;
@@ -314,18 +342,26 @@
       if (opened) return;
       opened = true;
 
-      // ignition + gilding + burst all run off this one class
+      if (music) music.play().catch(() => { /* autoplay declined; silent */ });
+
+      // Seal cracks (~0-0.55s) → flap hinges open (~0.22-1.52s) → sparks
+      // race the creases (~0.08-1.21s) → at ~1.6s the envelope fades
+      // (its own 0.6s transition) at the same moment #introScreen itself
+      // starts to fade (0.8s transition below). Both need to move together:
+      // #introScreen carries its own near-black background at z-index 1000
+      // over the *entire* viewport, so if it fades on a separate, later
+      // schedule from the envelope inside it, the site content revealed
+      // behind briefly shows through to nothing but that black backdrop —
+      // a dead gap between "envelope's gone" and "screen's gone".
       screen.classList.add('is-opening');
 
-      // the reveal washes through a flare while the envelope dissolves
       setTimeout(() => {
-        screen.classList.add('is-flaring');
         document.body.classList.add('intro-open');
         siteContent.classList.add('is-visible');
-      }, 1500);
+        screen.classList.add('is-hidden');
+      }, 1600);
 
-      setTimeout(() => screen.classList.add('is-hidden'), 2250);
-      setTimeout(() => screen.remove(), 3200);
+      setTimeout(() => screen.remove(), 2500);
     }
 
     screen.addEventListener('click', open);
@@ -336,6 +372,9 @@
       }
     });
   }
+
+
+
 
 
   /* ---- Hanging toran: a repeating tile of leaves and marigolds ----
@@ -632,6 +671,7 @@
   }
 
   async function init() {
+    let music = null;
     try {
       const cfg = await loadConfig();
       state.config = cfg;
@@ -646,6 +686,7 @@
       setupAddToCalendar(cfg);
       setupEnvelopeArt(cfg);
       setupGanesh(cfg);
+      music = setupIntroAudio(cfg);
     } catch (err) {
       console.error(err);
       // Config failed to load — still draw the door so the page is openable.
@@ -653,7 +694,7 @@
     }
     setupHeroArch();
     setupHeroDecor();
-    setupEnvelope();
+    setupEnvelope(music);
     setupScrollReveal();
     setupPetals();
   }

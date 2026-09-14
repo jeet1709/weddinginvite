@@ -7,3 +7,12 @@ dist/
 public/assets/HomepageBackground.jpg
 public/assets/Shiv-Parvati-Vivah.jpeg
 ScreenRecording_09-12-2026 19-16-55_1.MP4
+
+# Root-level originals — already copied into public/assets/media/, which is
+# what the site actually serves. Keeping duplicates out of git history.
+# Anchored with a leading slash: an unanchored pattern here would also
+# match the served copies under public/assets/media/ by filename alone.
+/WeddingInvite.mp4
+/jashn-e-bahaara.mp3
+/invitationopeining.mp4
+/Screenshot *.png

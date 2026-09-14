@@ -17,7 +17,7 @@
     "eyebrow": "Together with their families",
     "joiner": "weds",
     "tapHint": "Tap to open",
-    "musicUrl": ""
+    "musicUrl": "assets/media/jashn-e-bahaara.mp3"
   },
   "branding": {
     "ganeshLogo": "assets/wedding-ganesh-logo.jpg"
@@ -25,7 +25,8 @@
   "hero": {
     "preTitle": "Together with their families",
     "tagline": "Request the honour of your presence",
-    "blessingLine": "With the blessings of our elders and the warmth of your presence."
+    "blessingLine": "With the blessings of our elders and the warmth of your presence.",
+    "videoUrl": "assets/media/wedding-invite.mp4"
   },
   "wedding": {
     "date": "2026-12-05",

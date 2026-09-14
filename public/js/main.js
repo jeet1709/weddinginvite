@@ -94,6 +94,19 @@
     if (!couple.hashtag) $('#footerHashtag').hidden = true;
     $('#footerBlessing').textContent = hero.blessingLine || '';
     if (!hero.blessingLine) $('#footerBlessing').hidden = true;
+
+    // The invitation video already carries names/date/venue as a finished
+    // animated card. Autoplay-muted-loop starts as soon as the source is
+    // set — it can run behind the envelope intro screen with no visible or
+    // audible effect, so there's nothing to gate on "after the letter
+    // opens" beyond the envelope itself no longer covering it.
+    const video = $('#heroVideo');
+    const videoFrame = $('.hero-video-frame');
+    if (video && hero.videoUrl) {
+      video.src = hero.videoUrl;
+    } else if (videoFrame) {
+      videoFrame.hidden = true;
+    }
   }
 
   function populateStory(cfg) {
@@ -209,7 +222,6 @@
     }
   }
   /* ============ Invitation opening: X-fold envelope ============ */
-  const svgUrl = (svg) => `url("data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}")`;
 
   /* ---- Rose spray, embossed on the side flaps only ----
      A filled silhouette (not stroke-only line art) reads as an engraving
@@ -260,28 +272,33 @@
 
   function setupEnvelopeArt(cfg) {
     const intro = (cfg && cfg.intro) || {};
-    const field = $('#envFiligree');
 
-    if (field) {
-      // Stagger by distance from the seal so the gilding visibly travels
-      // outward from the ignition point, same logic as the light itself.
-      const withDist = SPRIG_LAYOUT.map((p) => ({
-        ...p,
-        d: Math.hypot(p.x - 50, (p.y - 42) * 0.9),
-      }));
-      const maxD = Math.max(...withDist.map((p) => p.d));
+    // Stagger by distance from the seal so the gilding visibly travels
+    // outward from the ignition point, same logic as the light itself.
+    // Rendered into two separate containers — one nested in each side
+    // flap's own wrap — so the roses physically travel with their flap as
+    // it opens, rather than staying pinned to a spot the flap has left.
+    const withDist = SPRIG_LAYOUT.map((p) => ({
+      ...p,
+      d: Math.hypot(p.x - 50, (p.y - 42) * 0.9),
+    }));
+    const maxD = Math.max(...withDist.map((p) => p.d));
 
-      field.innerHTML = withDist.map((p) => {
-        const delay = 0.25 + (p.d / maxD) * 0.55;
-        const scaleX = p.mirror ? -1 : 1;
-        return `<span class="env-sprig" style="
-          left:${p.x}%; top:${p.y}%;
-          width:${p.s}vmin; height:${p.s}vmin;
-          --rot:${p.r}deg;
-          transform:translate(-50%,-50%) rotate(${p.r}deg) scaleX(${scaleX});
-          transition-delay:${delay.toFixed(2)}s">${ROSE_SPRAY}</span>`;
-      }).join('');
-    }
+    const renderSprig = (p) => {
+      const delay = 0.25 + (p.d / maxD) * 0.55;
+      const scaleX = p.mirror ? -1 : 1;
+      return `<span class="env-sprig" style="
+        left:${p.x}%; top:${p.y}%;
+        width:${p.s}vmin; height:${p.s}vmin;
+        --rot:${p.r}deg;
+        transform:translate(-50%,-50%) rotate(${p.r}deg) scaleX(${scaleX});
+        transition-delay:${delay.toFixed(2)}s">${ROSE_SPRAY}</span>`;
+    };
+
+    const fieldLeft = $('#envFiligreeLeft');
+    const fieldRight = $('#envFiligreeRight');
+    if (fieldLeft) fieldLeft.innerHTML = withDist.filter((p) => !p.mirror).map(renderSprig).join('');
+    if (fieldRight) fieldRight.innerHTML = withDist.filter((p) => p.mirror).map(renderSprig).join('');
 
     const couple = cfg && cfg.couple;
     if (couple) {
@@ -344,24 +361,26 @@
 
       if (music) music.play().catch(() => { /* autoplay declined; silent */ });
 
-      // Seal cracks (~0-0.55s) → flap hinges open (~0.22-1.52s) → sparks
-      // race the creases (~0.08-1.21s) → at ~1.6s the envelope fades
-      // (its own 0.6s transition) at the same moment #introScreen itself
-      // starts to fade (0.8s transition below). Both need to move together:
-      // #introScreen carries its own near-black background at z-index 1000
-      // over the *entire* viewport, so if it fades on a separate, later
-      // schedule from the envelope inside it, the site content revealed
-      // behind briefly shows through to nothing but that black backdrop —
-      // a dead gap between "envelope's gone" and "screen's gone".
+      // Seal cracks (~0-0.85s) → the closed envelope's gold trim fades fast
+      // (~0-0.3s) → all four flaps unfold in a bloom-like stagger, top
+      // first, then the sides, then bottom (~0.3-2.74s) → sparks race each
+      // crease as its flap starts moving (~0.3-2.22s) → a brief hold, then
+      // at 3.0s #introScreen itself starts to fade at the same moment the
+      // site content is revealed. Both need to move together: #introScreen
+      // carries its own near-black background at z-index 1000 over the
+      // *entire* viewport, so if it fades on a separate, later schedule
+      // from what's happening inside it, the site briefly shows through to
+      // nothing but that black backdrop — a dead gap between "envelope's
+      // gone" and "screen's gone".
       screen.classList.add('is-opening');
 
       setTimeout(() => {
         document.body.classList.add('intro-open');
         siteContent.classList.add('is-visible');
         screen.classList.add('is-hidden');
-      }, 1600);
+      }, 3000);
 
-      setTimeout(() => screen.remove(), 2500);
+      setTimeout(() => screen.remove(), 4200);
     }
 
     screen.addEventListener('click', open);
@@ -377,169 +396,6 @@
 
 
 
-  /* ---- Hanging toran: a repeating tile of leaves and marigolds ----
-     Beads are spaced tighter than their diameter so each strand reads as a
-     continuous strung garland rather than a row of loose dots. */
-  function buildGarlandSvg() {
-    const W = 300;
-    const H = 165;
-    const DIP = 58;
-    const cordY = (t) => 6 + Math.sin(Math.PI * t) * DIP;
-
-    const MARIGOLD = ['#f4a300', '#ff8c1a', '#ffc93c', '#ef7a12'];
-
-    // a layered marigold: outer petals + lighter heart
-    const flower = (x, y, r, c) =>
-      `<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}" fill="${c}"/>` +
-      `<circle cx="${x.toFixed(1)}" cy="${(y - r * 0.22).toFixed(1)}" r="${(r * 0.5).toFixed(1)}" fill="#fff3d2" opacity="0.42"/>`;
-
-    const leafPair = (x, y) =>
-      `<path d="M${x} ${y} q-9 7 -2 15 q8 -4 2 -15 z" fill="#1f7a3d"/>` +
-      `<path d="M${x} ${y} q9 7 2 15 q-8 -4 -2 -15 z" fill="#2f9c4f"/>`;
-
-    let parts = '';
-
-    // leaf pairs sitting on the cord
-    for (let i = 0; i <= 10; i++) {
-      const t = i / 10;
-      parts += leafPair(t * W, cordY(t) + 1);
-    }
-
-    // hanging strands
-    const stops = [0.08, 0.2, 0.32, 0.44, 0.5, 0.56, 0.68, 0.8, 0.92];
-    stops.forEach((t, i) => {
-      const x = t * W;
-      const y = cordY(t);
-      const len = i === 4 ? 92 : 40 + ((i * 17) % 44);
-      parts += `<line x1="${x.toFixed(1)}" y1="${y.toFixed(1)}" x2="${x.toFixed(1)}" y2="${(y + len).toFixed(1)}" stroke="#1f7a3d" stroke-width="1.5"/>`;
-
-      const step = 7.2;
-      const n = Math.floor(len / step);
-      for (let b = 0; b < n; b++) {
-        const by = y + 7 + b * step;
-        const r = 4.8 - (b / n) * 1.5;
-        parts += flower(x, by, r, MARIGOLD[(i + b) % MARIGOLD.length]);
-      }
-      // mango leaf finial
-      parts += `<path d="M${x} ${(y + len).toFixed(1)} q7 9 0 19 q-7 -10 0 -19 z" fill="#1f7a3d"/>`;
-    });
-
-    return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W}" height="${H}">
-  <path d="M0 6 Q${W / 2} ${6 + DIP * 1.28} ${W} 6" fill="none" stroke="#14532d" stroke-width="4"/>
-  ${parts}
-</svg>`.trim();
-  }
-
-  /* ---- Kalash: brass pot, mango-leaf fan and coconut ----
-     Leaves are drawn first and radiate from the rim; the coconut is laid over
-     their bases so it nestles into the fan instead of floating above it. */
-  function buildKalashSvg() {
-    const leafAngles = [-74, -52, -30, -10, 10, 30, 52, 74];
-    const leaves = leafAngles
-      .map((a, i) => {
-        const shade = i % 2 ? '#2f9c4f' : '#1f7a3d';
-        return `<g transform="rotate(${a})"><path d="M0 0 q-8 -22 0 -44 q8 22 0 44 z" fill="${shade}"/><path d="M0 -2 V-40" stroke="rgba(255,255,255,0.28)" stroke-width="1"/></g>`;
-      })
-      .join('');
-
-    return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 185" width="120" height="185">
-  <defs>
-    <linearGradient id="pot" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#ffe9a8"/><stop offset="34%" stop-color="#e8b449"/><stop offset="72%" stop-color="#c0871d"/><stop offset="100%" stop-color="#8f5d0e"/>
-    </linearGradient>
-    <radialGradient id="nut" cx="36%" cy="30%" r="72%">
-      <stop offset="0%" stop-color="#b07a41"/><stop offset="100%" stop-color="#6f4520"/>
-    </radialGradient>
-  </defs>
-
-  <!-- mango-leaf fan springing from the rim -->
-  <g transform="translate(60,74)">${leaves}</g>
-
-  <!-- coconut nestled into the fan -->
-  <ellipse cx="60" cy="46" rx="18" ry="21" fill="url(#nut)"/>
-  <path d="M60 25 q6 -9 1 -12 q-7 4 -1 12 z" fill="#6f4520"/>
-  <ellipse cx="53" cy="39" rx="5.5" ry="6.5" fill="#c08b52" opacity="0.55"/>
-
-  <!-- rim, neck, body -->
-  <path d="M26 74 h68 l-8 13 H34 z" fill="url(#pot)"/>
-  <path d="M30 74 h60" stroke="#fff3d2" stroke-width="2" opacity="0.5"/>
-  <rect x="41" y="87" width="38" height="7" fill="url(#pot)"/>
-  <path d="M41 94 q-28 24 -22 54 q7 32 41 32 q34 0 41 -32 q6 -30 -22 -54 z" fill="url(#pot)"/>
-  <path d="M46 100 q-20 20 -17 45" stroke="#fff3d2" stroke-width="3" opacity="0.35" fill="none"/>
-
-  <!-- kalava thread + motif -->
-  <path d="M20 128 q40 13 80 0" fill="none" stroke="#c1121f" stroke-width="5"/>
-  <path d="M21 138 q39 12 78 0" fill="none" stroke="#fff3d2" stroke-width="2" opacity="0.6"/>
-  <circle cx="60" cy="155" r="9" fill="none" stroke="#7a4a08" stroke-width="2"/>
-  <path d="M55 155 h10 M60 150 v10" stroke="#7a4a08" stroke-width="2"/>
-
-  <!-- foot -->
-  <path d="M42 178 h36 l-5 7 H47 z" fill="#8f5d0e"/>
-</svg>`.trim();
-  }
-
-  function setupHeroDecor() {
-    const g = $('#heroGarland');
-    if (g) g.style.backgroundImage = svgUrl(buildGarlandSvg());
-
-    const kalash = svgUrl(buildKalashSvg());
-    [$('#heroKalashLeft'), $('#heroKalashRight')].forEach((el) => {
-      if (el) el.style.backgroundImage = kalash;
-    });
-  }
-
-  /* ============ Cusped (multifoil) Mughal arch ============ */
-  // Walks a semicircle and joins the sample points with small arcs that bulge
-  // inward, producing the scalloped arch head of the reference invitation.
-  function buildArchPath(cx, cy, R, lobes) {
-    const pt = (k) => {
-      const deg = 180 - (180 * k) / lobes;
-      const rad = (deg * Math.PI) / 180;
-      return [cx + R * Math.cos(rad), cy - R * Math.sin(rad)];
-    };
-    const p0 = pt(0);
-    const p1 = pt(1);
-    const chord = Math.hypot(p1[0] - p0[0], p1[1] - p0[1]);
-    const r = chord * 0.62;
-
-    let d = `M ${p0[0].toFixed(1)} ${p0[1].toFixed(1)}`;
-    for (let k = 1; k <= lobes; k++) {
-      const [x, y] = pt(k);
-      // sweep-flag 0 = cusp curves into the opening
-      d += ` A ${r.toFixed(1)} ${r.toFixed(1)} 0 0 0 ${x.toFixed(1)} ${y.toFixed(1)}`;
-    }
-    return d;
-  }
-
-  function buildArchSvg() {
-    const W = 400;
-    const H = 210;
-    const cy = H - 5;
-    const outer = buildArchPath(200, cy, 200, 9);
-    const inner = buildArchPath(200, cy, 188, 9);
-    return `
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none">
-  <defs>
-    <linearGradient id="archGold" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#ffe9a8"/><stop offset="45%" stop-color="#f4a300"/><stop offset="100%" stop-color="#c68a12"/>
-    </linearGradient>
-    <linearGradient id="archCream" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fffefb"/><stop offset="100%" stop-color="#fffdf6"/>
-    </linearGradient>
-  </defs>
-  <path d="${outer} L 400 ${H} L 0 ${H} Z" fill="url(#archCream)"/>
-  <path d="${outer}" fill="none" stroke="url(#archGold)" stroke-width="6" stroke-linejoin="round"/>
-  <path d="${inner}" fill="none" stroke="rgba(244,163,0,0.55)" stroke-width="1.6"/>
-</svg>`.trim();
-  }
-
-  function setupHeroArch() {
-    const host = $('#heroCardArch');
-    if (!host) return;
-    host.insertAdjacentHTML('afterbegin', buildArchSvg());
-  }
 
   function setupGanesh(cfg) {
     const src = (cfg && cfg.branding && cfg.branding.ganeshLogo) || '';
@@ -692,8 +548,6 @@
       // Config failed to load — still draw the door so the page is openable.
       setupEnvelopeArt(null);
     }
-    setupHeroArch();
-    setupHeroDecor();
     setupEnvelope(music);
     setupScrollReveal();
     setupPetals();

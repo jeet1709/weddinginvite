@@ -27,40 +27,48 @@
   </svg>
 
   <!-- ===== Invitation opening: X-fold envelope =====
-       A real envelope has ONE flap that opens — the top one, hinged along
-       its base — while the other three folds form the fixed pocket
-       underneath. That's the physical action here: the top flap lifts open
-       (a 3D rotation on its hinge, like actually opening a letter), the
-       seal breaks to let it do so, and a spark of light races outward along
-       each of the four crease lines at the same moment — light traveling
-       the diagonals, not a glow blooming from nowhere. Once the flap is
-       open, the whole envelope dissolves to reveal the invitation. -->
+       All four flaps open — each hinged on its own outer screen edge,
+       folding away from the viewer in 3D like petals unfolding — rather
+       than only the top flap with the rest as a fixed pocket. With four
+       flaps in motion, light traveling every crease actually means
+       something: each seam visibly separates as its flap lifts, instead
+       of three of the four diagonals just sitting there unexplained.
+       Sequence: the seal cracks, the flaps unfold in a slight bloom-like
+       stagger (top first, then the sides, then bottom), a spark of light
+       races out along each crease as it happens, and once fully open the
+       screen dissolves into the invitation beneath it. -->
   <div class="intro-screen" id="introScreen" role="button" tabindex="0" aria-label="Tap to open your invitation">
 
     <div class="envelope" id="envelope">
-      <!-- The fixed pocket: bottom/left/right folds never move -->
-      <div class="env-flap env-flap-bottom" aria-hidden="true"></div>
-      <div class="env-flap env-flap-left" aria-hidden="true"></div>
-      <div class="env-flap env-flap-right" aria-hidden="true"></div>
-
-      <!-- Rose sprays embossed on the side flaps only -->
-      <div class="env-filigree" id="envFiligree" aria-hidden="true"></div>
-
-      <!-- Gold hairlines along the diagonal folds -->
+      <!-- Gold hairlines along the diagonal folds — the closed-envelope
+           state only; each flap carries its own matching edge trim once
+           the fold lines below are unlit, so this fades out the instant
+           the flaps start moving rather than trailing after them. -->
       <div class="env-folds" aria-hidden="true"></div>
 
+      <div class="env-flap-wrap env-flap-wrap-top" id="envFlapTop">
+        <div class="env-flap env-flap-top" aria-hidden="true"></div>
+      </div>
+      <div class="env-flap-wrap env-flap-wrap-bottom" id="envFlapBottom">
+        <div class="env-flap env-flap-bottom" aria-hidden="true"></div>
+      </div>
+      <div class="env-flap-wrap env-flap-wrap-left" id="envFlapLeft">
+        <div class="env-flap env-flap-left" aria-hidden="true"></div>
+        <!-- Rose sprays travel with their own flap as it opens -->
+        <div class="env-filigree" id="envFiligreeLeft" aria-hidden="true"></div>
+      </div>
+      <div class="env-flap-wrap env-flap-wrap-right" id="envFlapRight">
+        <div class="env-flap env-flap-right" aria-hidden="true"></div>
+        <div class="env-filigree" id="envFiligreeRight" aria-hidden="true"></div>
+      </div>
+
       <!-- Sparks of light travelling outward along each crease, from the
-           seal to each corner, the instant the flap breaks open -->
+           seal to each corner, the instant the seams start to separate -->
       <div class="env-sparks" aria-hidden="true">
         <span class="env-spark env-spark-tl"><i></i></span>
         <span class="env-spark env-spark-tr"><i></i></span>
         <span class="env-spark env-spark-bl"><i></i></span>
         <span class="env-spark env-spark-br"><i></i></span>
-      </div>
-
-      <!-- The one flap that actually opens: hinged at the top edge -->
-      <div class="env-flap-top-wrap" id="envFlapTopWrap">
-        <div class="env-flap env-flap-top" aria-hidden="true"></div>
       </div>
 
       <div class="env-seal" id="envSeal">
@@ -75,15 +83,18 @@
     </div>
 
     <p class="tap-hint" id="tapHint">Tap to open</p>
-
-    <!-- Background music, started on the same tap gesture that opens the
-         envelope. Silent no-op until config.intro.musicUrl is set. -->
-    <audio id="introMusic" preload="none" loop></audio>
-    <button class="mute-toggle" id="muteToggle" type="button" aria-label="Mute music" hidden>
-      <svg class="icon-on" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z"/><path d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-      <svg class="icon-off" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M19 12l2.5-2.5-1.42-1.42L17.58 10.6l-2.5-2.5-1.42 1.42L16.16 12l-2.5 2.5 1.42 1.42 2.5-2.5 2.5 2.5 1.42-1.42L19 12z"/></svg>
-    </button>
   </div>
+
+  <!-- Background music, started on the same tap gesture that opens the
+       envelope. Lives OUTSIDE #introScreen deliberately: that element is
+       removed from the DOM once the intro finishes, which would silently
+       kill the audio (and this control) right along with it if either
+       were nested inside. Both need to persist across the whole site. -->
+  <audio id="introMusic" preload="none" loop></audio>
+  <button class="mute-toggle" id="muteToggle" type="button" aria-label="Mute music" hidden>
+    <svg class="icon-on" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M16.5 12c0-1.77-1-3.29-2.5-4.03v8.06c1.5-.74 2.5-2.26 2.5-4.03z"/><path d="M14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+    <svg class="icon-off" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" hidden><path d="M3 9v6h4l5 5V4L7 9H3z"/><path d="M19 12l2.5-2.5-1.42-1.42L17.58 10.6l-2.5-2.5-1.42 1.42L16.16 12l-2.5 2.5 1.42 1.42 2.5-2.5 2.5 2.5 1.42-1.42L19 12z"/></svg>
+  </button>
 
   <!-- ===== Site content ===== -->
   <div id="siteContent" class="site-content">
@@ -97,46 +108,24 @@
       </div>
     </nav>
 
-    <!-- Hero: cream cusped-arch card on an ornate red ground -->
+    <!-- Hero: the invitation video, full-bleed, and nothing else. It
+         already carries the names/date/tagline/venue as a finished
+         animated card, so nothing here duplicates that visually — the
+         same text stays in the DOM as sr-only for accessibility/SEO. -->
     <header class="hero" id="hero">
-      <!-- Decorative: hanging toran, flanking kalash -->
-      <div class="hero-garland" id="heroGarland" aria-hidden="true"></div>
-      <div class="hero-kalash hero-kalash-left" id="heroKalashLeft" aria-hidden="true"></div>
-      <div class="hero-kalash hero-kalash-right" id="heroKalashRight" aria-hidden="true"></div>
+      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true"></video>
 
-      <div class="hero-card reveal">
-        <!-- Cusped Mughal arch head; the SVG is generated in main.js -->
-        <div class="hero-card-arch" id="heroCardArch" aria-hidden="true">
-          <div class="ganesh-mark" id="heroGanesh"></div>
-        </div>
-        <div class="hero-card-body">
-      <div class="hero-inner">
-        <p class="hero-pretitle" id="heroPreTitle">Together with their families</p>
-        <h1 class="hero-names">
-          <span id="brideName">Saanvi</span>
-          <span class="hero-parents" id="brideParents"></span>
-          <span class="amp" aria-hidden="true">&amp;</span>
-          <span id="groomName">Vihaan</span>
-          <span class="hero-parents" id="groomParents"></span>
-        </h1>
-        <p class="hero-tagline" id="heroTagline">Request the honour of your presence</p>
-        <p class="hero-date" id="heroDate">Friday, 11th December 2026</p>
-        <div class="hero-divider" aria-hidden="true"><span></span><svg width="20" height="20" viewBox="0 0 20 20"><path d="M10 1 L12.5 7.5 L19 10 L12.5 12.5 L10 19 L7.5 12.5 L1 10 L7.5 7.5 Z" fill="currentColor"/></svg><span></span></div>
-        <div class="hero-glance">
-          <div class="glance-item">
-            <span class="glance-label">When</span>
-            <span class="glance-value" id="glanceWhen"></span>
-          </div>
-          <div class="glance-sep" aria-hidden="true"></div>
-          <div class="glance-item">
-            <span class="glance-label">Where</span>
-            <span class="glance-value" id="glanceWhere"></span>
-          </div>
-        </div>
-        <a class="ghost-button small" id="heroDirectionsBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
-      </div>
-        </div>
-      </div>
+      <p class="sr-only" id="heroPreTitle">Together with their families</p>
+      <h1 class="sr-only hero-names-sr">
+        <span id="brideName">Saanvi</span>
+        <span class="hero-parents" id="brideParents"></span>
+        &amp;
+        <span id="groomName">Vihaan</span>
+        <span class="hero-parents" id="groomParents"></span>
+      </h1>
+      <p class="sr-only" id="heroTagline">Request the honour of your presence</p>
+      <p class="sr-only" id="heroDate">Friday, 11th December 2026</p>
+
       <a class="scroll-cue" href="#countdown" aria-label="Scroll for more">
         <svg width="22" height="34" viewBox="0 0 22 34"><rect x="1" y="1" width="20" height="32" rx="10" fill="none" stroke="currentColor" stroke-width="1.4"/><circle class="scroll-dot" cx="11" cy="10" r="2.4" fill="currentColor"/></svg>
       </a>
@@ -152,7 +141,21 @@
           <div class="countdown-cell"><span class="countdown-num" id="cdMinutes">00</span><span class="countdown-label">Minutes</span></div>
           <div class="countdown-cell"><span class="countdown-num" id="cdSeconds">00</span><span class="countdown-label">Seconds</span></div>
         </div>
-        <button class="ghost-button" id="addToCalendarBtn" type="button">+ Add to Calendar</button>
+        <div class="hero-glance">
+          <div class="glance-item">
+            <span class="glance-label">When</span>
+            <span class="glance-value" id="glanceWhen"></span>
+          </div>
+          <div class="glance-sep" aria-hidden="true"></div>
+          <div class="glance-item">
+            <span class="glance-label">Where</span>
+            <span class="glance-value" id="glanceWhere"></span>
+          </div>
+        </div>
+        <div class="countdown-actions">
+          <button class="ghost-button" id="addToCalendarBtn" type="button">+ Add to Calendar</button>
+          <a class="ghost-button" id="heroDirectionsBtn" href="#" target="_blank" rel="noopener">Get Directions</a>
+        </div>
       </div>
     </section>
 

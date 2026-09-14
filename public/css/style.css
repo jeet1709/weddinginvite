@@ -49,6 +49,22 @@ body:not(.intro-open) {
 }
 
 img { max-width: 100%; display: block; }
+
+/* Visually hidden but present for screen readers/SEO — used where a video
+   or image already carries the same information visually (e.g. the hero
+   video already shows the names/date), so sighted users see the richer
+   version while the text stays available to everyone else. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 a { color: inherit; }
 h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
 
@@ -109,19 +125,23 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   transform: translateY(0);
 }
 /* ============ Invitation opening: X-fold envelope ============
-   A real envelope has exactly one flap that opens — the top one, hinged
-   along its own base — while the other three folds form a fixed pocket
-   underneath. That's the physical action here, not an abstract dissolve:
+   All four flaps open — each hinged on its own outer screen edge, folding
+   away from the viewer in 3D, like four petals unfolding rather than one
+   flap with the rest as a static pocket:
 
-     1. The seal cracks and releases (0 → ~0.4s).
-     2. The top flap lifts open on a 3D hinge, rotating up and away from
-        the viewer, like actually opening a letter (~0.15s → ~1.5s).
-     3. At the same moment, a spark of light races outward along each of
-        the four crease lines, from the seal to each corner — light
-        traveling the diagonals, which is the actual fold geometry, rather
-        than a glow blooming from the middle of nowhere.
-     4. Once the flap is open, the whole envelope dissolves to reveal the
-        invitation already sitting beneath it.
+     1. The seal cracks and releases (0 → ~0.85s).
+     2. The gold trim on the closed envelope's creases fades out fast
+        (0 → ~0.3s) as the flaps begin to separate.
+     3. The four flaps unfold in a slight bloom-like stagger — top first,
+        then the sides, then bottom — each on a real 3D hinge along its own
+        base (~0.3s → ~2.7s total). `backface-visibility: hidden` means
+        each simply isn't there once rotated past 90°.
+     4. A spark of light races along each of the four crease lines at the
+        same moment its flap starts moving — light traveling the actual
+        fold geometry, brighter and longer than a hairline, forming a
+        bold X for a beat before fading.
+     5. Once fully open, a brief hold, then the screen dissolves smoothly
+        into the invitation already sitting beneath it.
 
    Every light element here is a small, thin shape (a spark, a hairline) —
    deliberately never a large gradient needing to be clipped to a shape,
@@ -142,7 +162,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   overflow: hidden;
   cursor: pointer;
   background: #0d0403;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  transition: opacity 1s ease, visibility 1s ease;
 }
 .intro-screen.is-hidden {
   opacity: 0;
@@ -154,15 +174,19 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   position: absolute;
   inset: 0;
   perspective: 1500px;
-  /* the envelope itself only ever fades, late, once the flap has opened */
-  transition: opacity 0.6s ease 1.55s;
+  /* a safety-net fade for anything still visible once all four flaps have
+     rotated away — timed to land just before #introScreen's own fade */
+  transition: opacity 0.6s ease 2.85s;
 }
 .intro-screen.is-opening .envelope {
   opacity: 0;
 }
 
 /* Each flap is a triangle pinned to one edge, apex at the centre — a near-
-   black chocolate leather, not a bright saturated maroon. */
+   black chocolate leather, not a bright saturated maroon. Each carries its
+   own gold edge trim along its two diagonal sides (inset box-shadow,
+   shaped by the same clip-path), so all four flaps read consistently —
+   not just the three that used to form the static "pocket". */
 .env-flap {
   position: absolute;
   inset: 0;
@@ -186,47 +210,66 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   background-image: linear-gradient(270deg, #260d0b 0%, #190807 68%, #130605 100%);
 }
 
-/* ---- The hinge: only the top flap moves ----
-   Rotated on its own base (the top edge of the screen), away from the
-   viewer, like a letter actually being opened. backface-visibility hides
-   the artwork once it's rotated past 90° so it doesn't read as a mirrored
-   ghost — at that point we're meant to see the pocket underneath instead. */
-.env-flap-top-wrap {
+/* ---- The hinges: all four flaps move ----
+   Each wrap wholly contains its flap and rotates on the screen edge that
+   flap is pinned to — top/bottom around X, left/right around Y — folding
+   away from the viewer in every case. Rotation signs below aren't
+   symmetric by accident: they're derived from the actual sign convention
+   (right-hand rule, CSS's Y-down/Z-toward-viewer space), not guessed —
+   top and left take one sign, bottom and right take the other, because
+   each flap's material sits on the opposite side of its hinge from its
+   mirror partner. backface-visibility hides each flap's face once it's
+   rotated past 90°, so it simply isn't there — nothing left to see but
+   the screen's own backdrop, and eventually the invitation beneath it. */
+.env-flap-wrap {
   position: absolute;
   inset: 0;
-  z-index: 3;
-  transform-origin: 50% 0%;
   transform-style: preserve-3d;
   backface-visibility: hidden;
-  transition: transform 1.3s cubic-bezier(0.5, 0, 0.18, 1) 0.22s;
+  transition: transform 2.2s cubic-bezier(0.45, 0, 0.15, 1);
 }
-.intro-screen.is-opening .env-flap-top-wrap {
-  transform: rotateX(-165deg);
-}
+.env-flap-wrap-top    { transform-origin: 50% 0%;   transition-delay: 0.3s; }
+.env-flap-wrap-left   { transform-origin: 0% 50%;   transition-delay: 0.42s; }
+.env-flap-wrap-right  { transform-origin: 100% 50%; transition-delay: 0.42s; }
+.env-flap-wrap-bottom { transform-origin: 50% 100%; transition-delay: 0.54s; }
 
-/* Gold hairlines tracing the two lower diagonals (the fixed pocket's own
-   folds — the top flap's edges travel with it, drawn by its own clip). */
+.intro-screen.is-opening .env-flap-wrap-top    { transform: rotateX(-160deg); }
+.intro-screen.is-opening .env-flap-wrap-bottom { transform: rotateX(160deg); }
+.intro-screen.is-opening .env-flap-wrap-left   { transform: rotateY(160deg); }
+.intro-screen.is-opening .env-flap-wrap-right  { transform: rotateY(-160deg); }
+
+/* Gold hairlines tracing all four diagonals — the closed-envelope state.
+   Fades out fast as soon as the flaps start separating, rather than
+   trying to travel with any one of them. */
 .env-folds {
   position: absolute;
   inset: 0;
   pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.3s ease;
+}
+.intro-screen.is-opening .env-folds {
+  opacity: 0;
 }
 .env-folds::before {
-  background:
-    linear-gradient(to bottom right, transparent calc(50% - 0.6px), rgba(179,135,47,0.42) 50%, transparent calc(50% + 0.6px)),
-    linear-gradient(to bottom left,  transparent calc(50% - 0.6px), rgba(179,135,47,0.42) 50%, transparent calc(50% + 0.6px));
-  clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
   content: '';
   position: absolute;
   inset: 0;
+  background:
+    linear-gradient(to top right,    transparent calc(50% - 0.6px), rgba(217,180,106,0.4) 50%, transparent calc(50% + 0.6px)),
+    linear-gradient(to top left,     transparent calc(50% - 0.6px), rgba(217,180,106,0.4) 50%, transparent calc(50% + 0.6px)),
+    linear-gradient(to bottom right, transparent calc(50% - 0.6px), rgba(217,180,106,0.4) 50%, transparent calc(50% + 0.6px)),
+    linear-gradient(to bottom left,  transparent calc(50% - 0.6px), rgba(217,180,106,0.4) 50%, transparent calc(50% + 0.6px));
 }
 
 /* ---- Sparks: light travelling outward along each crease ----
-   Four thin streaks, each pinned at the seal and aimed at one screen
-   corner via a static rotation on the wrapper; the inner element handles
-   the actual grow-and-fade via `scaleY`, so the two transforms never fight
-   inside a single animated value. Deliberately tiny (2px wide) — nothing
-   here is large enough to hit the clip/overflow bug described above. */
+   Four streaks, each pinned at the seal and aimed at one screen corner via
+   a static rotation on the wrapper; the inner element handles the actual
+   grow-and-fade via `scaleY`, so the two transforms never fight inside a
+   single animated value. Wider and longer-lived than a hairline, with a
+   tight drop-shadow bloom — still a small shape overall (a few px across),
+   so it doesn't come near the large-gradient-plus-clip-path bug described
+   above; a small blur radius on a small shape is unaffected by it. */
 .env-sparks {
   position: absolute;
   inset: 0;
@@ -237,8 +280,8 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 2px;
-  height: 62vmax;
+  width: 3.5px;
+  height: 68vmax;
   transform-origin: top center;
 }
 .env-spark-tl { transform: translate(-50%, 0) rotate(-45deg); }
@@ -253,26 +296,28 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   transform: scaleY(0);
   opacity: 0;
   background: linear-gradient(to bottom,
-    rgba(255, 246, 227, 0.95) 0%, rgba(240, 217, 160, 0.5) 6%, transparent 16%);
+    #fff6e7 0%, rgba(250, 230, 180, 0.85) 5%, rgba(240, 217, 160, 0.5) 14%,
+    rgba(200, 160, 100, 0.18) 26%, transparent 38%);
+  filter: drop-shadow(0 0 5px rgba(250, 225, 170, 0.55));
 }
 .intro-screen.is-opening .env-spark i {
-  animation: spark-travel 1.05s cubic-bezier(0.2, 0.7, 0.3, 1) forwards;
+  animation: spark-travel 1.8s cubic-bezier(0.19, 0.7, 0.28, 1) forwards;
 }
 .intro-screen.is-opening .env-spark-tr i,
-.intro-screen.is-opening .env-spark-tl i { animation-delay: 0.08s; }
-.intro-screen.is-opening .env-spark-br i,
-.intro-screen.is-opening .env-spark-bl i { animation-delay: 0.16s; }
+.intro-screen.is-opening .env-spark-tl i { animation-delay: 0.3s; }
+.intro-screen.is-opening .env-spark-bl i,
+.intro-screen.is-opening .env-spark-br i { animation-delay: 0.42s; }
 @keyframes spark-travel {
   0%   { opacity: 0; transform: scaleY(0); }
-  14%  { opacity: 1; }
-  55%  { opacity: 0.85; transform: scaleY(1); }
+  10%  { opacity: 1; }
+  60%  { opacity: 0.9; transform: scaleY(1); }
   100% { opacity: 0; transform: scaleY(1); }
 }
 
-/* ---- Rose sprays, side flaps only ---- */
-/* Each spray starts as a near-invisible deboss and rim-lights to a muted,
-   desaturated amber — never the flat saturated marigold-orange a first pass
-   at this reaches for. */
+/* ---- Rose sprays, side flaps only ----
+   Nested inside each side flap's own wrap now, so they physically travel
+   with their flap as it opens instead of staying pinned to a spot the
+   flap has already left. */
 .env-filigree { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
 .env-sprig {
   position: absolute;
@@ -288,8 +333,8 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
 
 /* ---- Wax seal: smooth 22-lobe scallop (clip-path defined once in the
    HTML, in objectBoundingBox units, so it scales cleanly at any size) ----
-   Cracks and releases right at the start — the thing that lets the flap
-   above it lift open a beat later. */
+   Cracks and releases first, with a touch more weight than before — the
+   thing that lets all four flaps lift a beat later. */
 .env-seal {
   position: absolute;
   top: 50%;
@@ -300,7 +345,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   max-width: 122px;
   max-height: 122px;
   z-index: 5;
-  transition: transform 0.55s cubic-bezier(0.3, 0, 0.4, 1), opacity 0.5s ease 0.05s;
+  transition: transform 0.85s cubic-bezier(0.3, 0, 0.4, 1), opacity 0.75s ease 0.1s;
 }
 .env-seal-ring {
   position: absolute;
@@ -329,7 +374,7 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   color: #6b4b2a;
 }
 .intro-screen.is-opening .env-seal {
-  transform: translate(-50%, -50%) scale(1.18) rotate(-8deg);
+  transform: translate(-50%, -50%) scale(1.22) rotate(-10deg);
   opacity: 0;
 }
 
@@ -406,11 +451,21 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
 }
 
 /* ---- Mute toggle ---- */
+/* Fixed (not absolute) and outside #introScreen in the DOM: this control
+   has to survive #introScreen being removed once the intro finishes, and
+   stay reachable while scrolling the rest of the site — it's the one way
+   to silence music that's now playing site-wide, not just during the
+   opening flourish. Hidden through the whole intro (closed envelope and
+   opening animation alike) so nothing clutters that screen; it fades in
+   once the invitation itself is revealed. */
 .mute-toggle {
-  position: absolute;
-  top: max(1.1rem, env(safe-area-inset-top));
+  position: fixed;
+  /* Sits below the sticky nav (which is only ~60-70px tall, but this clears
+     it with margin on any device) rather than at the very top edge — at
+     the top edge it landed directly on top of the RSVP nav link. */
+  top: calc(env(safe-area-inset-top) + 4.25rem);
   right: 1.1rem;
-  z-index: 7;
+  z-index: 900;
   width: 38px;
   height: 38px;
   border-radius: 50%;
@@ -421,20 +476,22 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: opacity 0.4s ease, border-color 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, border-color 0.2s ease;
 }
 .mute-toggle:hover { border-color: rgba(217, 180, 106, 0.75); }
 .mute-toggle .icon-on,
 .mute-toggle .icon-off { display: block; }
 .mute-toggle[data-muted="true"] .icon-on { display: none; }
 .mute-toggle[data-muted="false"] .icon-off { display: none; }
-.intro-screen.is-opening .mute-toggle {
-  opacity: 0;
-  pointer-events: none;
+body.intro-open .mute-toggle {
+  opacity: 1;
+  pointer-events: auto;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .envelope, .env-flap-top-wrap, .env-seal, .env-sprig, .env-spark i { transition: none; animation: none; }
+  .envelope, .env-flap-wrap, .env-seal, .env-sprig, .env-spark i, .env-folds { transition: none; animation: none; }
 }
 /* ============ Site content ============ */
 .site-content {
@@ -487,122 +544,34 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
 .nav-links a:hover { opacity: 1; color: var(--color-accent); }
 
 /* ---- Hero ---- */
+/* The hero is just the invitation video, full-width, matching the
+   countdown band below it (also full-width) rather than the narrower
+   780px text column ordinary sections use.
+
+   Full width + zero cropping can't both be true against a fixed viewport
+   height for a 9:16 source: on a wide desktop screen, filling the width
+   edge-to-edge means the video's rendered height is far taller than one
+   screen — there's no way around that for a portrait video shown at full
+   width, short of cropping it (which was the previous approach here, and
+   is explicitly what's being avoided now). So the section's height simply
+   follows the video's own aspect ratio rather than being pinned to
+   100vh — on mobile that's close to a normal fullscreen hero already;
+   on a wide desktop it runs taller than one viewport and the visitor
+   scrolls a little further to clear it. Either way the whole frame, top
+   to bottom, is always visible. `aspect-ratio` reserves the correct space
+   immediately, before the video's own metadata has loaded, so there's no
+   layout jump once it does. */
 .hero {
-  min-height: 100vh;
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  /* top padding clears the hanging toran, bottom clears the kalash */
-  padding: clamp(4.5rem, 14vw, 8rem) clamp(1rem, 4vw, 2.5rem) clamp(3rem, 8vw, 5rem);
-  position: relative;
-  overflow: hidden;
-  /* background inherited from the page ground on <body> */
-}
-/* Double gold rule inset from the edge, like the border of a printed card */
-.hero::before {
-  content: '';
-  position: absolute;
-  inset: clamp(8px, 2vw, 18px);
-  border: 2px solid rgba(244,163,0,0.75);
-  border-radius: 6px;
-  pointer-events: none;
-}
-.hero::after {
-  content: '';
-  position: absolute;
-  inset: calc(clamp(8px, 2vw, 18px) + 5px);
-  border: 1px solid rgba(255,226,168,0.45);
-  border-radius: 4px;
-  pointer-events: none;
-}
-
-/* ---- Hero decorations: toran across the top, kalash flanking ---- */
-.hero-garland {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 165px;
-  background-repeat: repeat-x;
-  background-position: center top;
-  background-size: auto 165px;
-  pointer-events: none;
-  z-index: 2;
-  opacity: 0.96;
-  animation: garland-sway 6s ease-in-out infinite;
-  transform-origin: top center;
-}
-@keyframes garland-sway {
-  0%, 100% { transform: rotate(-0.5deg); }
-  50%      { transform: rotate(0.5deg); }
-}
-
-.hero-kalash {
-  position: absolute;
-  bottom: 0;
-  width: 124px;
-  height: 190px;
-  background-repeat: no-repeat;
-  background-position: bottom center;
-  background-size: contain;
-  pointer-events: none;
-  z-index: 2;
-  filter: drop-shadow(0 8px 14px rgba(50,4,10,0.5));
-}
-.hero-kalash-left  { left: clamp(0.5rem, 4vw, 4rem); }
-.hero-kalash-right { right: clamp(0.5rem, 4vw, 4rem); transform: scaleX(-1); }
-
-/* ---- Cream cusped-arch invitation card ---- */
-.hero-card {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  max-width: 520px;
-  filter: drop-shadow(0 18px 40px rgba(60,6,14,0.45));
-}
-.hero-card-arch {
   position: relative;
   width: 100%;
-  aspect-ratio: 400 / 210;
-  margin-bottom: -1px;
+  line-height: 0;
 }
-.hero-card-arch svg { width: 100%; height: 100%; display: block; }
-/* Ganesha sits in the belly of the arch, not down at the springing line */
-.hero-card-arch .ganesh-mark {
-  position: absolute;
-  left: 50%;
-  top: 46%;
-  transform: translate(-50%, -50%);
+.hero-video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
 }
-.hero-card-body {
-  /* warm ivory→champagne wash with a faint gold mandala watermark, so the
-     panel reads as printed card stock rather than plain white */
-  background:
-    repeating-conic-gradient(from 0deg at 50% 10%,
-      rgba(244,163,0,0.028) 0deg 2.5deg, transparent 2.5deg 10deg),
-    radial-gradient(ellipse at 50% 0%, rgba(244,163,0,0.13), transparent 62%),
-    linear-gradient(180deg, #fffdf6 0%, #fdf1da 55%, #f8e6c4 100%);
-  border: 3px solid var(--color-accent);
-  border-top: none;
-  border-radius: 0 0 10px 10px;
-  padding: 0.5rem clamp(1.1rem, 4vw, 2.25rem) clamp(1.75rem, 4vw, 2.5rem);
-  position: relative;
-}
-/* inner hairline, mirroring the arch's double outline */
-.hero-card-body::before {
-  content: '';
-  position: absolute;
-  inset: 0 5px 5px;
-  border: 1px solid rgba(244,163,0,0.55);
-  border-top: none;
-  border-radius: 0 0 6px 6px;
-  pointer-events: none;
-}
-
-.hero-inner { position: relative; z-index: 1; max-width: 640px; margin: 0 auto; }
 
 /* ---- Ganesha mark ---- */
 /* The source art is red line-work on solid white; `multiply` drops the white
@@ -662,78 +631,16 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   margin-bottom: 1rem;
 }
 
-.hero-pretitle {
-  text-transform: uppercase;
-  letter-spacing: 0.3em;
-  font-size: 0.78rem;
-  color: var(--color-muted);
-  margin-bottom: 1.25rem;
-}
-.hero-names {
-  font-family: var(--font-script);
-  font-weight: 400;
-  font-size: clamp(2.6rem, 8.5vw, 4.6rem);
-  color: var(--color-text);
-  line-height: 1.25;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: center;
-  gap: 0 0.5rem;
-}
-.hero-names > span:first-child,
-.hero-names > span:nth-child(3) { line-height: 1; }
-/* The "&" sits on its own centred line between the two names, rather than
-   inline before the groom's name — reads as a divider, not punctuation. */
-.hero-names .amp {
-  display: block;
-  width: 100%;
-  text-align: center;
-  color: var(--color-accent);
-  font-size: 0.62em;
-  line-height: 1;
-  margin: 0.05em 0 0.15em;
-}
-.hero-parents {
-  display: block;
-  width: 100%;
-  font-family: var(--font-body);
-  font-size: 0.98rem;
-  font-style: italic;
-  color: var(--color-muted);
-  margin: -0.1rem 0 0.6rem;
-  line-height: 1.3;
-}
-.hero-tagline {
-  font-style: italic;
-  color: var(--color-muted);
-  margin-top: 1.25rem;
-  font-size: 1.15rem;
-}
-.hero-date {
-  margin-top: 0.6rem;
-  font-size: 1.05rem;
-  letter-spacing: 0.05em;
-  color: var(--color-primary);
-  font-weight: 600;
-}
-.hero-divider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-  margin: 2rem auto 0;
-  color: var(--color-accent);
-  max-width: 220px;
-}
-.hero-divider span { flex: 1; height: 1px; background: currentColor; opacity: 0.4; }
-
+/* These fields (names/parents/tagline/date) now live only as .sr-only text
+   in the hero — the video already shows them. They resurface visually
+   here in the countdown band instead, alongside the When/Where glance,
+   so no dedicated hero typography rules are needed any more. */
 .hero-glance {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 1.5rem;
-  margin: 1.75rem 0 1.25rem;
+  margin: 0.25rem 0 1.75rem;
   flex-wrap: wrap;
 }
 .glance-item { display: flex; flex-direction: column; align-items: center; }
@@ -741,18 +648,25 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   text-transform: uppercase;
   letter-spacing: 0.2em;
   font-size: 0.68rem;
-  color: var(--color-muted);
+  color: rgba(255,244,214,0.65);
   margin-bottom: 0.25rem;
 }
 .glance-value {
   font-family: var(--font-heading);
   font-size: 1rem;
-  color: var(--color-text);
+  color: #fff4d6;
 }
 .glance-sep {
   width: 1px;
   height: 34px;
-  background: rgba(200,148,31,0.4);
+  background: rgba(255,215,122,0.35);
+}
+.countdown-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
 }
 
 .scroll-cue {

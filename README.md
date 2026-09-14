@@ -1,10 +1,11 @@
 # Wedding Invite
 
 A self-hosted, animated Hindu wedding invitation: a tap-to-open wax-sealed
-envelope, live falling petals, scroll-reveal sections, flip cards for each day of
-celebration, a live countdown to the muhurtham, and an RSVP that links out to
-a Google Form (so responses land in a Google Sheet you already own — no
-custom backend needed).
+envelope with background music, a homepage video, live falling petals,
+scroll-reveal sections, flip cards for each day of celebration, a live
+countdown to the muhurtham, and an RSVP that links out to a Google Form (so
+responses land in a Google Sheet you already own — no custom backend
+needed).
 
 ## Quick start
 
@@ -33,10 +34,10 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | Section | Notes |
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
-| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`. The names themselves come from `couple` |
-| `branding` | `ganeshLogo` — the Ganesha mark shown in the crown of the hero arch and in the footer. Line art on a white background works best (the white is blended out automatically) |
-| `hero` | Pre-title, tagline, `blessingLine` shown in the footer |
-| `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the hero "When & Where" glance and Directions buttons; `countdownLabel` is the text above the countdown |
+| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage video & background music" below. The names themselves come from `couple` |
+| `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
+| `hero` | `videoUrl` — the homepage video, see below. `preTitle`, `tagline`, `blessingLine` (shown in the footer) still exist as text but are visually hidden (`.sr-only`) in the hero itself now that the video carries that information; they remain for accessibility/SEO |
+| `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional paragraph — leave `""` to hide the section |
 | `schedule` | Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card |
 | `rsvp` | `googleFormUrl` — your Google Form share link (`forms.gle/...`). Toggle `enabled` to hide the section entirely. `deadline`, `contactName`/`contactPhone` (shown as a "prefer to call?" fallback) |
@@ -84,18 +85,58 @@ envelope's gone" and "the screen's gone."
 
 Reduced-motion users skip straight to the revealed invitation.
 
+### Homepage video & background music
+
+The hero is the invitation video (`hero.videoUrl`) and nothing else —
+`public/assets/media/wedding-invite.mp4` already carries the names, date,
+time and venue as a finished animated card, so there's no separate arch,
+card, or duplicate text sitting on top of it. That text still exists in the
+DOM as `.sr-only` elements (`#heroPreTitle`, the names, `#heroTagline`,
+`#heroDate`) purely for accessibility and SEO, since a video's on-screen
+text isn't readable by either.
+
+The video runs **full width, at its own aspect ratio, with zero cropping** —
+deliberately not `object-fit: cover`. A 9:16 portrait video can't fill a wide
+desktop viewport edge-to-edge *and* stay uncropped at the same time; those
+are mutually exclusive once the container's proportions don't match the
+source. This site picks "show the whole video" over "fill the screen
+exactly": width is 100%, height follows from `aspect-ratio: 9/16`, so on a
+wide desktop screen the hero simply runs taller than one viewport (you
+scroll a little further to clear it) rather than having the top or bottom of
+the video cut off. `aspect-ratio` also reserves the correct height
+immediately, before the video's own metadata loads, so there's no layout
+jump once it does.
+
+Background music (`intro.musicUrl`,
+`public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
+that opens the envelope — calling `.play()` synchronously inside that click
+handler is what lets browsers allow audio to start unmuted without a
+separate permission prompt. The `<audio>` element and the mute button
+(`#muteToggle`) deliberately live **outside** `#introScreen` in the DOM:
+that element is removed entirely once the intro finishes, and anything
+nested inside it would be deleted right along with it — silently killing
+both the music and the only control that could silence it. Both are direct
+children of `<body>` instead, so they persist and the mute button stays
+reachable (fixed position, fades in once the invitation is revealed) as you
+scroll the rest of the site.
+
+Leave either `videoUrl` or `musicUrl` as `""` to disable that feature
+without touching any other code — the hero section and the mute button
+both hide themselves gracefully when there's nothing to show.
+
 ### Where the images live
 
 | File in `public/assets/` | Used for |
 |---|---|
-| `wedding-ganesh-logo.jpg` | Ganesha mark in the hero arch + footer (`branding.ganeshLogo`) |
+| `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
+| `media/wedding-invite.mp4` | The homepage hero video (`hero.videoUrl`) |
+| `media/jashn-e-bahaara.mp3` | Background music (`intro.musicUrl`) |
 
-The homepage ornament — the red damask ground, the cusped Mughal arch
-(`buildArchSvg()`), the hanging marigold toran (`buildGarlandSvg()`) and the
-flanking kalash (`buildKalashSvg()`) — is all drawn in CSS/SVG rather than
-exported as images. That keeps it crisp at any size, recolours with the `theme` palette,
-and adds nothing to page weight.
+The remaining homepage ornament — the red damask ground, the falling petals,
+the rose sprays and gold hairlines on the opening envelope — is drawn in
+CSS/SVG rather than exported as images, which keeps it crisp at any size,
+recolours with the `theme` palette, and adds nothing to page weight.
 
 `HomepageBackground.jpg` and `Shiv-Parvati-Vivah.jpeg` are kept as **design
 references only** and are not loaded by the page. (The homepage background

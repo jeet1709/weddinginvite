@@ -1059,19 +1059,6 @@ section {
 
 /* ============ Responsive ============ */
 
-/* Below this the card fills the width, so the kalash would sit on top of it —
-   tuck them behind as a low, partially-cropped flourish instead. */
-@media (max-width: 900px) {
-  .hero-kalash { width: 84px; height: 122px; opacity: 0.9; }
-  .hero-kalash-left  { left: -14px; }
-  .hero-kalash-right { right: -14px; }
-}
-@media (max-width: 620px) {
-  .hero-kalash { display: none; }
-  .hero-garland { height: 96px; background-size: auto 96px; }
-  .hero { padding-top: clamp(3.5rem, 18vw, 5.5rem); }
-}
-
 @media (max-width: 560px) {
   body { font-size: 17px; }
   section { padding: 4rem 1.25rem; }

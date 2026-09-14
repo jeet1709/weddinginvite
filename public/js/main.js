@@ -361,6 +361,23 @@
 
       if (music) music.play().catch(() => { /* autoplay declined; silent */ });
 
+      // The `autoplay` attribute is unreliable once a video's `src` is set
+      // dynamically after page load (which populateHero() does, since the
+      // URL comes from config) — several mobile browsers only honour
+      // autoplay reliably when it's driven by an actual user gesture, and
+      // otherwise fall back to showing a native play button, leaving the
+      // video paused on its first frame until tapped. This click on the
+      // envelope IS that gesture, so play() is called explicitly from
+      // inside this same handler rather than trusting the attribute alone.
+      // `.muted` is set as a JS property (not just the HTML attribute) —
+      // Safari in particular checks the live property when deciding
+      // whether to honour autoplay-without-permission.
+      const heroVideo = $('#heroVideo');
+      if (heroVideo) {
+        heroVideo.muted = true;
+        heroVideo.play().catch(() => { /* autoplay declined; silent */ });
+      }
+
       // Seal cracks (~0-0.85s) → the closed envelope's gold trim fades fast
       // (~0-0.3s) → all four flaps unfold in a bloom-like stagger, top
       // first, then the sides, then bottom (~0.3-2.74s) → sparks race each

@@ -16,11 +16,27 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+/* Matches body's own base colour: mobile browsers reveal whatever is behind
+   <body> during rubber-band/elastic overscroll (scrolling past the very
+   top or bottom of the page) — with no background of its own here, that
+   showed as a flash of plain white, which reads as "the page ran out and
+   I'm now scrolling into empty space" rather than the natural bounce it
+   actually is. */
+html {
+  scroll-behavior: smooth;
+  background: #9e1f2c;
+}
 
 /* One carved red damask ground for the whole page, so the hero and the
    sections below it read as a single invitation rather than two designs.
-   Content sits on it as cream/gold cards. */
+   Content sits on it as cream/gold cards.
+
+   No `background-attachment: fixed`: it's a well-known source of scroll
+   jank, repaint stutter, and in some older iOS Safari versions outright
+   broken rendering, for exactly the kind of long, image-heavy scrolling
+   page this is. The pattern is a subtle texture, not a hero image — the
+   parallax effect fixed attachment would add here isn't worth iOS's
+   history of bugs with it. */
 body {
   margin: 0;
   background-color: #9e1f2c;
@@ -32,7 +48,6 @@ body {
     repeating-linear-gradient(-45deg, rgba(0,0,0,0.10) 0 1px, transparent 1px 22px),
     linear-gradient(170deg, #b32834 0%, #9e1f2c 45%, #7d1522 100%);
   background-size: 44px 44px, 44px 44px, 44px 44px, auto, auto, auto;
-  background-attachment: fixed;
   color: var(--color-text);
   font-family: var(--font-body);
   font-size: 19px;

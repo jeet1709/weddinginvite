@@ -340,6 +340,23 @@
         try { localStorage.setItem('weddinginvite:muted', String(muted)); } catch { /* ignore */ }
       });
     }
+
+    // Pause while the tab isn't visible (switched away, minimised, screen
+    // locked) and resume from where it left off once it's visible again —
+    // music playing on in a backgrounded tab is a surprise for the visitor
+    // and a pointless battery/data drain. `hasStarted` only flips true once
+    // playback has actually begun (the envelope's been tapped), so this
+    // never triggers a bare autoplay attempt before that gesture.
+    let hasStarted = false;
+    audio.addEventListener('play', () => { hasStarted = true; });
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (!audio.paused) audio.pause();
+      } else if (hasStarted && audio.paused) {
+        audio.play().catch(() => { /* ignore */ });
+      }
+    });
+
     return audio;
   }
 

@@ -18,3 +18,7 @@ ScreenRecording_09-12-2026 19-16-55_1.MP4
 /Screenshot *.png
 /wedding_invite_v2.mp4
 /wedding_invite_v3.mp4
+
+# Claude Design project export (design explorations, reference screenshots,
+# personal uploads) — source material only, not part of the site.
+/Wedding invite config issues/

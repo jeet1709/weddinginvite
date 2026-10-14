@@ -29,9 +29,9 @@
     "videoUrl": "assets/media/wedding-invite.mp4"
   },
   "wedding": {
-    "date": "2026-12-05",
+    "date": "2026-12-11",
     "time": "18:00",
-    "displayDate": "Friday, 5th December 2026",
+    "displayDate": "Friday, 11th December 2026",
     "venueName": "Taj Palace",
     "venueCity": "Hyderabad",
     "address": "Road No. 12, Banjara Hills, Hyderabad, Telangana 500034",
@@ -42,12 +42,12 @@
   "schedule": [
     {
       "id": "haldi",
-      "date": "2026-12-08",
-      "time": "6:00 PM onwards",
+      "date": "2026-12-04",
+      "time": "2:30 PM onwards",
       "title": "Haldi",
-      "subtitle": "Manjal Neerattu Vizha",
-      "location": "Taj Palace, Hyderabad",
-      "dressCode": "Yellow & Marigold",
+      "subtitle": "Yellow scenes, filmy dreams and lots of games!",
+      "location": "Community Center, IIT Roorkee",
+      "dressCode": "Shades of yellow, orange, pink & lavender",
       "quote": "Turmeric, laughter and the very first blessings."
     },
     {

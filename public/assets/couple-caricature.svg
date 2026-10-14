@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 420" role="img" aria-label="Caricature of the couple under a floral arch">
+<defs>
+  <radialGradient id="bg" cx="50%" cy="42%" r="72%">
+    <stop offset="0" stop-color="#fffaf0"/><stop offset=".65" stop-color="#f7e6d0"/><stop offset="1" stop-color="#e8c6a6"/>
+  </radialGradient>
+  <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+    <stop offset="0" stop-color="#ffd27a" stop-opacity=".55"/><stop offset="1" stop-color="#ffd27a" stop-opacity="0"/>
+  </radialGradient>
+  <g id="rose">
+    <circle r="11" fill="#f4a7c0"/>
+    <circle r="8" fill="#ea86a6"/>
+    <path d="M-5 -1 a5 5 0 1 1 6 5 a3 3 0 1 1 -2.5 -5" fill="none" stroke="#c4527a" stroke-width="1.5" stroke-linecap="round"/>
+  </g>
+  <g id="daisy"><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(0)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(36)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(72)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(108)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(144)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(180)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(216)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(252)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(288)"/><ellipse rx="2.6" ry="7" cy="-6" fill="#fffdf6" stroke="#e8dcc2" stroke-width=".5" transform="rotate(324)"/><circle r="3.2" fill="#f2c14e"/></g>
+  <path id="leaf" d="M0 0 C6 -7 15 -7 21 0 C15 7 6 7 0 0Z" fill="#4e7f3b"/>
+  <pattern id="stole" width="10" height="10" patternUnits="userSpaceOnUse">
+    <rect width="10" height="10" fill="#e9b1a7"/>
+    <path d="M5 1 L9 5 L5 9 L1 5Z" fill="none" stroke="#f8dcd3" stroke-width="1"/>
+    <circle cx="5" cy="5" r=".9" fill="#c98a80"/>
+  </pattern>
+  <pattern id="saree" width="28" height="28" patternUnits="userSpaceOnUse" patternTransform="rotate(-18)">
+    <rect width="28" height="28" fill="#f3ab98"/>
+    <path d="M0 4 H28 M0 18 H28" stroke="#f7bfae" stroke-width="2.5"/>
+  </pattern>
+</defs>
+
+<rect width="400" height="420" fill="url(#bg)"/>
+<!-- wall panelling, like the photo backdrop -->
+<g stroke="#ead6bd" stroke-width="2"><line x1="12" y1="0" x2="12" y2="420"/><line x1="33" y1="0" x2="33" y2="420"/><line x1="54" y1="0" x2="54" y2="420"/><line x1="75" y1="0" x2="75" y2="420"/><line x1="96" y1="0" x2="96" y2="420"/><line x1="117" y1="0" x2="117" y2="420"/><line x1="138" y1="0" x2="138" y2="420"/><line x1="159" y1="0" x2="159" y2="420"/><line x1="180" y1="0" x2="180" y2="420"/><line x1="201" y1="0" x2="201" y2="420"/><line x1="222" y1="0" x2="222" y2="420"/><line x1="243" y1="0" x2="243" y2="420"/><line x1="264" y1="0" x2="264" y2="420"/><line x1="285" y1="0" x2="285" y2="420"/><line x1="306" y1="0" x2="306" y2="420"/><line x1="327" y1="0" x2="327" y2="420"/><line x1="348" y1="0" x2="348" y2="420"/><line x1="369" y1="0" x2="369" y2="420"/><line x1="390" y1="0" x2="390" y2="420"/></g>
+<ellipse cx="200" cy="215" rx="170" ry="150" fill="url(#halo)"/>
+
+<!-- mandir shelf with little idols under the arch -->
+<rect x="128" y="112" width="144" height="4" rx="2" fill="#c9a24a"/>
+<g transform="translate(150 98)"><path d="M-9 14 Q0 2 9 14Z" fill="#b8442e"/><circle cy="2" r="5" fill="#d9a441"/></g>
+<g transform="translate(200 94)"><path d="M-11 18 Q0 0 11 18Z" fill="#c4473a"/><circle cy="2" r="6" fill="#e2b04d"/><path d="M-4 -4 L0 -10 L4 -4Z" fill="#e2b04d"/></g>
+<g transform="translate(250 98)"><path d="M-9 14 Q0 2 9 14Z" fill="#3f6fa0"/><circle cy="2" r="5" fill="#d9a441"/></g>
+
+<g><use href="#leaf" transform="translate(15.9 247) rotate(0) scale(0.9)"/><use href="#leaf" transform="translate(10 250) rotate(150) scale(1)"/><use href="#leaf" transform="translate(8.5 235.5) rotate(191.8) scale(1.2)"/><use href="#leaf" transform="translate(10.9 231.9) rotate(341.8) scale(0.9)"/><use href="#leaf" transform="translate(15.3 218.5) rotate(246.4) scale(0.9)"/><use href="#leaf" transform="translate(13.4 214) rotate(396.4) scale(0.8)"/><use href="#leaf" transform="translate(20.5 190.2) rotate(254.8) scale(1.1)"/><use href="#leaf" transform="translate(17.7 196.5) rotate(404.8) scale(0.9)"/><use href="#leaf" transform="translate(27.9 174.1) rotate(332.1) scale(1.1)"/><use href="#leaf" transform="translate(23.6 179.4) rotate(482.1) scale(1.1)"/><use href="#leaf" transform="translate(33.1 164) rotate(247.9) scale(1.3)"/><use href="#leaf" transform="translate(31.1 162.9) rotate(397.9) scale(1.1)"/><use href="#leaf" transform="translate(37.9 152) rotate(134) scale(1)"/><use href="#leaf" transform="translate(40.2 147.3) rotate(284) scale(0.8)"/><use href="#leaf" transform="translate(49.6 129.7) rotate(107.2) scale(1.3)"/><use href="#leaf" transform="translate(50.6 132.5) rotate(257.2) scale(0.9)"/><use href="#leaf" transform="translate(67.8 112.7) rotate(262.5) scale(0.9)"/><use href="#leaf" transform="translate(62.5 118.9) rotate(412.5) scale(0.9)"/><use href="#leaf" transform="translate(74.5 102.1) rotate(183.2) scale(1.3)"/><use href="#leaf" transform="translate(75.6 106.4) rotate(333.2) scale(0.7)"/><use href="#leaf" transform="translate(87.6 97.5) rotate(131.6) scale(1.3)"/><use href="#leaf" transform="translate(89.8 95.2) rotate(281.6) scale(0.9)"/><use href="#leaf" transform="translate(103.7 82.4) rotate(59.6) scale(1)"/><use href="#leaf" transform="translate(105 85.5) rotate(209.6) scale(0.9)"/><use href="#leaf" transform="translate(121.5 78.8) rotate(119.7) scale(0.9)"/><use href="#leaf" transform="translate(121.1 77.2) rotate(269.7) scale(1.1)"/><use href="#leaf" transform="translate(142.9 72.3) rotate(164.8) scale(1.1)"/><use href="#leaf" transform="translate(137.9 70.4) rotate(314.8) scale(0.9)"/><use href="#leaf" transform="translate(157.9 71.5) rotate(181.8) scale(1)"/><use href="#leaf" transform="translate(155.2 65.4) rotate(331.8) scale(1)"/><use href="#leaf" transform="translate(174.2 59.8) rotate(90.4) scale(1)"/><use href="#leaf" transform="translate(173 61.9) rotate(240.4) scale(0.9)"/><use href="#leaf" transform="translate(196.2 54.8) rotate(286.1) scale(1.2)"/><use href="#leaf" transform="translate(191 60.2) rotate(436.1) scale(0.7)"/><use href="#leaf" transform="translate(204.2 54.3) rotate(146.4) scale(1.3)"/><use href="#leaf" transform="translate(209 60.2) rotate(296.4) scale(0.8)"/><use href="#leaf" transform="translate(222.1 61.3) rotate(227.7) scale(1.1)"/><use href="#leaf" transform="translate(227 61.9) rotate(377.7) scale(0.8)"/><use href="#leaf" transform="translate(250.2 70.8) rotate(331.9) scale(1.2)"/><use href="#leaf" transform="translate(244.8 65.4) rotate(481.9) scale(1.1)"/><use href="#leaf" transform="translate(259 63.6) rotate(274) scale(0.9)"/><use href="#leaf" transform="translate(262.1 70.4) rotate(424) scale(0.7)"/><use href="#leaf" transform="translate(280.6 73.4) rotate(0.6) scale(1.2)"/><use href="#leaf" transform="translate(278.9 77.2) rotate(150.6) scale(0.9)"/><use href="#leaf" transform="translate(291.3 90.8) rotate(247.5) scale(0.9)"/><use href="#leaf" transform="translate(295 85.5) rotate(397.5) scale(0.8)"/><use href="#leaf" transform="translate(304.9 95.1) rotate(321.9) scale(0.8)"/><use href="#leaf" transform="translate(310.2 95.2) rotate(471.9) scale(1.1)"/><use href="#leaf" transform="translate(330.3 99.7) rotate(229.3) scale(1.3)"/><use href="#leaf" transform="translate(324.4 106.4) rotate(379.3) scale(0.8)"/><use href="#leaf" transform="translate(338.4 121.4) rotate(348.7) scale(0.9)"/><use href="#leaf" transform="translate(337.5 118.9) rotate(498.7) scale(0.8)"/><use href="#leaf" transform="translate(350.3 126.3) rotate(75.2) scale(1.2)"/><use href="#leaf" transform="translate(349.4 132.5) rotate(225.2) scale(1)"/><use href="#leaf" transform="translate(359.8 140.7) rotate(257.1) scale(0.9)"/><use href="#leaf" transform="translate(359.8 147.3) rotate(407.1) scale(1.1)"/><use href="#leaf" transform="translate(371.5 168.4) rotate(47.1) scale(0.8)"/><use href="#leaf" transform="translate(368.9 162.9) rotate(197.1) scale(1.1)"/><use href="#leaf" transform="translate(383.3 185.7) rotate(310.1) scale(1.2)"/><use href="#leaf" transform="translate(376.4 179.4) rotate(460.1) scale(0.9)"/><use href="#leaf" transform="translate(385.5 201.8) rotate(89.4) scale(1)"/><use href="#leaf" transform="translate(382.3 196.5) rotate(239.4) scale(0.8)"/><use href="#leaf" transform="translate(392 214.9) rotate(145.8) scale(1)"/><use href="#leaf" transform="translate(386.6 214) rotate(295.8) scale(0.9)"/><use href="#leaf" transform="translate(386.8 235.1) rotate(264.6) scale(1)"/><use href="#leaf" transform="translate(389.1 231.9) rotate(414.6) scale(0.8)"/><use href="#leaf" transform="translate(396.8 256.9) rotate(112.2) scale(1.1)"/><use href="#leaf" transform="translate(390 250) rotate(262.2) scale(1)"/><use href="#rose" transform="translate(6.3 236.7) rotate(232.3) scale(0.9)"/><use href="#daisy" transform="translate(14.4 209.5) rotate(277.7) scale(1.2)"/><use href="#rose" transform="translate(22.1 184.7) rotate(160.8) scale(0.9)"/><use href="#rose" transform="translate(31.8 158.8) rotate(202.1) scale(1.1)"/><use href="#daisy" transform="translate(45.8 137) rotate(270.3) scale(0.9)"/><use href="#rose" transform="translate(67.1 115.4) rotate(73) scale(1.1)"/><use href="#rose" transform="translate(87.4 100) rotate(237.4) scale(1)"/><use href="#daisy" transform="translate(111 80.8) rotate(296.2) scale(1.2)"/><use href="#rose" transform="translate(132.2 70.3) rotate(345.2) scale(0.9)"/><use href="#rose" transform="translate(159.1 63.4) rotate(260.7) scale(1.2)"/><use href="#daisy" transform="translate(186.8 64.1) rotate(28.9) scale(0.9)"/><use href="#rose" transform="translate(213.3 65.4) rotate(217.8) scale(1.2)"/><use href="#rose" transform="translate(239.7 67.9) rotate(72.8) scale(1.1)"/><use href="#daisy" transform="translate(265.5 72.4) rotate(357.8) scale(1)"/><use href="#rose" transform="translate(291.9 80.8) rotate(142.9) scale(1)"/><use href="#rose" transform="translate(311.2 100.1) rotate(290.7) scale(1.2)"/><use href="#daisy" transform="translate(331.9 112.6) rotate(183.1) scale(0.9)"/><use href="#rose" transform="translate(349.8 135.5) rotate(61.4) scale(0.9)"/><use href="#rose" transform="translate(364.8 158.2) rotate(200.2) scale(1)"/><use href="#daisy" transform="translate(382.6 185.1) rotate(148.8) scale(1)"/><use href="#rose" transform="translate(380.8 210.7) rotate(148.8) scale(0.9)"/><use href="#rose" transform="translate(386.9 236.1) rotate(279.9) scale(1.2)"/><use href="#leaf" transform="translate(12 268) rotate(80) scale(.9)"/><use href="#rose" transform="translate(9 276) scale(0.7)"/><use href="#leaf" transform="translate(15 290) rotate(80) scale(.9)"/><use href="#daisy" transform="translate(12 298) scale(0.62)"/><use href="#leaf" transform="translate(18 312) rotate(80) scale(.9)"/><use href="#rose" transform="translate(15 320) scale(0.5399999999999999)"/><use href="#leaf" transform="translate(21 334) rotate(80) scale(.9)"/><use href="#daisy" transform="translate(18 342) scale(0.45999999999999996)"/><use href="#leaf" transform="translate(388 268) rotate(100) scale(.9)"/><use href="#rose" transform="translate(391 276) scale(0.7)"/><use href="#leaf" transform="translate(385 290) rotate(100) scale(.9)"/><use href="#daisy" transform="translate(388 298) scale(0.62)"/><use href="#leaf" transform="translate(382 312) rotate(100) scale(.9)"/><use href="#rose" transform="translate(385 320) scale(0.5399999999999999)"/><use href="#leaf" transform="translate(379 334) rotate(100) scale(.9)"/><use href="#daisy" transform="translate(382 342) scale(0.45999999999999996)"/></g>
+
+<!-- ===== Saurabh ===== -->
+<g id="groom">
+  <!-- kurta -->
+  <path d="M58 420 L70 312 Q78 270 124 258 L176 258 Q222 270 230 312 L242 420Z" fill="#f8f2e4" stroke="#e6dcc6" stroke-width="2"/>
+  <path d="M150 262 V350" stroke="#e2d6bc" stroke-width="2"/>
+  <g fill="#e2d6bc"><circle cx="150" cy="282" r="2"/><circle cx="150" cy="302" r="2"/><circle cx="150" cy="322" r="2"/></g>
+  <!-- neck + mandarin collar -->
+  <path d="M134 222 L134 262 Q150 270 166 262 L166 222Z" fill="#d99f78"/>
+  <path d="M130 254 Q150 266 170 254 L172 264 Q150 276 128 264Z" fill="#fbf7ec" stroke="#e2d6bc" stroke-width="1.5"/>
+  <!-- pink embroidered stole over both shoulders -->
+  <path d="M108 262 Q92 330 88 420 L124 420 Q124 336 132 262Z" fill="url(#stole)" stroke="#d99a90" stroke-width="1.5"/>
+  <path d="M168 262 Q178 336 180 420 L212 420 Q206 330 192 262Z" fill="url(#stole)" stroke="#d99a90" stroke-width="1.5"/>
+  <!-- ears -->
+  <ellipse cx="96" cy="180" rx="10" ry="15" fill="#dca07a"/>
+  <ellipse cx="204" cy="180" rx="10" ry="15" fill="#dca07a"/>
+  <!-- face -->
+  <path d="M98 168 Q96 112 150 108 Q204 112 202 168 Q204 236 150 240 Q96 236 98 168Z" fill="#e8b48e"/>
+  <!-- stubble beard + moustache -->
+  <path d="M99 176 Q100 238 150 241 Q200 238 201 176 Q196 222 172 220 Q150 212 128 220 Q104 222 99 176Z" fill="#3a2418" opacity=".34"/>
+  <path d="M128 207 Q150 196 172 207 Q160 204 150 205 Q140 204 128 207Z" fill="#2a1a12" opacity=".8"/>
+  <!-- hair, swept up -->
+  <path d="M96 170 Q84 112 122 96 Q140 74 172 84 Q214 92 206 164 Q202 136 186 124 Q172 132 150 126 Q122 122 110 132 Q100 146 96 170Z" fill="#23150e"/>
+  <path d="M118 102 Q142 84 170 92" stroke="#4a3022" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- brows -->
+  <path d="M112 146 Q126 138 140 146" stroke="#23150e" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <path d="M160 146 Q174 138 188 146" stroke="#23150e" stroke-width="5" stroke-linecap="round" fill="none"/>
+  <!-- glasses -->
+  <g fill="rgba(255,255,255,.18)" stroke="#141414" stroke-width="4.5">
+    <rect x="106" y="152" width="40" height="28" rx="8"/>
+    <rect x="154" y="152" width="40" height="28" rx="8"/>
+  </g>
+  <path d="M146 162 Q150 158 154 162 M106 160 L98 164 M194 160 L202 164" stroke="#141414" stroke-width="4" fill="none" stroke-linecap="round"/>
+  <!-- smiling eyes -->
+  <path d="M116 170 Q126 160 136 170" stroke="#23150e" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <path d="M164 170 Q174 160 184 170" stroke="#23150e" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+  <!-- nose -->
+  <path d="M151 178 Q144 194 153 197" stroke="#b9805e" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <!-- big grin -->
+  <path d="M126 210 Q150 238 174 210 Q150 216 126 210Z" fill="#fff" stroke="#7a2e22" stroke-width="2.4" stroke-linejoin="round"/>
+  <ellipse cx="114" cy="196" rx="9" ry="5" fill="#e88b78" opacity=".35"/>
+  <ellipse cx="186" cy="196" rx="9" ry="5" fill="#e88b78" opacity=".35"/>
+</g>
+
+<!-- ===== Anushka ===== -->
+<g id="bride">
+  <!-- long wavy hair, behind -->
+  <path d="M206 214 Q190 130 258 130 Q326 128 312 214 Q322 250 314 288 Q322 312 304 330 Q296 300 292 272 L228 272 Q222 300 214 324 Q196 306 204 280 Q194 248 206 214Z" fill="#4a2a1b"/>
+  <path d="M310 230 Q322 262 312 300" stroke="#7a4a2e" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- saree -->
+  <path d="M186 420 Q190 330 214 298 Q232 280 258 278 Q286 280 304 298 Q326 330 334 420Z" fill="url(#saree)" stroke="#e4927e" stroke-width="2"/>
+  <!-- pallu over the shoulder, with zari motifs -->
+  <path d="M266 280 Q306 286 322 318 Q340 370 346 420 L298 420 Q298 352 266 280Z" fill="#f7bcab" stroke="#e4927e" stroke-width="2"/>
+  <g fill="none" stroke="#fff3df" stroke-width="1.6" opacity=".9">
+    <circle cx="318" cy="372" r="9"/><circle cx="318" cy="372" r="4"/>
+    <path d="M300 330 q6 -6 12 0 q-6 6 -12 0Z"/>
+  </g>
+  <!-- neck -->
+  <path d="M242 240 L242 282 Q258 290 274 282 L274 240Z" fill="#e7b18e"/>
+  <!-- front hair strands over her shoulders -->
+  <path d="M216 230 Q206 270 222 300 Q230 318 222 336 Q240 318 236 292 Q228 262 232 232Z" fill="#4a2a1b"/>
+  <path d="M296 232 Q312 268 300 300 Q294 318 306 340 Q284 322 288 292 Q294 262 284 232Z" fill="#4a2a1b"/>
+  <!-- face -->
+  <path d="M212 192 Q210 140 258 138 Q306 140 304 192 Q306 252 258 256 Q210 252 212 192Z" fill="#f3c6a4"/>
+  <!-- jhumka earrings -->
+  <g fill="#d9a441"><circle cx="212" cy="214" r="3.2"/><path d="M206 218 Q212 210 218 218 L216 226 L208 226Z"/><circle cx="304" cy="214" r="3.2"/><path d="M298 218 Q304 210 310 218 L308 226 L300 226Z"/></g>
+  <!-- side-swept fringe -->
+  <path d="M208 200 Q200 132 262 132 Q314 134 308 196 Q300 162 276 154 Q252 166 228 168 Q214 178 208 200Z" fill="#4a2a1b"/>
+  <path d="M236 150 Q258 140 288 148" stroke="#7a4a2e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- brows, smiling eyes with lashes -->
+  <path d="M226 180 Q236 174 246 179" stroke="#3b2216" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M270 179 Q280 174 290 180" stroke="#3b2216" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+  <path d="M226 196 Q236 186 246 196" stroke="#2a170f" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M270 196 Q280 186 290 196" stroke="#2a170f" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M225 194 l-4 -3 M291 194 l4 -3" stroke="#2a170f" stroke-width="2" stroke-linecap="round"/>
+  <!-- bindi -->
+  <circle cx="258" cy="176" r="3.6" fill="#c1121f"/>
+  <!-- nose + smile -->
+  <path d="M258 200 Q254 212 261 214" stroke="#c88d6c" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+  <path d="M238 226 Q258 248 278 226 Q258 232 238 226Z" fill="#fff" stroke="#b5474a" stroke-width="2.4" stroke-linejoin="round"/>
+  <ellipse cx="226" cy="214" rx="9" ry="5" fill="#ee8e8a" opacity=".45"/>
+  <ellipse cx="290" cy="214" rx="9" ry="5" fill="#ee8e8a" opacity=".45"/>
+  <!-- her hand resting on his chest, gold bangles -->
+  <path d="M250 392 Q226 372 206 350" stroke="#f0bf9c" stroke-width="18" stroke-linecap="round" fill="none"/>
+  <ellipse cx="200" cy="344" rx="13" ry="10" fill="#f3c6a4" transform="rotate(-30 200 344)"/>
+  <g stroke="#d9a441" stroke-width="3.2" fill="none" stroke-linecap="round">
+    <path d="M222 352 q-7 9 -2 17"/><path d="M227 356 q-7 9 -2 17"/><path d="M232 360 q-7 9 -2 17"/>
+  </g>
+</g>
+</svg>

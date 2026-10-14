@@ -1,7 +1,7 @@
 # Wedding Invite
 
 A self-hosted, animated Hindu wedding invitation: a tap-to-open wax-sealed
-envelope with background music, a homepage video, live falling petals,
+envelope with background music, a film-premiere "screening" poster as the homepage, live falling petals,
 scroll-reveal sections, flip cards for each day of celebration, a live
 countdown to the muhurtham, and an RSVP that links out to a Google Form (so
 responses land in a Google Sheet you already own — no custom backend
@@ -34,9 +34,9 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | Section | Notes |
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
-| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage video & background music" below. The names themselves come from `couple` |
+| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage screening poster & background music" below. The names themselves come from `couple` |
 | `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
-| `hero` | `videoUrl` — the homepage video, see below. `preTitle`, `tagline`, `blessingLine` (shown in the footer) still exist as text but are visually hidden (`.sr-only`) in the hero itself now that the video carries that information; they remain for accessibility/SEO |
+| `hero` | `screening` — the homepage poster, see below. `preTitle`, `tagline` are visually hidden (`.sr-only`) text kept for accessibility/SEO; `blessingLine` is shown in the footer |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional paragraph — leave `""` to hide the section |
 | `schedule` | Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card |
@@ -85,27 +85,28 @@ envelope's gone" and "the screen's gone."
 
 Reduced-motion users skip straight to the revealed invitation.
 
-### Homepage video & background music
+### Homepage screening poster & background music
 
-The hero is the invitation video (`hero.videoUrl`) and nothing else —
-`public/assets/media/wedding-invite.mp4` already carries the names, date,
-time and venue as a finished animated card, so there's no separate arch,
-card, or duplicate text sitting on top of it. That text still exists in the
-DOM as `.sr-only` elements (`#heroPreTitle`, the names, `#heroTagline`,
-`#heroDate`) purely for accessibility and SEO, since a video's on-screen
-text isn't readable by either.
+The homepage is styled as a film premiere: `॥ श्री गणेशाय नमः ॥` and the
+Ganesha mark at the top, then "You're invited to the screening of
+#Pyar Dosti Hai", then a cinema screen (chasing marquee bulbs, velvet
+curtains that part as the envelope finishes opening) showing a caricature
+of the couple, then poster billing (Starring ...), a Premiere / Showtime /
+Venue row, a ticket-shaped "Reserve your seat" button that jumps to RSVP,
+and small film-credit lines.
 
-The video runs **full width, at its own aspect ratio, with zero cropping** —
-deliberately not `object-fit: cover`. A 9:16 portrait video can't fill a wide
-desktop viewport edge-to-edge *and* stay uncropped at the same time; those
-are mutually exclusive once the container's proportions don't match the
-source. This site picks "show the whole video" over "fill the screen
-exactly": width is 100%, height follows from `aspect-ratio: 9/16`, so on a
-wide desktop screen the hero simply runs taller than one viewport (you
-scroll a little further to clear it) rather than having the top or bottom of
-the video cut off. `aspect-ratio` also reserves the correct height
-immediately, before the video's own metadata loads, so there's no layout
-jump once it does.
+All text comes from `hero.screening` (`invocation`, `eyebrow`, `title`,
+`ctaLabel`, `credits`, `caricature`). The Premiere/Showtime/Venue row is
+derived from `wedding` (`date`, `time`, `venueName`, `venueCity`) so it
+always matches the countdown.
+
+`public/assets/couple-caricature.svg` is a hand-drawn vector caricature
+based on the roka photo (`roka1.jpeg`): glasses, stubble, cream kurta and
+pink stole; wavy hair, bindi, jhumkas, peach saree and gold bangles; the
+rose-and-daisy arch behind them. To use a commissioned illustration
+instead, drop the image in `public/assets/` and point
+`hero.screening.caricature` at it. Any roughly 400:420 image fits the
+screen frame.
 
 Background music (`intro.musicUrl`,
 `public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
@@ -120,9 +121,8 @@ children of `<body>` instead, so they persist and the mute button stays
 reachable (fixed position, fades in once the invitation is revealed) as you
 scroll the rest of the site.
 
-Leave either `videoUrl` or `musicUrl` as `""` to disable that feature
-without touching any other code — the hero section and the mute button
-both hide themselves gracefully when there's nothing to show.
+Leave `musicUrl` as `""` to disable the music (the mute button hides
+itself), or `caricature` as `""` to hide the cinema screen.
 
 ### Where the images live
 
@@ -130,7 +130,7 @@ both hide themselves gracefully when there's nothing to show.
 |---|---|
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
-| `media/wedding-invite.mp4` | The homepage hero video (`hero.videoUrl`) |
+| `couple-caricature.svg` | The couple's caricature on the cinema screen (`hero.screening.caricature`) |
 | `media/jashn-e-bahaara.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining homepage ornament — the red damask ground, the falling petals,

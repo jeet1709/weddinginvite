@@ -95,18 +95,39 @@
     $('#footerBlessing').textContent = hero.blessingLine || '';
     if (!hero.blessingLine) $('#footerBlessing').hidden = true;
 
-    // The invitation video already carries names/date/venue as a finished
-    // animated card. Autoplay-muted-loop starts as soon as the source is
-    // set — it can run behind the envelope intro screen with no visible or
-    // audible effect, so there's nothing to gate on "after the letter
-    // opens" beyond the envelope itself no longer covering it.
-    const video = $('#heroVideo');
-    const videoFrame = $('.hero-video-frame');
-    if (video && hero.videoUrl) {
-      video.src = hero.videoUrl;
-    } else if (videoFrame) {
-      videoFrame.hidden = true;
+    populateScreening(cfg);
+  }
+
+  // The hero "screening" poster. Every line is config-driven
+  // (hero.screening); the showtime row is derived from `wedding` so it can
+  // never drift from the countdown.
+  function populateScreening(cfg) {
+    const { couple, wedding } = cfg;
+    const sc = (cfg.hero && cfg.hero.screening) || {};
+
+    if (sc.invocation) $('#screeningInvocation').textContent = sc.invocation;
+    if (sc.eyebrow) $('#screeningEyebrow').textContent = sc.eyebrow;
+    if (sc.title) $('#screeningTitle').textContent = sc.title;
+    if (sc.ctaLabel) $('#ticketLabel').textContent = sc.ctaLabel;
+    $('#screeningCredits').textContent = sc.credits || '';
+
+    const art = $('#screeningArt');
+    if (sc.caricature) {
+      art.src = sc.caricature;
+      art.alt = `Illustrated caricature of ${couple.bride.name} and ${couple.groom.name}`;
+    } else {
+      art.closest('.cinema').hidden = true;
     }
+
+    $('#starBride').textContent = couple.bride.name;
+    $('#starGroom').textContent = couple.groom.name;
+
+    $('#showDate').textContent = formatDisplayDate(wedding.date, { weekday: 'short', day: 'numeric', month: 'short', year: 'numeric' });
+    const t = new Date(`${wedding.date}T${to24h(wedding.time)}`);
+    $('#showTime').textContent = Number.isNaN(t.getTime())
+      ? (wedding.time || '')
+      : t.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true });
+    $('#showVenue').textContent = [wedding.venueName, wedding.venueCity].filter(Boolean).join(', ');
   }
 
   function populateStory(cfg) {
@@ -377,23 +398,6 @@
       opened = true;
 
       if (music) music.play().catch(() => { /* autoplay declined; silent */ });
-
-      // The `autoplay` attribute is unreliable once a video's `src` is set
-      // dynamically after page load (which populateHero() does, since the
-      // URL comes from config) — several mobile browsers only honour
-      // autoplay reliably when it's driven by an actual user gesture, and
-      // otherwise fall back to showing a native play button, leaving the
-      // video paused on its first frame until tapped. This click on the
-      // envelope IS that gesture, so play() is called explicitly from
-      // inside this same handler rather than trusting the attribute alone.
-      // `.muted` is set as a JS property (not just the HTML attribute) —
-      // Safari in particular checks the live property when deciding
-      // whether to honour autoplay-without-permission.
-      const heroVideo = $('#heroVideo');
-      if (heroVideo) {
-        heroVideo.muted = true;
-        heroVideo.play().catch(() => { /* autoplay declined; silent */ });
-      }
 
       // Seal cracks (~0-0.85s) → the closed envelope's gold trim fades fast
       // (~0-0.3s) → all four flaps unfold in a bloom-like stagger, top

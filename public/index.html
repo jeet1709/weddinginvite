@@ -38,66 +38,35 @@
       </div>
     </nav>
 
-    <!-- Hero: no visual of its own — the "Now Showing" card right below
-         is the homepage. These names/date/tagline stay in the DOM as
-         sr-only text for accessibility/SEO (the page's <h1>). -->
+    <!-- Hero: the invitation itself, inside a gold-lined arch — Om and the
+         Ganesha invocation, the couple and their parents, the invitation
+         line, the celebration dates (spanning the schedule) and place, and
+         a button down into the rest of the site. Text from config `hero`
+         and `couple`; the date range is derived from `schedule`. -->
     <header class="hero" id="hero">
+      <div class="arch reveal">
+        <span class="arch-flora arch-flora-left" aria-hidden="true"></span>
+        <span class="arch-flora arch-flora-right" aria-hidden="true"></span>
 
-      <p class="sr-only" id="heroPreTitle">Together with their families</p>
-      <h1 class="sr-only hero-names-sr">
-        <span id="brideName">Saanvi</span>
-        <span class="hero-parents" id="brideParents"></span>
-        &amp;
-        <span id="groomName">Vihaan</span>
-        <span class="hero-parents" id="groomParents"></span>
-      </h1>
-      <p class="sr-only" id="heroTagline">Request the honour of your presence</p>
-      <p class="sr-only" id="heroDate">Friday, 11th December 2026</p>
-    </header>
+        <p class="arch-om" aria-hidden="true">ॐ</p>
+        <p class="arch-invocation" id="heroInvocation" lang="sa">श्री गणेशाय नमः</p>
+        <p class="arch-pretitle" id="heroPreTitle">Together with our families</p>
 
-    <!-- "Now Showing": the #Pyar Dosti Hai screening card — Ganesha
-         invocation, a marquee title, star billing, the festivities as
-         "shows", and the wedding as the grand-premiere ticket. Everything
-         is filled from config (`screening`, `couple`, `schedule`,
-         `wedding`, `rsvp`); hidden if `screening.enabled` is false. -->
-    <section class="now-showing" id="nowShowing" hidden>
-      <div class="ns-card reveal">
-        <figure class="ns-ganesha" id="nsGanesha"><img id="nsGaneshaArt" src="" alt="Shri Ganesha" loading="lazy" /></figure>
-        <p class="ns-shloka" id="nsShloka" lang="sa"></p>
-        <p class="ns-presenters" id="nsPresenters"></p>
-        <p class="ns-present">present</p>
+        <h1 class="arch-names">
+          <span class="arch-name" id="brideName">Anushka</span>
+          <span class="arch-parents" id="brideParents"></span>
+          <span class="arch-amp" aria-label="and">&amp;</span>
+          <span class="arch-name" id="groomName">Saurabh</span>
+          <span class="arch-parents" id="groomParents"></span>
+        </h1>
 
-        <div class="ns-marquee">
-          <p class="ns-eyebrow" id="nsEyebrow"></p>
-          <h2 class="ns-title" id="nsTitle"></h2>
-        </div>
+        <p class="arch-tagline" id="heroTagline"></p>
+        <p class="arch-date" id="heroDate"></p>
+        <p class="arch-place" id="heroPlace"></p>
 
-        <p class="ns-kicker">Starring</p>
-        <div class="ns-stars">
-          <div class="ns-star ns-star-bride"><span class="ns-name" id="nsBride"></span><span class="ns-parents" id="nsBrideParents"></span></div>
-          <span class="ns-amp" aria-hidden="true">&amp;</span>
-          <div class="ns-star ns-star-groom"><span class="ns-name" id="nsGroom"></span><span class="ns-parents" id="nsGroomParents"></span></div>
-        </div>
-
-        <div class="ns-divider" aria-hidden="true"><span></span></div>
-
-        <p class="ns-kicker">Now Showing</p>
-        <div class="ns-shows" id="nsShows"></div>
-
-        <a class="ns-ticket" href="#rsvp">
-          <span class="ns-ticket-main">
-            <span class="ns-ticket-label" id="nsPremiereLabel"></span>
-            <strong class="ns-ticket-when" id="nsPremiereWhen"></strong>
-            <span class="ns-ticket-where" id="nsPremiereWhere"></span>
-          </span>
-          <span class="ns-ticket-stub">
-            <span class="ns-ticket-label">Admit</span>
-            <strong class="ns-ticket-admit" id="nsAdmit"></strong>
-            <span class="ns-ticket-rsvp" id="nsRsvpBy"></span>
-          </span>
-        </a>
+        <a class="arch-cta" href="#countdown" id="heroCta">Let the celebrations begin <span aria-hidden="true">↓</span></a>
       </div>
-    </section>
+    </header>
 
     <!-- Countdown -->
     <section class="countdown-section" id="countdown">

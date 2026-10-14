@@ -1,8 +1,8 @@
 # Wedding Invite
 
 A self-hosted, animated Hindu wedding invitation: a tap-to-open wax-sealed
-envelope with background music, a "#Pyar Dosti Hai" screening card as the
-homepage, live falling petals,
+envelope with background music, an arched invitation homepage, live
+falling petals,
 scroll-reveal sections, flip cards for each day of celebration, a live
 countdown to the muhurtham, and an RSVP that links out to a Google Form (so
 responses land in a Google Sheet you already own — no custom backend
@@ -37,8 +37,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
 | `intro` | The opening overlay's text: `tagline`, `subtitle`, `headline`, `tapHint`, `buttonLabel`; plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
 | `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
-| `hero` | `preTitle`, `tagline` — visually hidden (`.sr-only`) text kept for accessibility/SEO; `blessingLine` is shown in the footer |
-| `screening` | The "Now Showing" homepage card: `ganeshaArt`, `invocation`, `presentedBy`, `eyebrow`, `title`, `premiereLabel`, `admit`. Set `enabled: false` to hide it |
+| `hero` | The homepage invitation: `invocation` (श्री गणेशाय नमः), `preTitle`, `tagline` (the invitation line), `place`, `ctaLabel`; `blessingLine` is shown in the footer. The date range ("4–5 December 2026") is worked out from `schedule` |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional paragraph — leave `""` to hide the section |
 | `schedule` | Optional `art` (a 9:16 image shown uncropped on the card front), `artText` (`top`/`bottom` — where the painting's blank band for text is) and `artTone` (`light`/`dark` — that band's colour). Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card |
@@ -70,12 +69,11 @@ git).
 
 ### Homepage & background music
 
-There's no hero video. Once the envelope opens, the homepage is the
-**Now Showing** card (`screening`): the Ganesha painting in a gold arch,
-॥ श्री गणेशाय नमः ॥, the parents "present", "#Pyar Dosti Hai" inside a
-frame of blinking marquee bulbs, "Starring" the couple, the festivities as
-"Now Showing" tiles (from `schedule`), and the wedding as a "Grand
-Premiere" ticket (from `wedding` and `rsvp.deadline`) that links to RSVP.
+Once the overlay opens, the homepage is the invitation itself, in a
+gold-lined arch on deep maroon: ॐ, श्री गणेशाय नमः, "Together with our
+families", the couple's names with their parents, the invitation line,
+the celebration dates (spanning the whole schedule), the place, and a
+"Let the celebrations begin" button down to the countdown.
 
 Background music (`intro.musicUrl`,
 `public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
@@ -98,7 +96,6 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 |---|---|
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
-| `ganesha-painting.jpg` | Ganesha painting at the top of the Now Showing card (`screening.ganeshaArt`) |
 | `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
 | `media/jashn-e-bahaara.mp3` | Background music (`intro.musicUrl`) |
 

@@ -37,6 +37,25 @@
     return d.toLocaleDateString(undefined, opts || { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
   }
 
+  // "4–5 December 2026" across the whole schedule (falls back to the
+  // wedding date alone). Same month → one month name; otherwise both.
+  function formatDateRange(schedule, wedding) {
+    const dates = (schedule || []).map((s) => s.date).filter(Boolean);
+    if (wedding && wedding.date) dates.push(wedding.date);
+    if (!dates.length) return '';
+    dates.sort();
+    const parse = (d) => new Date(`${d}T00:00:00`);
+    const a = parse(dates[0]);
+    const b = parse(dates[dates.length - 1]);
+    if (Number.isNaN(a.getTime()) || Number.isNaN(b.getTime())) return '';
+    const month = (d) => d.toLocaleDateString('en-GB', { month: 'long' });
+    if (a.getTime() === b.getTime()) return `${a.getDate()} ${month(a)} ${a.getFullYear()}`;
+    if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
+      return `${a.getDate()}–${b.getDate()} ${month(b)} ${b.getFullYear()}`;
+    }
+    return `${a.getDate()} ${month(a)} – ${b.getDate()} ${month(b)} ${b.getFullYear()}`;
+  }
+
   function to24h(timeStr) {
     if (!timeStr) return '00:00:00';
     const m = /^(\d{1,2}):(\d{2})\s*(AM|PM)?/i.exec(timeStr.trim());
@@ -75,8 +94,11 @@
     $('#brideParents').textContent = couple.bride.parents || '';
     $('#groomParents').textContent = couple.groom.parents || '';
 
+    if (hero.invocation) $('#heroInvocation').textContent = hero.invocation;
     $('#heroTagline').textContent = hero.tagline || '';
-    $('#heroDate').textContent = wedding.displayDate || formatDisplayDate(wedding.date);
+    $('#heroDate').textContent = formatDateRange(cfg.schedule, wedding) || wedding.displayDate || '';
+    $('#heroPlace').textContent = hero.place || '';
+    if (hero.ctaLabel) $('#heroCta').firstChild.textContent = `${hero.ctaLabel} `;
 
     $('#glanceWhen').textContent = formatDisplayDate(wedding.date, { day: 'numeric', month: 'long', year: 'numeric' });
     $('#glanceWhere').textContent = [wedding.venueName, wedding.venueCity].filter(Boolean).join(', ');
@@ -175,47 +197,6 @@
         }
       });
     });
-  }
-
-  /* ============ Now Showing (#Pyar Dosti Hai screening card) ============ */
-  function populateNowShowing(cfg) {
-    const sc = cfg.screening;
-    if (!sc || sc.enabled === false) return;
-    const { couple, wedding, rsvp } = cfg;
-    const set = (sel, text) => { $(sel).textContent = text || ''; };
-
-    if (sc.ganeshaArt) $('#nsGaneshaArt').src = sc.ganeshaArt;
-    else $('#nsGanesha').hidden = true;
-    set('#nsShloka', sc.invocation);
-    set('#nsPresenters', sc.presentedBy);
-    set('#nsEyebrow', sc.eyebrow);
-    set('#nsTitle', sc.title);
-    set('#nsBride', couple.bride.name);
-    set('#nsGroom', couple.groom.name);
-    set('#nsBrideParents', couple.bride.parents);
-    set('#nsGroomParents', couple.groom.parents);
-
-    const shows = (cfg.schedule || []).slice().sort((a, b) => (a.date < b.date ? -1 : 1));
-    $('#nsShows').innerHTML = shows.map((item) => `
-      <div class="ns-show">
-        <div class="ns-show-head">
-          <span class="ns-show-title">${escapeHtml(item.title)}</span>
-          <span class="ns-show-date">${escapeHtml(formatDisplayDate(item.date, { weekday: 'short', day: 'numeric', month: 'short' }))}</span>
-        </div>
-        ${item.subtitle ? `<span class="ns-show-sub">${escapeHtml(item.subtitle)}</span>` : ''}
-        <span class="ns-show-when">${escapeHtml((item.time || '').replace(/\s*onwards$/i, ''))}</span>
-        ${item.location ? `<span class="ns-show-where">${escapeHtml(item.location)}</span>` : ''}
-      </div>`).join('');
-
-    const t = new Date(`${wedding.date}T${to24h(wedding.time)}`);
-    const time = Number.isNaN(t.getTime()) ? '' : t.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true });
-    set('#nsPremiereLabel', sc.premiereLabel);
-    set('#nsPremiereWhen', [formatDisplayDate(wedding.date), time].filter(Boolean).join(' · '));
-    set('#nsPremiereWhere', [wedding.venueName, wedding.venueCity].filter(Boolean).join(', '));
-    set('#nsAdmit', sc.admit);
-    set('#nsRsvpBy', rsvp && rsvp.deadline ? `RSVP by ${formatDisplayDate(rsvp.deadline, { day: 'numeric', month: 'short' })}` : '');
-
-    $('#nowShowing').hidden = false;
   }
 
   function populateAccommodations(cfg) {
@@ -481,7 +462,6 @@
       applyTheme(cfg.theme);
       populateHero(cfg);
       populateStory(cfg);
-      populateNowShowing(cfg);
       populateFestivities(cfg);
       populateAccommodations(cfg);
       populateRegistry(cfg);

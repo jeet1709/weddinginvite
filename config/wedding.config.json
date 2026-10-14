@@ -25,8 +25,11 @@
     "ganeshLogo": "assets/wedding-ganesh-logo.jpg"
   },
   "hero": {
-    "preTitle": "Together with their families",
-    "tagline": "Request the honour of your presence",
+    "invocation": "श्री गणेशाय नमः",
+    "preTitle": "Together with our families",
+    "tagline": "With hearts full of love, we invite you to celebrate our wedding and bless the beginning of our life together.",
+    "place": "Roorkee · Uttarakhand",
+    "ctaLabel": "Let the celebrations begin",
     "blessingLine": "With the blessings of our elders and the warmth of your presence."
   },
   "wedding": {
@@ -38,16 +41,6 @@
     "address": "Community Center, IIT Roorkee, Roorkee, Uttarakhand",
     "mapQuery": "Community Center IIT Roorkee",
     "countdownLabel": "Counting Down to the Muhurtham"
-  },
-  "screening": {
-    "enabled": true,
-    "ganeshaArt": "assets/ganesha-painting.jpg",
-    "invocation": "॥ श्री गणेशाय नमः ॥",
-    "presentedBy": "Neelam & Ashok · Babita & Shiv",
-    "eyebrow": "You're invited to the screening of",
-    "title": "#Pyar Dosti Hai",
-    "premiereLabel": "Grand Premiere · The Pheras",
-    "admit": "You & family"
   },
   "story": "From a chance meeting on a rainy afternoon to a lifetime of promises — we can't wait to celebrate the next chapter with the people we love most.",
   "schedule": [

@@ -35,7 +35,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | Section | Notes |
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
-| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage & background music" below. The names themselves come from `couple` |
+| `intro` | The opening overlay's text: `tagline`, `subtitle`, `headline`, `tapHint`, `buttonLabel`; plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
 | `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
 | `hero` | `preTitle`, `tagline` — visually hidden (`.sr-only`) text kept for accessibility/SEO; `blessingLine` is shown in the footer |
 | `screening` | The "Now Showing" homepage card: `ganeshaArt`, `invocation`, `presentedBy`, `eyebrow`, `title`, `premiereLabel`, `admit`. Set `enabled: false` to hide it |
@@ -49,43 +49,24 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 
 ### The opening screen
 
-The invitation opens on a full-bleed **X-fold envelope** — four triangular
-flaps meeting at a wax seal, drawn entirely in CSS/SVG. The mechanic is
-modelled on how a real envelope actually opens, not an abstract dissolve:
-only the top flap moves. The bottom/left/right folds are the fixed pocket
-and never animate. Tapping runs:
+`public/js/invitation-overlay.js` draws a full-screen "tap to open"
+invitation over the site: a beaded toran, falling petals, the couple's
+monogram, and a gold-framed envelope sealed with an A&S wax seal. Tapping
+the envelope (or "Open Invitation"):
 
-1. **The seal cracks** and releases (`.env-seal`, ~0–0.5s).
-2. **The top flap lifts open** on a real 3D hinge along its own base
-   (`.env-flap-top-wrap`, `rotateX`, `transform-origin: 50% 0%`), rotating
-   up and away from the viewer like a letter actually being opened
-   (~0.2–1.5s). `backface-visibility: hidden` means it simply isn't there
-   once it's rotated past 90°, revealing the pocket underneath.
-3. **A spark of light races along each of the four crease lines** at the
-   same moment, from the seal out to each corner (`.env-spark-tl/tr/bl/br`,
-   ~0.1–1.2s) — light traveling the actual fold geometry, forming a bright
-   X for a moment, rather than a glow blooming from nowhere.
-4. **The envelope dissolves** (~1.6–2.2s), cross-fading directly into the
-   invitation already sitting beneath it.
+1. presses and melts the seal (0–0.75s)
+2. opens the flap (0.75–1.75s)
+3. lifts the invitation card — Ganesha, ॥ श्री गणेशाय नमः ॥, the names —
+   out of the envelope (1.6–2.6s), then holds a beat
+4. fades and gently scales the overlay away while the homepage fades in
+   and settles underneath it (3.9–4.7s), then removes the overlay
 
-Every light element here is a small, thin shape — a 2px-wide streak, a
-hairline — never a large gradient that needs to be clipped to a shape. That
-matters: a large blurred or transformed element clipped by `clip-path` (or
-even a plain ancestor `overflow: hidden`) has a genuine Chromium rendering
-bug where the clip silently stops being honoured once `devicePixelRatio` is
-2 or 3 — i.e. on the large majority of real phones. It renders correctly at
-DPR 1, which is exactly the trap: it looks fine on a standard desktop
-screenshot and breaks on the retina display it's actually viewed on. Small
-shapes never trigger it, which is part of why this version is built the way
-it is rather than as a single large glowing blob.
-
-`#introScreen` itself (not just `.envelope`) has its own near-black
-background at `z-index: 1000` over the full viewport — its own fade and the
-site content's reveal are triggered on the same timer in `setupEnvelope()`
-in `public/js/main.js`, specifically to avoid a dead black gap between "the
-envelope's gone" and "the screen's gone."
-
-Reduced-motion users skip straight to the revealed invitation.
+Music starts on the tap itself (browsers only allow unmuted audio inside
+the gesture). The overlay's text comes from `intro` (`tagline`,
+`subtitle`, `headline`, `tapHint`, `buttonLabel`), the names/monogram from
+`couple`, and the Ganesha image from `branding.ganeshLogo`. It was adapted
+from the standalone `website-integration/` drop-in (kept locally, not in
+git).
 
 ### Homepage & background music
 

@@ -65,12 +65,8 @@
     const { couple, hero, wedding } = cfg;
     document.title = `${couple.bride.name} & ${couple.groom.name} — We're Getting Married`;
 
-    // Roundels are small circles: strip spaces so "A & S" renders as "A&S"
-    // and stays on one line inside the ring.
     const monogramFull = couple.monogram || `${couple.bride.name} & ${couple.groom.name}`;
-    const monogramCompact = (couple.monogram || `${couple.bride.name[0]}&${couple.groom.name[0]}`).replace(/\s+/g, '');
 
-    $('#envMonogram').textContent = monogramCompact;
     $('#navMonogram').textContent = monogramFull;
     $('#heroPreTitle').textContent = hero.preTitle || '';
 
@@ -267,94 +263,6 @@
       fallback.hidden = true;
     }
   }
-  /* ============ Invitation opening: X-fold envelope ============ */
-
-  /* ---- Rose spray, embossed on the side flaps only ----
-     A filled silhouette (not stroke-only line art) reads as an engraving
-     when rim-lit — the earlier stroked circles read as a schematic flower
-     icon rather than a rose. Built from overlapping almond petals in two
-     rings plus a stem and a pair of leaves, all in `currentColor` so one
-     CSS colour change carries the whole gilding transition. */
-  function buildRoseSpray() {
-    const petal = (len, w) =>
-      `M50 38 C${50 - w} ${38 - len * 0.55}, ${50 - w} ${38 - len}, 50 ${38 - len - 4} ` +
-      `C${50 + w} ${38 - len}, ${50 + w} ${38 - len * 0.55}, 50 38 Z`;
-
-    const outerPetal = petal(24, 9);
-    const innerPetal = petal(15, 6.5);
-
-    let outer = '';
-    for (let i = 0; i < 6; i++) {
-      outer += `<path d="${outerPetal}" transform="rotate(${i * 60} 50 38)"/>`;
-    }
-    let inner = '';
-    for (let i = 0; i < 5; i++) {
-      inner += `<path d="${innerPetal}" transform="rotate(${i * 72 + 20} 50 38)" opacity="0.92"/>`;
-    }
-
-    return `
-<svg viewBox="0 0 100 150" fill="currentColor" stroke="none">
-  <path d="M50 60 C48 78 47 98 49 122" fill="none" stroke="currentColor" stroke-width="1.6" opacity="0.85"/>
-  <path d="M49 88 C40 84 32 86 25 94 C33 92 41 93 49 98 Z" opacity="0.85"/>
-  <path d="M49 104 C58 99 66 100 74 107 C65 106 57 108 49 114 Z" opacity="0.85"/>
-  <g>${outer}</g>
-  <g>${inner}</g>
-  <circle cx="50" cy="38" r="4.5"/>
-</svg>`.trim();
-  }
-  const ROSE_SPRAY = buildRoseSpray();
-
-  // Confined to the two side flaps, arranged as a loose descending vine —
-  // matching the reference, where the top and bottom flaps carry no
-  // ornament at all and only the sides are embossed.
-  const SPRIG_LAYOUT = [
-    { x: 22, y: 27, s: 20, r: -14, mirror: false },
-    { x: 16, y: 50, s: 24, r: -6, mirror: false },
-    { x: 21, y: 73, s: 19, r: -18, mirror: false },
-    { x: 78, y: 27, s: 20, r: 14, mirror: true },
-    { x: 84, y: 50, s: 24, r: 6, mirror: true },
-    { x: 79, y: 73, s: 19, r: 18, mirror: true },
-  ];
-
-  function setupEnvelopeArt(cfg) {
-    const intro = (cfg && cfg.intro) || {};
-
-    // Stagger by distance from the seal so the gilding visibly travels
-    // outward from the ignition point, same logic as the light itself.
-    // Rendered into two separate containers — one nested in each side
-    // flap's own wrap — so the roses physically travel with their flap as
-    // it opens, rather than staying pinned to a spot the flap has left.
-    const withDist = SPRIG_LAYOUT.map((p) => ({
-      ...p,
-      d: Math.hypot(p.x - 50, (p.y - 42) * 0.9),
-    }));
-    const maxD = Math.max(...withDist.map((p) => p.d));
-
-    const renderSprig = (p) => {
-      const delay = 0.25 + (p.d / maxD) * 0.55;
-      const scaleX = p.mirror ? -1 : 1;
-      return `<span class="env-sprig" style="
-        left:${p.x}%; top:${p.y}%;
-        width:${p.s}vmin; height:${p.s}vmin;
-        --rot:${p.r}deg;
-        transform:translate(-50%,-50%) rotate(${p.r}deg) scaleX(${scaleX});
-        transition-delay:${delay.toFixed(2)}s">${ROSE_SPRAY}</span>`;
-    };
-
-    const fieldLeft = $('#envFiligreeLeft');
-    const fieldRight = $('#envFiligreeRight');
-    if (fieldLeft) fieldLeft.innerHTML = withDist.filter((p) => !p.mirror).map(renderSprig).join('');
-    if (fieldRight) fieldRight.innerHTML = withDist.filter((p) => p.mirror).map(renderSprig).join('');
-
-    const couple = cfg && cfg.couple;
-    if (couple) {
-      $('#doorTitle').innerHTML =
-        `${escapeHtml(couple.bride.name)}<em>${escapeHtml(intro.joiner || 'weds')}</em>${escapeHtml(couple.groom.name)}`;
-    }
-    if (intro.eyebrow) $('#doorEyebrow').textContent = intro.eyebrow;
-    if (intro.tapHint) $('#tapHint').textContent = intro.tapHint;
-  }
-
   /* ---- Background music ----
      Silent no-op unless config.intro.musicUrl is set — this repo ships no
      audio file (see README: sourcing a properly licensed track is a
@@ -406,59 +314,35 @@
     return audio;
   }
 
-  /* ---- Opening sequence ----
-     ignite → beam pours down through the lower fold only → a brief hold at
-     full light → the envelope dissolves through a contained bloom, with the
-     invitation already in place underneath. Paced deliberately slower than
-     a typical CSS reveal — the hold beat is what keeps it from feeling
-     rushed or "snappy" in the way cheaper transitions do. */
-  function setupEnvelope(music) {
-    const screen = $('#introScreen');
+  /* ---- Opening overlay ----
+     js/invitation-overlay.js draws the tap-to-open envelope. Music starts
+     inside the tap itself (the gesture that unlocks audio); the site is
+     revealed at the moment the overlay starts fading, so the homepage
+     cross-fades in underneath it rather than appearing after a gap. */
+  function setupOpening(cfg, music) {
     const siteContent = $('#siteContent');
-    if (!screen) return;
-    let opened = false;
+    const reveal = () => {
+      window.scrollTo(0, 0);
+      document.body.classList.add('intro-open');
+      siteContent.classList.add('is-visible');
+    };
+    if (!window.InvitationOverlay) { reveal(); return; }
 
-    function open() {
-      if (opened) return;
-      opened = true;
-
-      if (music) music.play().catch(() => { /* autoplay declined; silent */ });
-
-      // Seal cracks (~0-0.85s) → the closed envelope's gold trim fades fast
-      // (~0-0.3s) → all four flaps unfold in a bloom-like stagger, top
-      // first, then the sides, then bottom (~0.3-2.74s) → sparks race each
-      // crease as its flap starts moving (~0.3-2.22s) → a brief hold, then
-      // at 3.0s #introScreen itself starts to fade at the same moment the
-      // site content is revealed. Both need to move together: #introScreen
-      // carries its own near-black background at z-index 1000 over the
-      // *entire* viewport, so if it fades on a separate, later schedule
-      // from what's happening inside it, the site briefly shows through to
-      // nothing but that black backdrop — a dead gap between "envelope's
-      // gone" and "screen's gone".
-      screen.classList.add('is-opening');
-
-      setTimeout(() => {
-        document.body.classList.add('intro-open');
-        siteContent.classList.add('is-visible');
-        screen.classList.add('is-hidden');
-      }, 3000);
-
-      setTimeout(() => screen.remove(), 4200);
-    }
-
-    screen.addEventListener('click', open);
-    screen.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        open();
-      }
+    const couple = (cfg && cfg.couple) || null;
+    const intro = (cfg && cfg.intro) || {};
+    window.InvitationOverlay.show({
+      ganesha: cfg && cfg.branding && cfg.branding.ganeshLogo,
+      monogram: couple && couple.monogram,
+      names: couple && `${couple.bride.name} & ${couple.groom.name}`,
+      tagline: intro.tagline,
+      subtitle: intro.subtitle,
+      headline: intro.headline,
+      tapHint: intro.tapHint,
+      buttonLabel: intro.buttonLabel,
+      onTap: () => { if (music) music.play().catch(() => { /* autoplay declined; silent */ }); },
+      onReveal: reveal,
     });
   }
-
-
-
-
-
 
   function setupGanesh(cfg) {
     const src = (cfg && cfg.branding && cfg.branding.ganeshLogo) || '';
@@ -604,15 +488,13 @@
       populateRsvpSection(cfg);
       setupCountdown(cfg);
       setupAddToCalendar(cfg);
-      setupEnvelopeArt(cfg);
       setupGanesh(cfg);
       music = setupIntroAudio(cfg);
     } catch (err) {
       console.error(err);
-      // Config failed to load — still draw the door so the page is openable.
-      setupEnvelopeArt(null);
+      // Config failed to load — still show the overlay so the page opens.
     }
-    setupEnvelope(music);
+    setupOpening(state.config, music);
     setupScrollReveal();
     setupPetals();
   }

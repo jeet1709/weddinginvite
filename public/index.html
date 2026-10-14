@@ -108,45 +108,12 @@
       </div>
     </nav>
 
-    <!-- Hero: a film-premiere poster. Ganesha invocation up top, the
-         "screening" title, then a cinema screen (marquee bulbs + velvet
-         curtains that part once the envelope opens) showing the couple's
-         caricature, with poster-style billing and showtime underneath. -->
-    <header class="hero screening" id="hero">
-      <div class="poster">
-        <p class="poster-invocation" id="screeningInvocation" lang="sa">॥ श्री गणेशाय नमः ॥</p>
-        <div class="ganesh-mark poster-ganesh"></div>
-
-        <p class="poster-eyebrow" id="screeningEyebrow">You're invited to the screening of</p>
-        <p class="poster-title" id="screeningTitle">#Pyar Dosti Hai</p>
-
-        <figure class="cinema">
-          <div class="cinema-frame">
-            <img class="cinema-art" id="screeningArt" src="" alt="" />
-            <span class="curtain curtain-left" aria-hidden="true"></span>
-            <span class="curtain curtain-right" aria-hidden="true"></span>
-            <span class="curtain-valance" aria-hidden="true"></span>
-          </div>
-        </figure>
-
-        <p class="poster-starring">
-          <span class="poster-small">Starring</span>
-          <span class="poster-stars"><span id="starBride">Anushka</span> <em>&amp;</em> <span id="starGroom">Saurabh</span></span>
-        </p>
-
-        <div class="poster-showtime">
-          <div><span class="poster-small">Premiere</span><span id="showDate"></span></div>
-          <div><span class="poster-small">Showtime</span><span id="showTime"></span></div>
-          <div><span class="poster-small">Venue</span><span id="showVenue"></span></div>
-        </div>
-
-        <a class="ticket-button" href="#rsvp" id="ticketButton">
-          <span class="ticket-label" id="ticketLabel">Reserve your seat</span>
-          <span class="ticket-stub" aria-hidden="true">Admit<br />All</span>
-        </a>
-
-        <p class="poster-credits" id="screeningCredits"></p>
-      </div>
+    <!-- Hero: the invitation video, full-bleed, and nothing else. It
+         already carries the names/date/tagline/venue as a finished
+         animated card, so nothing here duplicates that visually — the
+         same text stays in the DOM as sr-only for accessibility/SEO. -->
+    <header class="hero" id="hero">
+      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true"></video>
 
       <p class="sr-only" id="heroPreTitle">Together with their families</p>
       <h1 class="sr-only hero-names-sr">

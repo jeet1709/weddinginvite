@@ -558,234 +558,34 @@ body.intro-open .mute-toggle {
 }
 .nav-links a:hover { opacity: 1; color: var(--color-accent); }
 
-/* ---- Hero: the screening poster ---- */
-/* A film-premiere poster on the same red damask as the rest of the page:
-   Ganesha invocation → "screening of" title → a cinema screen with chasing
-   marquee bulbs and velvet curtains → billing, showtime, ticket CTA.
+/* ---- Hero ---- */
+/* The hero is just the invitation video, full-width, matching the
+   countdown band below it (also full-width) rather than the narrower
+   780px text column ordinary sections use.
 
-   Everything that moves here is small (bulbs) or moves by scaleX inside
-   its own box (curtains) — nothing is a large transformed/blurred layer
-   clipped by an ancestor, which is the Chromium DPR 2/3 clip bug noted in
-   the README. */
+   Full width + zero cropping can't both be true against a fixed viewport
+   height for a 9:16 source: on a wide desktop screen, filling the width
+   edge-to-edge means the video's rendered height is far taller than one
+   screen — there's no way around that for a portrait video shown at full
+   width, short of cropping it (which was the previous approach here, and
+   is explicitly what's being avoided now). So the section's height simply
+   follows the video's own aspect ratio rather than being pinned to
+   100vh — on mobile that's close to a normal fullscreen hero already;
+   on a wide desktop it runs taller than one viewport and the visitor
+   scrolls a little further to clear it. Either way the whole frame, top
+   to bottom, is always visible. `aspect-ratio` reserves the correct space
+   immediately, before the video's own metadata has loaded, so there's no
+   layout jump once it does. */
 .hero {
   position: relative;
   width: 100%;
-  padding: 2.25rem 1rem 2.5rem;
-  text-align: center;
-  background:
-    radial-gradient(ellipse 70% 55% at 50% 42%, rgba(255,214,140,0.22), transparent 70%);
+  line-height: 0;
 }
-.poster {
-  position: relative;
-  width: min(100%, 560px);
-  margin: 0 auto;
-  padding: 1.75rem 1.25rem 2.4rem;
-  background:
-    radial-gradient(ellipse 80% 50% at 50% 0%, rgba(244,163,0,0.18), transparent 70%),
-    linear-gradient(170deg, #6d0a14 0%, #4f0710 60%, #3c050c 100%);
-  border: 1px solid rgba(244,163,0,0.75);
-  outline: 1px solid rgba(244,163,0,0.45);
-  outline-offset: 5px;
-  border-radius: 6px;
-  box-shadow: 0 30px 60px -30px rgba(30,0,4,0.85);
-  color: #fff4d6;
-}
-/* gold corner flourishes */
-.poster::before, .poster::after {
-  content: '';
-  position: absolute;
-  width: 46px;
-  height: 46px;
-  border: 2px solid var(--color-accent);
-  pointer-events: none;
-}
-.poster::before { top: 10px; left: 10px; border-right: 0; border-bottom: 0; border-top-left-radius: 14px; }
-.poster::after { bottom: 10px; right: 10px; border-left: 0; border-top: 0; border-bottom-right-radius: 14px; }
-
-.poster-invocation {
-  margin: 0 0 0.75rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-  color: #ffd77a;
-}
-.ganesh-mark.poster-ganesh { width: 92px; height: 92px; margin: 0 auto 1.5rem; }
-.poster-eyebrow {
-  margin: 0;
-  font-size: 0.78rem;
-  letter-spacing: 0.32em;
-  text-transform: uppercase;
-  color: rgba(255,244,214,0.82);
-}
-.poster-title {
-  margin: 0.35rem 0 1.25rem;
-  font-family: var(--font-display);
-  font-size: clamp(2rem, 9vw, 3.9rem);
-  line-height: 1.05;
-  letter-spacing: 0.01em;
-  background: linear-gradient(100deg, #f4a300 0%, #ffe6a3 22%, #f4a300 40%, #c97f00 60%, #ffe6a3 80%, #f4a300 100%);
-  background-size: 250% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  text-shadow: 0 2px 18px rgba(244,163,0,0.25);
-  animation: titleShimmer 7s linear infinite;
-}
-@keyframes titleShimmer { to { background-position: -250% 0; } }
-
-/* ---- the cinema screen ---- */
-.cinema {
-  margin: 0 auto 1.4rem;
-  padding: 14px;
-  position: relative;
-  border-radius: 10px;
-  background: linear-gradient(160deg, #2a0307, #14010a);
-  box-shadow: inset 0 0 0 2px rgba(244,163,0,0.6), 0 18px 40px -18px rgba(0,0,0,0.8);
-}
-/* chasing marquee bulbs: ::before lights the odd bulbs, ::after the even
-   ones (same 44px tile, bulb offset by half), blinking out of phase */
-.cinema::before, .cinema::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 10px;
-  pointer-events: none;
-  --g: #fff6d0 0 2px, #ffc94a 3px, rgba(255,180,40,0.35) 4.5px, transparent 6px;
-  background:
-    radial-gradient(circle at var(--o) 7px, var(--g)) 0 0 / 44px 14px repeat-x,
-    radial-gradient(circle at var(--o) 7px, var(--g)) 0 100% / 44px 14px repeat-x,
-    radial-gradient(circle at 7px var(--o), var(--g)) 0 0 / 14px 44px repeat-y,
-    radial-gradient(circle at 7px var(--o), var(--g)) 100% 0 / 14px 44px repeat-y;
-  animation: bulbs 1.2s steps(1) infinite;
-}
-.cinema::before { --o: 11px; }
-.cinema::after { --o: 33px; animation-delay: -0.6s; }
-@keyframes bulbs { 0% { opacity: 1; } 50% { opacity: 0.3; } }
-
-.cinema-frame {
-  position: relative;
-  aspect-ratio: 400 / 420;
-  border-radius: 4px;
-  overflow: hidden;
-  background: #f7e6d0;
-}
-.cinema-art { width: 100%; height: 100%; object-fit: cover; }
-
-/* velvet curtains, gathered to each side once the envelope opens */
-.curtain {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 51%;
-  background:
-    linear-gradient(180deg, rgba(0,0,0,0.0) 60%, rgba(0,0,0,0.35)),
-    repeating-linear-gradient(90deg, #8e0f1c 0 9px, #b3192a 14px, #8e0f1c 22px, #5e0710 26px);
-  transition: transform 2.4s cubic-bezier(.6,.05,.25,1) .6s;
-}
-.curtain-left  { left: 0;  transform-origin: 0 50%;   box-shadow: inset -6px 0 10px rgba(0,0,0,0.35); }
-.curtain-right { right: 0; transform-origin: 100% 50%; box-shadow: inset 6px 0 10px rgba(0,0,0,0.35); }
-body.intro-open .curtain { transform: scaleX(0.09); }
-.curtain-valance {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 22px;
-  background:
-    radial-gradient(circle at 50% 0, #a3162a 0 13px, transparent 14px) 0 0 / 28px 22px repeat-x,
-    linear-gradient(#7d0b17, #7d0b17) 0 0 / 100% 9px no-repeat;
-  border-top: 2px solid var(--color-accent);
-}
-
-/* ---- billing ---- */
-.poster-small {
+.hero-video {
   display: block;
-  font-size: 0.66rem;
-  letter-spacing: 0.3em;
-  text-transform: uppercase;
-  color: rgba(255,215,122,0.8);
-}
-.poster-starring { margin: 0 0 1.2rem; }
-.poster-stars {
-  display: block;
-  font-family: var(--font-heading);
-  font-size: clamp(1.5rem, 6vw, 2.1rem);
-  letter-spacing: 0.04em;
-  color: #fff4d6;
-}
-.poster-stars em { font-family: var(--font-script); font-style: normal; color: var(--color-accent); padding: 0 0.15em; }
-
-.poster-showtime {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  border-top: 1px solid rgba(244,163,0,0.45);
-  border-bottom: 1px solid rgba(244,163,0,0.45);
-  margin: 0 0 1.4rem;
-}
-.poster-showtime > div {
-  padding: 0.7rem 0.35rem;
-  font-family: var(--font-heading);
-  font-size: 0.92rem;
-  line-height: 1.3;
-}
-.poster-showtime > div + div { border-left: 1px solid rgba(244,163,0,0.3); }
-.poster-showtime .poster-small { margin-bottom: 0.3rem; }
-
-/* RSVP as a cinema ticket: body + perforated stub */
-.ticket-button {
-  display: inline-flex;
-  align-items: stretch;
-  text-decoration: none;
-  color: #4a1010;
-  font-family: var(--font-heading);
-  filter: drop-shadow(0 8px 14px rgba(0,0,0,0.35));
-  transition: transform .2s ease;
-}
-.ticket-button:hover { transform: translateY(-2px) rotate(-1deg); }
-.ticket-label, .ticket-stub {
-  background: linear-gradient(150deg, #ffe08a, #f4a300 70%, #d98a00);
-  display: flex;
-  align-items: center;
-}
-.ticket-label {
-  padding: 0.8rem 1.4rem;
-  font-size: 1.05rem;
-  letter-spacing: 0.04em;
-  border-radius: 6px 0 0 6px;
-}
-.ticket-stub {
-  padding: 0.4rem 0.8rem;
-  font-size: 0.62rem;
-  line-height: 1.2;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  border-left: 2px dashed rgba(74,16,16,0.45);
-  border-radius: 0 6px 6px 0;
-}
-.poster-credits {
-  margin: 1.5rem 0 0;
-  font-size: 0.72rem;
-  line-height: 1.6;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: rgba(255,244,214,0.6);
-}
-.poster-credits:empty { display: none; }
-
-.hero .scroll-cue {
-  position: static;
-  display: block;
-  width: fit-content;
-  margin: 1.5rem auto 0;
-}
-
-@media (max-width: 420px) {
-  .poster { padding: 1.5rem 0.9rem 2.2rem; }
-  .poster-showtime > div { font-size: 0.82rem; }
-  .ganesh-mark.poster-ganesh { width: 78px; height: 78px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .poster-title, .cinema::before, .cinema::after { animation: none; }
-  .curtain { transition: none; transform: scaleX(0.09); }
+  width: 100%;
+  height: auto;
+  aspect-ratio: 9 / 16;
 }
 
 /* ---- Ganesha mark ---- */

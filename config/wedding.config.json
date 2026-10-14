@@ -26,14 +26,7 @@
     "preTitle": "Together with their families",
     "tagline": "Request the honour of your presence",
     "blessingLine": "With the blessings of our elders and the warmth of your presence.",
-    "screening": {
-      "invocation": "॥ श्री गणेशाय नमः ॥",
-      "eyebrow": "You're invited to the screening of",
-      "title": "#Pyar Dosti Hai",
-      "caricature": "assets/couple-caricature.svg",
-      "ctaLabel": "Reserve your seat",
-      "credits": "The Dwivedy & Kumar families present · Music: Jashn-e-Bahaara · Directed by Destiny"
-    }
+    "videoUrl": "assets/media/wedding-invite.mp4"
   },
   "wedding": {
     "date": "2026-12-05",

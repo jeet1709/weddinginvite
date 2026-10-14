@@ -559,34 +559,8 @@ body.intro-open .mute-toggle {
 .nav-links a:hover { opacity: 1; color: var(--color-accent); }
 
 /* ---- Hero ---- */
-/* The hero is just the invitation video, full-width, matching the
-   countdown band below it (also full-width) rather than the narrower
-   780px text column ordinary sections use.
-
-   Full width + zero cropping can't both be true against a fixed viewport
-   height for a 9:16 source: on a wide desktop screen, filling the width
-   edge-to-edge means the video's rendered height is far taller than one
-   screen — there's no way around that for a portrait video shown at full
-   width, short of cropping it (which was the previous approach here, and
-   is explicitly what's being avoided now). So the section's height simply
-   follows the video's own aspect ratio rather than being pinned to
-   100vh — on mobile that's close to a normal fullscreen hero already;
-   on a wide desktop it runs taller than one viewport and the visitor
-   scrolls a little further to clear it. Either way the whole frame, top
-   to bottom, is always visible. `aspect-ratio` reserves the correct space
-   immediately, before the video's own metadata has loaded, so there's no
-   layout jump once it does. */
-.hero {
-  position: relative;
-  width: 100%;
-  line-height: 0;
-}
-.hero-video {
-  display: block;
-  width: 100%;
-  height: auto;
-  aspect-ratio: 9 / 16;
-}
+/* Holds only sr-only text now; the Now Showing card is the homepage. */
+.hero { position: relative; width: 100%; }
 
 /* ---- Ganesha mark ---- */
 /* The source art is red line-work on solid white; `multiply` drops the white
@@ -704,6 +678,191 @@ section {
   padding: 5.5rem 1.5rem;
   max-width: var(--max-width);
   margin: 0 auto;
+}
+
+/* ---- Now Showing: the #Pyar Dosti Hai screening card ---- */
+/* A framed red "film poster" card right under the video. Bulbs are small
+   radial-gradient dots on pseudo-elements — no large clipped/blurred
+   layers (see the DPR 2/3 Chromium clip note in the README). */
+.now-showing { max-width: 720px; padding-top: 3.5rem; padding-bottom: 3.5rem; }
+.ns-card {
+  position: relative;
+  padding: 2.5rem 1.5rem 2rem;
+  text-align: center;
+  color: #fff4d6;
+  background:
+    radial-gradient(ellipse at 50% 12%, rgba(193,18,31,0.85) 0%, transparent 60%),
+    linear-gradient(170deg, #a8182a 0%, #8c1422 50%, #6e0c18 100%);
+  border: 3px solid var(--color-accent);
+  outline: 1px solid rgba(255,215,122,0.6);
+  outline-offset: -12px;
+  box-shadow: 0 30px 60px -30px rgba(30,0,4,0.8);
+}
+.ns-ganesha {
+  width: 132px;
+  margin: 0 auto;
+  padding: 6px;
+  background: linear-gradient(160deg, #ffe08a, #c98a1a);
+  border-radius: 70px 70px 10px 10px;
+  box-shadow: 0 10px 24px -10px rgba(0,0,0,0.6);
+}
+.ns-ganesha img {
+  width: 100%;
+  aspect-ratio: 821 / 1100;
+  object-fit: cover;
+  border-radius: 64px 64px 6px 6px;
+}
+.ns-shloka {
+  margin: 1.1rem 0 0;
+  font-family: 'Tiro Devanagari Sanskrit', serif;
+  font-size: 1.3rem;
+  letter-spacing: 0.04em;
+  color: #ffd77a;
+}
+.ns-presenters {
+  margin: 0.6rem 0 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+.ns-present { margin: 0.1rem 0 0; font-style: italic; color: #ffd77a; }
+
+.ns-marquee {
+  position: relative;
+  margin: 1.6rem auto 0;
+  padding: 1.4rem 1rem 1.5rem;
+  border: 2px solid var(--color-accent);
+  border-radius: 18px;
+  background: rgba(74,8,14,0.55);
+}
+/* chasing bulbs on the marquee border: ::before lights odd bulbs, ::after
+   even ones (same 40px tile, bulb offset by half), blinking out of phase */
+.ns-marquee::before, .ns-marquee::after {
+  content: '';
+  position: absolute;
+  inset: -8px;
+  pointer-events: none;
+  --g: #fff6d0 0 2.5px, #ffd77a 3.5px, rgba(255,200,80,0.4) 5px, transparent 7px;
+  background:
+    radial-gradient(circle at var(--o) 8px, var(--g)) 20px 0 / 40px 16px repeat-x,
+    radial-gradient(circle at var(--o) 8px, var(--g)) 20px 100% / 40px 16px repeat-x,
+    radial-gradient(circle at 8px var(--o), var(--g)) 0 20px / 16px 40px repeat-y,
+    radial-gradient(circle at 8px var(--o), var(--g)) 100% 20px / 16px 40px repeat-y;
+  background-clip: content-box;
+  padding: 0 0;
+  animation: nsBulbs 1.2s steps(1) infinite;
+}
+.ns-marquee::before { --o: 10px; }
+.ns-marquee::after { --o: 30px; animation-delay: -0.6s; }
+@keyframes nsBulbs { 0% { opacity: 1; } 50% { opacity: 0.35; } }
+.ns-eyebrow { margin: 0; font-size: clamp(1.05rem, 4.2vw, 1.5rem); font-style: italic; }
+.ns-title {
+  margin: 0.4rem 0 0;
+  font-family: var(--font-display);
+  font-weight: 400;
+  font-size: clamp(2rem, 9.5vw, 3.6rem);
+  line-height: 1.05;
+  color: #ffd77a;
+  text-shadow: 0 3px 0 #5e0810, 0 0 26px rgba(244,163,0,0.35);
+}
+
+.ns-kicker {
+  margin: 1.8rem 0 0;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: #ffd77a;
+}
+.ns-stars {
+  display: grid;
+  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+.ns-star { display: flex; flex-direction: column; gap: 0.15rem; }
+.ns-star-bride { align-items: flex-end; text-align: right; }
+.ns-star-groom { align-items: flex-start; text-align: left; }
+.ns-name { font-family: var(--font-script); font-size: clamp(2.3rem, 10vw, 3.8rem); line-height: 1.1; }
+.ns-parents { font-size: 0.82rem; font-style: italic; color: #ffe3a8; }
+.ns-amp { font-family: var(--font-script); font-size: clamp(2rem, 8vw, 3rem); color: var(--color-accent); padding-bottom: 1.2rem; }
+
+.ns-divider { display: flex; align-items: center; gap: 0.9rem; width: 60%; margin: 1.4rem auto 0; }
+.ns-divider::before, .ns-divider::after { content: ''; flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--color-accent)); }
+.ns-divider::after { background: linear-gradient(270deg, transparent, var(--color-accent)); }
+.ns-divider span { width: 9px; height: 9px; transform: rotate(45deg); background: var(--color-accent); }
+
+.ns-shows {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 0.85rem;
+}
+.ns-show {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.9rem 1.1rem;
+  text-align: left;
+  color: #4a1010;
+  background: linear-gradient(165deg, #ffe3a8 0%, #fff6e5 100%);
+  border: 2px solid var(--color-accent);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  line-height: 1.35;
+}
+.ns-show-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.6rem; }
+.ns-show-title { font-family: var(--font-heading); font-weight: 700; font-size: 1.3rem; color: var(--color-deep); }
+.ns-show-date { font-weight: 700; font-size: 0.85rem; letter-spacing: 0.05em; color: var(--color-primary); white-space: nowrap; }
+.ns-show-sub { font-style: italic; color: #6b3a20; }
+.ns-show-when { font-weight: 600; }
+.ns-show-where { color: #6b3a20; }
+
+.ns-ticket {
+  margin-top: 1.6rem;
+  display: flex;
+  align-items: stretch;
+  text-align: left;
+  text-decoration: none;
+  color: #4a1010;
+  border-radius: 14px;
+  background: #fff4d6;
+  box-shadow: 0 12px 24px -14px rgba(0,0,0,0.7);
+  transition: transform 0.2s ease;
+}
+.ns-ticket:hover { transform: translateY(-2px); color: #4a1010; }
+.ns-ticket-main { flex: 1; padding: 1rem 1.2rem; display: flex; flex-direction: column; gap: 0.15rem; }
+.ns-ticket-stub {
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background: #ffe3a8;
+  border-left: 2px dashed var(--color-primary);
+  border-radius: 0 14px 14px 0;
+}
+.ns-ticket-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-primary); }
+.ns-ticket-when { font-family: var(--font-heading); font-size: 1.15rem; color: var(--color-deep); }
+.ns-ticket-where { font-size: 0.95rem; }
+.ns-ticket-admit { font-family: var(--font-heading); font-size: 1rem; color: var(--color-deep); white-space: nowrap; }
+.ns-ticket-rsvp { font-size: 0.85rem; white-space: nowrap; }
+
+@media (max-width: 520px) {
+  .now-showing { padding-left: 0.9rem; padding-right: 0.9rem; }
+  .ns-card { padding: 2rem 1rem 1.6rem; }
+  .ns-presenters { letter-spacing: 0.16em; font-size: 0.72rem; }
+  .ns-parents { font-size: 0.72rem; }
+  .ns-stars { gap: 0.35rem; }
+  .ns-name { font-size: 2.1rem; }
+  .ns-amp { font-size: 1.8rem; padding-bottom: 1rem; }
+  .ns-ticket-main, .ns-ticket-stub { padding: 0.85rem 0.8rem; }
+  .ns-ticket-when { font-size: 1rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ns-marquee::before, .ns-marquee::after { animation: none; }
 }
 
 /* ---- Countdown ---- */
@@ -1085,3 +1244,46 @@ section {
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
 }
+
+/* Festivity cards with caricature art: the card takes the scene's own 9:16
+   shape so the painting is never cropped, and the label sits in the blank
+   band each painting leaves for text (top or bottom, light or dark). The
+   image carries its own border-radius rather than relying on an ancestor's
+   overflow clip inside the 3D flip. */
+.festivity-cards.has-art {
+  grid-template-columns: repeat(auto-fit, minmax(220px, 260px));
+  justify-content: center;
+}
+.festivities-section:has(.festivity-cards.has-art) { max-width: 1180px; }
+.festivity-card.has-art { height: auto; aspect-ratio: 9 / 16; }
+.festivity-card-front.has-art { padding: 0; background: #fff3d2; justify-content: flex-start; }
+.festivity-art {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 16px;
+}
+.festivity-art-label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  min-height: 28%;
+  padding: 0.9rem 0.9rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+.art-text-top .festivity-art-label { top: 0; }
+.art-text-bottom .festivity-art-label { bottom: 0; }
+.festivity-card-front.has-art .festivity-title { margin-bottom: 0.1rem; font-size: 1.75rem; line-height: 1.15; }
+.festivity-card-front.has-art .festivity-subtitle { margin-bottom: 0.35rem; font-size: 0.85rem; line-height: 1.3; }
+/* the section's own "Tap a card to reveal the details" line covers this */
+.festivity-card-front.has-art .festivity-tap-hint { display: none; }
+.art-tone-dark .festivity-title { color: #fff4d6; }
+.art-tone-dark .festivity-subtitle,
+.art-tone-dark .festivity-tap-hint { color: rgba(255,244,214,0.85); }
+.art-tone-dark .festivity-date { color: #ffd77a; }

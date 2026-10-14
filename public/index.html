@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%94%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&family=Yeseva+One&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&family=Yeseva+One&family=Tiro+Devanagari+Sanskrit&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -108,12 +108,10 @@
       </div>
     </nav>
 
-    <!-- Hero: the invitation video, full-bleed, and nothing else. It
-         already carries the names/date/tagline/venue as a finished
-         animated card, so nothing here duplicates that visually — the
-         same text stays in the DOM as sr-only for accessibility/SEO. -->
+    <!-- Hero: no visual of its own — the "Now Showing" card right below
+         is the homepage. These names/date/tagline stay in the DOM as
+         sr-only text for accessibility/SEO (the page's <h1>). -->
     <header class="hero" id="hero">
-      <video class="hero-video" id="heroVideo" autoplay muted loop playsinline aria-hidden="true"></video>
 
       <p class="sr-only" id="heroPreTitle">Together with their families</p>
       <h1 class="sr-only hero-names-sr">
@@ -125,11 +123,51 @@
       </h1>
       <p class="sr-only" id="heroTagline">Request the honour of your presence</p>
       <p class="sr-only" id="heroDate">Friday, 11th December 2026</p>
-
-      <a class="scroll-cue" href="#countdown" aria-label="Scroll for more">
-        <svg width="22" height="34" viewBox="0 0 22 34"><rect x="1" y="1" width="20" height="32" rx="10" fill="none" stroke="currentColor" stroke-width="1.4"/><circle class="scroll-dot" cx="11" cy="10" r="2.4" fill="currentColor"/></svg>
-      </a>
     </header>
+
+    <!-- "Now Showing": the #Pyar Dosti Hai screening card — Ganesha
+         invocation, a marquee title, star billing, the festivities as
+         "shows", and the wedding as the grand-premiere ticket. Everything
+         is filled from config (`screening`, `couple`, `schedule`,
+         `wedding`, `rsvp`); hidden if `screening.enabled` is false. -->
+    <section class="now-showing" id="nowShowing" hidden>
+      <div class="ns-card reveal">
+        <figure class="ns-ganesha" id="nsGanesha"><img id="nsGaneshaArt" src="" alt="Shri Ganesha" loading="lazy" /></figure>
+        <p class="ns-shloka" id="nsShloka" lang="sa"></p>
+        <p class="ns-presenters" id="nsPresenters"></p>
+        <p class="ns-present">present</p>
+
+        <div class="ns-marquee">
+          <p class="ns-eyebrow" id="nsEyebrow"></p>
+          <h2 class="ns-title" id="nsTitle"></h2>
+        </div>
+
+        <p class="ns-kicker">Starring</p>
+        <div class="ns-stars">
+          <div class="ns-star ns-star-bride"><span class="ns-name" id="nsBride"></span><span class="ns-parents" id="nsBrideParents"></span></div>
+          <span class="ns-amp" aria-hidden="true">&amp;</span>
+          <div class="ns-star ns-star-groom"><span class="ns-name" id="nsGroom"></span><span class="ns-parents" id="nsGroomParents"></span></div>
+        </div>
+
+        <div class="ns-divider" aria-hidden="true"><span></span></div>
+
+        <p class="ns-kicker">Now Showing</p>
+        <div class="ns-shows" id="nsShows"></div>
+
+        <a class="ns-ticket" href="#rsvp">
+          <span class="ns-ticket-main">
+            <span class="ns-ticket-label" id="nsPremiereLabel"></span>
+            <strong class="ns-ticket-when" id="nsPremiereWhen"></strong>
+            <span class="ns-ticket-where" id="nsPremiereWhere"></span>
+          </span>
+          <span class="ns-ticket-stub">
+            <span class="ns-ticket-label">Admit</span>
+            <strong class="ns-ticket-admit" id="nsAdmit"></strong>
+            <span class="ns-ticket-rsvp" id="nsRsvpBy"></span>
+          </span>
+        </a>
+      </div>
+    </section>
 
     <!-- Countdown -->
     <section class="countdown-section" id="countdown">
@@ -176,7 +214,7 @@
     <!-- Festivities: flip cards (replaces the old FAQ + venue-details sections) -->
     <section class="festivities-section" id="festivities">
       <div class="reveal">
-        <p class="section-kicker">Four Days of Celebration</p>
+        <p class="section-kicker" id="festivitiesKicker">Days of Celebration</p>
         <h2 class="section-title">The Festivities</h2>
         <p class="festivities-hint">Tap a card to reveal the details</p>
       </div>

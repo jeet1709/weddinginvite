@@ -94,19 +94,6 @@
     if (!couple.hashtag) $('#footerHashtag').hidden = true;
     $('#footerBlessing').textContent = hero.blessingLine || '';
     if (!hero.blessingLine) $('#footerBlessing').hidden = true;
-
-    // The invitation video already carries names/date/venue as a finished
-    // animated card. Autoplay-muted-loop starts as soon as the source is
-    // set — it can run behind the envelope intro screen with no visible or
-    // audible effect, so there's nothing to gate on "after the letter
-    // opens" beyond the envelope itself no longer covering it.
-    const video = $('#heroVideo');
-    const videoFrame = $('.hero-video-frame');
-    if (video && hero.videoUrl) {
-      video.src = hero.videoUrl;
-    } else if (videoFrame) {
-      videoFrame.hidden = true;
-    }
   }
 
   function populateStory(cfg) {
@@ -142,16 +129,27 @@
     wrap.innerHTML = items.map((item, i) => {
       const icon = FESTIVITY_ICONS[item.id] || FESTIVITY_ICONS.default;
       const dateLabel = formatDisplayDate(item.date, { weekday: 'long', day: 'numeric', month: 'long' });
-      return `
-        <div class="festivity-card" data-index="${i}" tabindex="0" role="button" aria-label="${escapeAttr(item.title)} — tap to reveal details">
-          <div class="festivity-card-inner">
-            <div class="festivity-card-face festivity-card-front">
-              <div class="festivity-icon">${icon}</div>
+      const label = `
               <p class="festivity-title">${escapeHtml(item.title || '')}</p>
               ${item.subtitle ? `<p class="festivity-subtitle">${escapeHtml(item.subtitle)}</p>` : ''}
               <p class="festivity-date">${escapeHtml(dateLabel)}</p>
-              <p class="festivity-tap-hint">Tap to reveal</p>
-            </div>
+              <p class="festivity-tap-hint">Tap to reveal</p>`;
+      // With `art`, the front is the full, uncropped 9:16 scene; its title
+      // sits in the blank band the illustration leaves for text —
+      // `artText` says which end that band is at, `artTone` whether it's
+      // light or dark so the type can contrast with it.
+      const front = item.art
+        ? `<div class="festivity-card-face festivity-card-front has-art art-text-${item.artText === 'top' ? 'top' : 'bottom'} art-tone-${item.artTone === 'dark' ? 'dark' : 'light'}">
+              <img class="festivity-art" src="${escapeAttr(item.art)}" alt="" loading="lazy" />
+              <div class="festivity-art-label">${label}</div>
+            </div>`
+        : `<div class="festivity-card-face festivity-card-front">
+              <div class="festivity-icon">${icon}</div>${label}
+            </div>`;
+      return `
+        <div class="festivity-card${item.art ? ' has-art' : ''}" data-index="${i}" tabindex="0" role="button" aria-label="${escapeAttr(item.title)} — tap to reveal details">
+          <div class="festivity-card-inner">
+            ${front}
             <div class="festivity-card-face festivity-card-back">
               <p class="festivity-back-title">${escapeHtml(item.title || '')}</p>
               <p class="festivity-back-row"><strong>When</strong>${escapeHtml(dateLabel)} · ${escapeHtml(item.time || '')}</p>
@@ -163,6 +161,13 @@
         </div>
       `;
     }).join('');
+    wrap.classList.toggle('has-art', items.some((item) => item.art));
+
+    // "Two Days of Celebration" etc. — counted from the distinct dates, so it
+    // follows the schedule instead of being hardcoded.
+    const days = new Set(items.map((item) => item.date)).size;
+    const words = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven'];
+    if (days) $('#festivitiesKicker').textContent = `${words[days] || days} Day${days > 1 ? 's' : ''} of Celebration`;
 
     $$('.festivity-card', wrap).forEach((card) => {
       const toggle = () => card.classList.toggle('is-flipped');
@@ -174,6 +179,47 @@
         }
       });
     });
+  }
+
+  /* ============ Now Showing (#Pyar Dosti Hai screening card) ============ */
+  function populateNowShowing(cfg) {
+    const sc = cfg.screening;
+    if (!sc || sc.enabled === false) return;
+    const { couple, wedding, rsvp } = cfg;
+    const set = (sel, text) => { $(sel).textContent = text || ''; };
+
+    if (sc.ganeshaArt) $('#nsGaneshaArt').src = sc.ganeshaArt;
+    else $('#nsGanesha').hidden = true;
+    set('#nsShloka', sc.invocation);
+    set('#nsPresenters', sc.presentedBy);
+    set('#nsEyebrow', sc.eyebrow);
+    set('#nsTitle', sc.title);
+    set('#nsBride', couple.bride.name);
+    set('#nsGroom', couple.groom.name);
+    set('#nsBrideParents', couple.bride.parents);
+    set('#nsGroomParents', couple.groom.parents);
+
+    const shows = (cfg.schedule || []).slice().sort((a, b) => (a.date < b.date ? -1 : 1));
+    $('#nsShows').innerHTML = shows.map((item) => `
+      <div class="ns-show">
+        <div class="ns-show-head">
+          <span class="ns-show-title">${escapeHtml(item.title)}</span>
+          <span class="ns-show-date">${escapeHtml(formatDisplayDate(item.date, { weekday: 'short', day: 'numeric', month: 'short' }))}</span>
+        </div>
+        ${item.subtitle ? `<span class="ns-show-sub">${escapeHtml(item.subtitle)}</span>` : ''}
+        <span class="ns-show-when">${escapeHtml((item.time || '').replace(/\s*onwards$/i, ''))}</span>
+        ${item.location ? `<span class="ns-show-where">${escapeHtml(item.location)}</span>` : ''}
+      </div>`).join('');
+
+    const t = new Date(`${wedding.date}T${to24h(wedding.time)}`);
+    const time = Number.isNaN(t.getTime()) ? '' : t.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit', hour12: true });
+    set('#nsPremiereLabel', sc.premiereLabel);
+    set('#nsPremiereWhen', [formatDisplayDate(wedding.date), time].filter(Boolean).join(' · '));
+    set('#nsPremiereWhere', [wedding.venueName, wedding.venueCity].filter(Boolean).join(', '));
+    set('#nsAdmit', sc.admit);
+    set('#nsRsvpBy', rsvp && rsvp.deadline ? `RSVP by ${formatDisplayDate(rsvp.deadline, { day: 'numeric', month: 'short' })}` : '');
+
+    $('#nowShowing').hidden = false;
   }
 
   function populateAccommodations(cfg) {
@@ -378,23 +424,6 @@
 
       if (music) music.play().catch(() => { /* autoplay declined; silent */ });
 
-      // The `autoplay` attribute is unreliable once a video's `src` is set
-      // dynamically after page load (which populateHero() does, since the
-      // URL comes from config) — several mobile browsers only honour
-      // autoplay reliably when it's driven by an actual user gesture, and
-      // otherwise fall back to showing a native play button, leaving the
-      // video paused on its first frame until tapped. This click on the
-      // envelope IS that gesture, so play() is called explicitly from
-      // inside this same handler rather than trusting the attribute alone.
-      // `.muted` is set as a JS property (not just the HTML attribute) —
-      // Safari in particular checks the live property when deciding
-      // whether to honour autoplay-without-permission.
-      const heroVideo = $('#heroVideo');
-      if (heroVideo) {
-        heroVideo.muted = true;
-        heroVideo.play().catch(() => { /* autoplay declined; silent */ });
-      }
-
       // Seal cracks (~0-0.85s) → the closed envelope's gold trim fades fast
       // (~0-0.3s) → all four flaps unfold in a bloom-like stagger, top
       // first, then the sides, then bottom (~0.3-2.74s) → sparks race each
@@ -568,6 +597,7 @@
       applyTheme(cfg.theme);
       populateHero(cfg);
       populateStory(cfg);
+      populateNowShowing(cfg);
       populateFestivities(cfg);
       populateAccommodations(cfg);
       populateRegistry(cfg);

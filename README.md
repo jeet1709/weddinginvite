@@ -1,7 +1,8 @@
 # Wedding Invite
 
 A self-hosted, animated Hindu wedding invitation: a tap-to-open wax-sealed
-envelope with background music, a homepage video, live falling petals,
+envelope with background music, a "#Pyar Dosti Hai" screening card as the
+homepage, live falling petals,
 scroll-reveal sections, flip cards for each day of celebration, a live
 countdown to the muhurtham, and an RSVP that links out to a Google Form (so
 responses land in a Google Sheet you already own — no custom backend
@@ -34,12 +35,13 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | Section | Notes |
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
-| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage video & background music" below. The names themselves come from `couple` |
+| `intro` | The opening screen: `eyebrow` (small tracked line above the names), `joiner` (the italic word between the names, e.g. "weds"), `tapHint`, and `musicUrl` — see "Homepage & background music" below. The names themselves come from `couple` |
 | `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
-| `hero` | `videoUrl` — the homepage video, see below. `preTitle`, `tagline`, `blessingLine` (shown in the footer) still exist as text but are visually hidden (`.sr-only`) in the hero itself now that the video carries that information; they remain for accessibility/SEO |
+| `hero` | `preTitle`, `tagline` — visually hidden (`.sr-only`) text kept for accessibility/SEO; `blessingLine` is shown in the footer |
+| `screening` | The "Now Showing" homepage card: `ganeshaArt`, `invocation`, `presentedBy`, `eyebrow`, `title`, `premiereLabel`, `admit`. Set `enabled: false` to hide it |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional paragraph — leave `""` to hide the section |
-| `schedule` | Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card |
+| `schedule` | Optional `art` (a 9:16 image shown uncropped on the card front), `artText` (`top`/`bottom` — where the painting's blank band for text is) and `artTone` (`light`/`dark` — that band's colour). Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card |
 | `rsvp` | `googleFormUrl` — your Google Form share link (`forms.gle/...`). Toggle `enabled` to hide the section entirely. `deadline`, `contactName`/`contactPhone` (shown as a "prefer to call?" fallback) |
 | `accommodations` | Optional hotel recommendations — omit/empty to hide |
 | `registry` | Set `enabled: true` and add `links` to show a registry section |
@@ -85,27 +87,14 @@ envelope's gone" and "the screen's gone."
 
 Reduced-motion users skip straight to the revealed invitation.
 
-### Homepage video & background music
+### Homepage & background music
 
-The hero is the invitation video (`hero.videoUrl`) and nothing else —
-`public/assets/media/wedding-invite.mp4` already carries the names, date,
-time and venue as a finished animated card, so there's no separate arch,
-card, or duplicate text sitting on top of it. That text still exists in the
-DOM as `.sr-only` elements (`#heroPreTitle`, the names, `#heroTagline`,
-`#heroDate`) purely for accessibility and SEO, since a video's on-screen
-text isn't readable by either.
-
-The video runs **full width, at its own aspect ratio, with zero cropping** —
-deliberately not `object-fit: cover`. A 9:16 portrait video can't fill a wide
-desktop viewport edge-to-edge *and* stay uncropped at the same time; those
-are mutually exclusive once the container's proportions don't match the
-source. This site picks "show the whole video" over "fill the screen
-exactly": width is 100%, height follows from `aspect-ratio: 9/16`, so on a
-wide desktop screen the hero simply runs taller than one viewport (you
-scroll a little further to clear it) rather than having the top or bottom of
-the video cut off. `aspect-ratio` also reserves the correct height
-immediately, before the video's own metadata loads, so there's no layout
-jump once it does.
+There's no hero video. Once the envelope opens, the homepage is the
+**Now Showing** card (`screening`): the Ganesha painting in a gold arch,
+॥ श्री गणेशाय नमः ॥, the parents "present", "#Pyar Dosti Hai" inside a
+frame of blinking marquee bulbs, "Starring" the couple, the festivities as
+"Now Showing" tiles (from `schedule`), and the wedding as a "Grand
+Premiere" ticket (from `wedding` and `rsvp.deadline`) that links to RSVP.
 
 Background music (`intro.musicUrl`,
 `public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
@@ -120,9 +109,7 @@ children of `<body>` instead, so they persist and the mute button stays
 reachable (fixed position, fades in once the invitation is revealed) as you
 scroll the rest of the site.
 
-Leave either `videoUrl` or `musicUrl` as `""` to disable that feature
-without touching any other code — the hero section and the mute button
-both hide themselves gracefully when there's nothing to show.
+Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 
 ### Where the images live
 
@@ -130,7 +117,8 @@ both hide themselves gracefully when there's nothing to show.
 |---|---|
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
-| `media/wedding-invite.mp4` | The homepage hero video (`hero.videoUrl`) |
+| `ganesha-painting.jpg` | Ganesha painting at the top of the Now Showing card (`screening.ganeshaArt`) |
+| `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
 | `media/jashn-e-bahaara.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining homepage ornament — the red damask ground, the falling petals,
@@ -192,7 +180,7 @@ Then upload `dist/` to any free static host:
 
 **This repo is already wired to GitHub Pages** via
 `.github/workflows/deploy.yml`: every push to `main` runs `npm run build` and
-publishes `dist/`, so updating the live invite is just
+publishes `dist/`. The live site is hosted from the **`pyar-dosti-hai`** branch (the workflow there deploys on every push to it; `main` keeps the earlier video version). Updating the live invite is just
 
 ```bash
 git add -A && git commit -m "Update details" && git push

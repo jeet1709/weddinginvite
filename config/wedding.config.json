@@ -25,18 +25,27 @@
   "hero": {
     "preTitle": "Together with their families",
     "tagline": "Request the honour of your presence",
-    "blessingLine": "With the blessings of our elders and the warmth of your presence.",
-    "videoUrl": "assets/media/wedding-invite.mp4"
+    "blessingLine": "With the blessings of our elders and the warmth of your presence."
   },
   "wedding": {
-    "date": "2026-12-11",
-    "time": "18:00",
-    "displayDate": "Friday, 11th December 2026",
-    "venueName": "Taj Palace",
-    "venueCity": "Hyderabad",
-    "address": "Road No. 12, Banjara Hills, Hyderabad, Telangana 500034",
-    "mapQuery": "Taj Palace Hyderabad",
+    "date": "2026-12-05",
+    "time": "15:30",
+    "displayDate": "Saturday, 5th December 2026",
+    "venueName": "Community Center",
+    "venueCity": "IIT Roorkee",
+    "address": "Community Center, IIT Roorkee, Roorkee, Uttarakhand",
+    "mapQuery": "Community Center IIT Roorkee",
     "countdownLabel": "Counting Down to the Muhurtham"
+  },
+  "screening": {
+    "enabled": true,
+    "ganeshaArt": "assets/ganesha-painting.jpg",
+    "invocation": "॥ श्री गणेशाय नमः ॥",
+    "presentedBy": "Neelam & Ashok · Babita & Shiv",
+    "eyebrow": "You're invited to the screening of",
+    "title": "#Pyar Dosti Hai",
+    "premiereLabel": "Grand Premiere · The Pheras",
+    "admit": "You & family"
   },
   "story": "From a chance meeting on a rainy afternoon to a lifetime of promises — we can't wait to celebrate the next chapter with the people we love most.",
   "schedule": [
@@ -44,41 +53,27 @@
       "id": "haldi",
       "date": "2026-12-04",
       "time": "2:30 PM onwards",
-      "title": "Haldi",
+      "title": "Haldi, Game & Dance",
       "subtitle": "Yellow scenes, filmy dreams and lots of games!",
       "location": "Community Center, IIT Roorkee",
       "dressCode": "Shades of yellow, orange, pink & lavender",
-      "quote": "Turmeric, laughter and the very first blessings."
-    },
-    {
-      "id": "mehndi",
-      "date": "2026-12-09",
-      "time": "5:30 PM onwards",
-      "title": "Mehndi",
-      "subtitle": "Where henna meets hearts",
-      "location": "Taj Palace, Hyderabad",
-      "dressCode": "Pastel & Floral",
-      "quote": "The deeper the mehndi, the deeper the love."
-    },
-    {
-      "id": "sangeet",
-      "date": "2026-12-10",
-      "time": "6:00 PM onwards",
-      "title": "Sangeet",
-      "subtitle": "An evening of song",
-      "location": "Taj Palace, Hyderabad",
-      "dressCode": "Indo-Western Glam",
-      "quote": "Music, dance and the whole family on its feet."
+      "quote": "Turmeric, laughter and the very first blessings.",
+      "art": "assets/scenes/haldi.jpg",
+      "artText": "top",
+      "artTone": "light"
     },
     {
       "id": "wedding",
-      "date": "2026-12-11",
-      "time": "6:00 PM onwards",
-      "title": "The Wedding",
-      "subtitle": "The Muhurtham",
-      "location": "Taj Palace, Hyderabad",
+      "date": "2026-12-05",
+      "time": "3:30 PM",
+      "title": "Barat & Phere",
+      "subtitle": "Baraat, Jaimala & Saat Phere",
+      "location": "Community Center, IIT Roorkee",
       "dressCode": "Traditional",
-      "quote": "The sacred vows, with your blessings."
+      "quote": "The sacred vows, with your blessings.",
+      "art": "assets/scenes/shaadi.jpg",
+      "artText": "bottom",
+      "artTone": "dark"
     }
   ],
   "rsvp": {

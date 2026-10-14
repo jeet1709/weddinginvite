@@ -1,11 +1,13 @@
 name: Deploy to GitHub Pages
 
-# Builds and publishes on every push to main, so editing
-# config/wedding.config.json and pushing is the entire update workflow —
-# no local build step or manual re-upload needed.
+# Builds and publishes on every push to pyar-dosti-hai — the branch the
+# live site is hosted from — so editing config/wedding.config.json and
+# pushing is the entire update workflow. (main keeps the earlier video
+# version; its own copy of this workflow still deploys on pushes to main,
+# which would replace the live site.)
 on:
   push:
-    branches: [main]
+    branches: [pyar-dosti-hai]
   workflow_dispatch:
 
 permissions:

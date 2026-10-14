@@ -13,10 +13,10 @@
        onDone,    // overlay removed from the DOM
      });
 
-   Sequence after a tap: seal presses and melts (0–0.75s) → flap opens
-   (0.75–1.75s) → the invitation card rises out of the envelope (1.6–2.6s)
-   → a beat to read it → the overlay fades and gently scales up while the
-   homepage fades in beneath it (3.9–4.7s). Fonts live in index.html's
+   Sequence after a tap: seal presses and melts (0–0.6s) → flap opens
+   (0.45–1.1s) → the invitation card rises out of the envelope (0.95–1.75s)
+   → a short beat to read it → the overlay fades and gently scales up while
+   the homepage fades in beneath it (2.25–2.9s). Fonts live in index.html's
    Google Fonts link. */
 (function () {
   'use strict';
@@ -24,7 +24,7 @@
   var C = { site: '#B21E30', deep: '#6B0C18', maroon: '#7E0D1D', orange: '#F5A300', gold: '#F6C66B', ivory: '#F8EEDC', white: '#FFF8EE' };
   var EASE = 'cubic-bezier(.65,0,.35,1)', OUT = 'cubic-bezier(.22,1,.36,1)';
 
-  var T = { melt: 350, open: 750, flapBack: 1250, rise: 1600, reveal: 3900, remove: 4750 };
+  var T = { melt: 220, open: 450, flapBack: 800, rise: 950, reveal: 2250, remove: 2900 };
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -33,7 +33,7 @@
   }
 
   var css =
-    '#inv-ov{position:fixed;inset:0;z-index:2147483000;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#C42335 0%,' + C.site + ' 45%,#7A0C1B 100%);transform-origin:50% 40%;transition:opacity .8s ' + EASE + ',transform .8s ' + EASE + ';-webkit-tap-highlight-color:transparent;font-family:Marcellus,serif}' +
+    '#inv-ov{position:fixed;inset:0;z-index:2147483000;overflow:hidden;background:radial-gradient(ellipse at 50% 42%,#C42335 0%,' + C.site + ' 45%,#7A0C1B 100%);transform-origin:50% 40%;transition:opacity .6s ' + EASE + ',transform .6s ' + EASE + ';-webkit-tap-highlight-color:transparent;font-family:Marcellus,serif}' +
     '#inv-ov *{box-sizing:border-box}' +
     '#inv-ov .lat{position:absolute;inset:0;opacity:.09;background-image:repeating-linear-gradient(45deg,' + C.gold + ' 0 1px,transparent 1px 48px),repeating-linear-gradient(-45deg,' + C.gold + ' 0 1px,transparent 1px 48px)}' +
     '#inv-ov .rays{position:absolute;left:50%;top:-30vh;width:160vmax;height:160vmax;margin-left:-80vmax;opacity:.08;background:repeating-conic-gradient(from 0deg at 50% 50%,' + C.gold + ' 0 2deg,transparent 2deg 9deg);-webkit-mask:radial-gradient(circle at 50% 50%,#000 0,transparent 45%);mask:radial-gradient(circle at 50% 50%,#000 0,transparent 45%)}' +
@@ -60,7 +60,7 @@
     '#inv-ov .inner{position:relative;width:100%;height:100%;border-radius:4px;perspective:1400px}' +
     '#inv-ov .liner{position:absolute;inset:0;border-radius:4px;background:' + C.maroon + ';overflow:hidden}' +
     '#inv-ov .liner:after{content:"";position:absolute;inset:0;opacity:.25;background-image:repeating-linear-gradient(45deg,' + C.gold + ' 0 1px,transparent 1px 16px),repeating-linear-gradient(-45deg,' + C.gold + ' 0 1px,transparent 1px 16px)}' +
-    '#inv-ov .card{position:absolute;left:8%;right:8%;top:6%;height:88%;background:' + C.ivory + ';border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4%;gap:1.2cqw;container-type:inline-size;box-shadow:0 -4px 14px rgba(40,0,6,.3);transition:transform 1s ' + OUT + '}' +
+    '#inv-ov .card{position:absolute;left:8%;right:8%;top:6%;height:88%;background:' + C.ivory + ';border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4%;gap:1.2cqw;container-type:inline-size;box-shadow:0 -4px 14px rgba(40,0,6,.3);transition:transform .8s ' + OUT + '}' +
     '#inv-ov .card .gan{width:15cqw;border-width:2px}' +
     '#inv-ov .card .sh{font-family:"Tiro Devanagari Hindi",serif;color:#B05A00;font-size:4.6cqw}' +
     '#inv-ov .card .nm{font-family:"Great Vibes",cursive;color:' + C.maroon + ';font-size:10cqw;line-height:1.1}' +
@@ -73,14 +73,14 @@
     '#inv-ov .pocket{position:absolute;inset:0;border-radius:4px;background:' + C.ivory + ';clip-path:polygon(0 0,50% 54%,100% 0,100% 100%,0 100%);filter:drop-shadow(0 -2px 3px rgba(60,20,0,.25))}' +
     '#inv-ov .pocket:before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 54%,rgba(200,140,60,.10) 0 3deg,transparent 3deg 9deg)}' +
     '#inv-ov .pocket:after{content:"";position:absolute;inset:0;background:linear-gradient(to top right,transparent 49.6%,rgba(160,100,40,.18) 50%,transparent 50.4%),linear-gradient(to top left,transparent 49.6%,rgba(160,100,40,.18) 50%,transparent 50.4%)}' +
-    '#inv-ov .flap{position:absolute;left:0;top:0;right:0;height:100%;transform-origin:50% 0;transition:transform 1s ' + EASE + ',filter 1s;z-index:4}' +
+    '#inv-ov .flap{position:absolute;left:0;top:0;right:0;height:100%;transform-origin:50% 0;transition:transform .65s ' + EASE + ',filter .65s;z-index:4}' +
     '#inv-ov .flap div{position:absolute;inset:0;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#9A1628,' + C.maroon + ');clip-path:polygon(0 0,100% 0,50% 56%);filter:drop-shadow(0 3px 3px rgba(30,0,5,.4))}' +
     '#inv-ov.open .flap{transform:rotateX(180deg);filter:brightness(.8)}' +
     '#inv-ov.flapback .flap{z-index:-1}' +
-    '#inv-ov .seal{position:absolute;left:50%;top:56%;width:18%;aspect-ratio:1;margin:-9% 0 0 -9%;z-index:5;transition:transform .6s ' + OUT + ',opacity .6s,filter .6s}' +
+    '#inv-ov .seal{position:absolute;left:50%;top:56%;width:18%;aspect-ratio:1;margin:-9% 0 0 -9%;z-index:5;transition:transform .4s ' + OUT + ',opacity .4s,filter .4s}' +
     '#inv-ov .wax{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#FFE09A,' + C.orange + ' 55%,#C47A00 100%);box-shadow:0 8px 18px rgba(50,0,8,.5),inset 0 -4px 8px rgba(120,60,0,.35);display:flex;align-items:center;justify-content:center;position:relative;font-family:"Great Vibes",cursive;font-size:min(5.6vw,32px,4vh);color:' + C.maroon + '}' +
     '#inv-ov .wax:before{content:"";position:absolute;inset:10%;border-radius:50%;border:1px dashed rgba(122,13,29,.45)}' +
-    '#inv-ov .seal.press{animation:inv-press .35s ' + EASE + '}' +
+    '#inv-ov .seal.press{animation:inv-press .25s ' + EASE + '}' +
     '@keyframes inv-press{50%{transform:scale(.86)}}' +
     '#inv-ov.melt .seal{transform:scale(1.25);opacity:0;filter:blur(6px)}' +
     '#inv-ov .ring,#inv-ov .rip{position:absolute;left:50%;top:56%;width:18%;aspect-ratio:1;margin:-9% 0 0 -9%;border-radius:50%;pointer-events:none;z-index:5}' +

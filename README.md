@@ -54,12 +54,12 @@ invitation over the site: a beaded toran, falling petals, the couple's
 monogram, and a gold-framed envelope sealed with an A&S wax seal. Tapping
 the envelope (or "Open Invitation"):
 
-1. presses and melts the seal (0–0.75s)
-2. opens the flap (0.75–1.75s)
+1. presses and melts the seal (0–0.6s)
+2. opens the flap (0.45–1.1s)
 3. lifts the invitation card — Ganesha, ॥ श्री गणेशाय नमः ॥, the names —
-   out of the envelope (1.6–2.6s), then holds a beat
+   out of the envelope (0.95–1.75s), then holds a short beat
 4. fades and gently scales the overlay away while the homepage fades in
-   and settles underneath it (3.9–4.7s), then removes the overlay
+   and settles underneath it (2.25–2.9s), then removes the overlay
 
 Music starts on the tap itself (browsers only allow unmuted audio inside
 the gesture). The overlay's text comes from `intro` (`tagline`,

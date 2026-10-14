@@ -37,18 +37,11 @@
     '#inv-ov *{box-sizing:border-box}' +
     '#inv-ov .lat{position:absolute;inset:0;opacity:.09;background-image:repeating-linear-gradient(45deg,' + C.gold + ' 0 1px,transparent 1px 48px),repeating-linear-gradient(-45deg,' + C.gold + ' 0 1px,transparent 1px 48px)}' +
     '#inv-ov .rays{position:absolute;left:50%;top:-30vh;width:160vmax;height:160vmax;margin-left:-80vmax;opacity:.08;background:repeating-conic-gradient(from 0deg at 50% 50%,' + C.gold + ' 0 2deg,transparent 2deg 9deg);-webkit-mask:radial-gradient(circle at 50% 50%,#000 0,transparent 45%);mask:radial-gradient(circle at 50% 50%,#000 0,transparent 45%)}' +
-    '#inv-ov .toran{position:absolute;left:0;right:0;top:0;height:7px;background:linear-gradient(' + C.deep + ',#560915);border-bottom:1.5px solid ' + C.gold + ';z-index:3;--b:clamp(9px,2.1vw,15px)}' +
-    '#inv-ov .tassels{position:absolute;left:0;right:0;top:100%;display:flex;justify-content:space-between;padding:0 2vw}' +
-    '#inv-ov .str{display:flex;flex-direction:column;align-items:center;transform-origin:50% 0;animation:inv-swing 3.4s ease-in-out infinite}' +
-    '#inv-ov .str:before{content:"";width:1px;height:4px;background:' + C.gold + '}' +
-    '#inv-ov .str i{display:block;width:var(--b);height:var(--b);border-radius:50%;margin-top:calc(var(--b) * -0.12);background:radial-gradient(circle at 35% 30%,#FFE08A,var(--c) 60%,#B85A00 100%);box-shadow:0 1px 2px rgba(60,10,0,.35)}' +
-    '#inv-ov .str b{display:block;width:calc(var(--b) * .55);height:calc(var(--b) * .55);margin-top:2px;background:' + C.gold + ';transform:rotate(45deg)}' +
-    '@keyframes inv-swing{0%,100%{transform:rotate(-3deg)}50%{transform:rotate(3deg)}}' +
     '#inv-ov .pt{position:absolute;top:-40px;border-radius:60% 0 60% 0;opacity:.55;animation:inv-fall linear infinite}' +
     '@keyframes inv-fall{to{transform:translate3d(30px,110vh,0) rotate(540deg)}}' +
     '#inv-ov .skyline{position:absolute;left:0;right:0;bottom:0;height:18vh;display:flex;align-items:flex-end;justify-content:center;gap:1.5vw;opacity:.22;pointer-events:none}' +
     '#inv-ov .skyline i{display:block;background:#4A0610}' +
-    '#inv-ov .col{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.8vh,22px);padding:calc(clamp(9px,2.1vw,15px) * 5 + 28px) 0 3vh;z-index:2}' +
+    '#inv-ov .col{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.8vh,22px);padding:3vh 0;z-index:2}' +
     '#inv-ov .top{display:flex;flex-direction:column;align-items:center;gap:clamp(2px,.6vh,6px);text-align:center;transition:opacity .4s,transform .5s ' + OUT + '}' +
     '#inv-ov .gan{width:clamp(44px,7vh,64px);aspect-ratio:118/146;border-radius:50% 50% 8px 8px/40% 40% 8px 8px;border:3px solid ' + C.orange + ';overflow:hidden;background:#fff;box-shadow:0 4px 12px rgba(40,0,6,.4)}' +
     '#inv-ov .gan img{width:100%;height:100%;object-fit:cover;display:block}' +
@@ -96,15 +89,9 @@
     '@keyframes inv-glow{0%,100%{box-shadow:0 8px 20px rgba(40,0,6,.4),0 0 0 0 rgba(246,198,107,.5),inset 0 1px 0 rgba(255,255,255,.6)}50%{box-shadow:0 8px 20px rgba(40,0,6,.4),0 0 0 10px rgba(246,198,107,0),inset 0 1px 0 rgba(255,255,255,.6)}}' +
     '#inv-ov.tapped .below,#inv-ov.tapped .top{opacity:0;transform:translateY(12px)}#inv-ov.tapped .ring{opacity:0;animation:none}' +
     '#inv-ov.gone{opacity:0;transform:scale(1.25);pointer-events:none}' +
-    '@media (prefers-reduced-motion:reduce){#inv-ov .pt,#inv-ov .env,#inv-ov .str,#inv-ov .btn,#inv-ov .ring{animation:none}}';
+    '@media (prefers-reduced-motion:reduce){#inv-ov .pt,#inv-ov .env,#inv-ov .btn,#inv-ov .ring{animation:none}}';
 
   function build(o) {
-    var tassels = '', lens = [5, 3, 4, 2, 4, 3, 5, 3, 4, 2, 4, 3, 5, 3, 4, 2, 4, 3, 5];
-    for (var t = 0; t < lens.length; t++) {
-      var beads = '';
-      for (var k = 0; k < lens[t]; k++) beads += '<i style="--c:' + (k % 2 ? '#FFB81C' : '#F08A00') + '"></i>';
-      tassels += '<div class="str" style="animation-delay:-' + (t * 0.31).toFixed(2) + 's">' + beads + '<b></b></div>';
-    }
     var petals = '', pcols = [C.orange, C.gold, '#E0566A'];
     var rnd = function (i, k) { var x = Math.sin(i * 127.1 + k * 311.7) * 43758.5453; return x - Math.floor(x); };
     for (var i = 0; i < 20; i++) {
@@ -117,7 +104,6 @@
 
     return '<div class="rays"></div><div class="lat"></div>' + petals +
       '<div class="skyline">' + sky + '</div>' +
-      '<div class="toran"><div class="tassels">' + tassels + '</div></div>' +
       '<div class="col">' +
         '<div class="top"><div class="ttag">' + esc(o.tagline) + '</div><div class="tmono">' + esc(o.monogram) + '</div><div class="tname">' + esc(o.names) + '</div><div class="tsub">' + esc(o.subtitle) + '</div></div>' +
         '<div class="env" role="button" tabindex="0" aria-label="' + esc(o.tapHint) + '"><div class="frame"><div class="inner">' +

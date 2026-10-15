@@ -80,18 +80,7 @@
     "contactName": "The Family",
     "contactPhone": ""
   },
-  "accommodations": [
-    {
-      "name": "Taj Palace",
-      "notes": "A block of rooms is held under 'Anushka & Saurabh Wedding' until 20 November 2026.",
-      "link": ""
-    },
-    {
-      "name": "Taj Krishna",
-      "notes": "10 minutes from the venue, recommended for families.",
-      "link": ""
-    }
-  ],
+  "accommodations": [],
   "registry": {
     "enabled": false,
     "note": "Your presence is the only present we need. If you'd still like to send something, a small note is below.",

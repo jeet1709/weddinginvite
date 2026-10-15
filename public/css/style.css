@@ -770,27 +770,20 @@ section {
   opacity: 0.65;
   margin-bottom: 0.1rem;
 }
-/* Dress-code colour palette: swatch + name, wrapping in rows. Each dot has
-   an ivory ring so the dark colours (wine, navy) still read on the red. */
+/* Dress-code colour palette: plain swatches (names are in title/aria-label
+   only). Each dot has an ivory ring so dark colours still read on the red. */
 .festivity-palette {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  gap: 0.55rem 0.7rem;
-  margin: -0.1rem 0 0.75rem;
+  flex-wrap: nowrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  padding: 2px; /* room for the ring */
 }
-.palette-chip {
-  display: inline-flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.72rem;
-  letter-spacing: 0.04em;
-  color: #fff4d6;
-}
+/* one row however many colours: each dot shrinks below 30px if needed */
 .palette-dot {
-  width: 30px;
-  height: 30px;
+  flex: 0 1 30px;
+  min-width: 0;
+  aspect-ratio: 1;
   border-radius: 50%;
   box-shadow: 0 0 0 2px rgba(255,244,214,0.9), 0 3px 8px rgba(0,0,0,0.35);
 }

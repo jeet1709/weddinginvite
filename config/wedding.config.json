@@ -52,7 +52,28 @@
       "time": "2:30 PM onwards",
       "title": "Haldi, Games & Dance",
       "location": "Community Center, IIT Roorkee",
-      "dressCode": "Yellow, Orange, Pink, Lavender, Mint Green, Peach",
+      "palette": [
+        {
+          "name": "Yellow",
+          "color": "#f7c948"
+        },
+        {
+          "name": "Orange",
+          "color": "#f28c28"
+        },
+        {
+          "name": "Pink",
+          "color": "#f08bb0"
+        },
+        {
+          "name": "Lavender",
+          "color": "#b9a3e3"
+        },
+        {
+          "name": "Mint Green",
+          "color": "#a8e6cf"
+        }
+      ],
       "quote": "Turmeric, laughter and the very first blessings.",
       "art": "assets/scenes/haldi.jpg",
       "artText": "top",
@@ -62,10 +83,9 @@
       "id": "wedding",
       "date": "2026-12-05",
       "time": "3:30 PM",
-      "title": "Baarat & Phere",
-      "subtitle": "Baarat, Jaimala & Saat Phere",
+      "title": "Baraat & Phere",
+      "subtitle": "Baraat, Jaimala & Saat Phere",
       "location": "Community Center, IIT Roorkee",
-      "dressCode": "Traditional",
       "palette": [
         {
           "name": "Wine",

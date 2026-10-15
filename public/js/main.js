@@ -160,6 +160,7 @@
     wrap.innerHTML = items.map((item, i) => {
       const icon = FESTIVITY_ICONS[item.id] || FESTIVITY_ICONS.default;
       const dateLabel = formatDisplayDate(item.date, { weekday: 'long', day: 'numeric', month: 'long' });
+      const hasPalette = Array.isArray(item.palette) && item.palette.length > 0;
       const label = `
               <p class="festivity-title">${escapeHtml(item.title || '')}</p>
               ${item.subtitle ? `<p class="festivity-subtitle">${escapeHtml(item.subtitle)}</p>` : ''}
@@ -185,8 +186,7 @@
               <p class="festivity-back-title">${escapeHtml(item.title || '')}</p>
               <p class="festivity-back-row"><strong>When</strong>${escapeHtml(dateLabel)} · ${escapeHtml(item.time || '')}</p>
               ${item.location ? `<p class="festivity-back-row"><strong>Where</strong>${escapeHtml(item.location)}</p>` : ''}
-              ${item.dressCode ? `<p class="festivity-back-row"><strong>Dress Code</strong>${escapeHtml(item.dressCode)}</p>` : ''}
-              ${Array.isArray(item.palette) && item.palette.length ? `<div class="festivity-palette" aria-label="Colour palette">${item.palette.map((c) => `<span class="palette-chip"><span class="palette-dot" style="background:${escapeAttr(c.color)}"></span>${escapeHtml(c.name || '')}</span>`).join('')}</div>` : ''}
+              ${item.dressCode || hasPalette ? `<div class="festivity-back-row"><strong>Dress Code</strong>${item.dressCode ? escapeHtml(item.dressCode) : ''}${hasPalette ? `<div class="festivity-palette" role="list" aria-label="Colour palette">${item.palette.map((c) => `<span class="palette-dot" role="listitem" title="${escapeAttr(c.name || '')}" aria-label="${escapeAttr(c.name || c.color)}" style="background:${escapeAttr(c.color)}"></span>`).join('')}</div>` : ''}</div>` : ''}
               ${item.quote ? `<p class="festivity-quote">${escapeHtml(item.quote)}</p>` : ''}
             </div>
           </div>

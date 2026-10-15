@@ -59,7 +59,7 @@
     '#inv-ov .card{position:absolute;left:8%;right:8%;top:6%;height:88%;background:' + C.ivory + ';border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4%;gap:1.2cqw;container-type:inline-size;box-shadow:0 -4px 14px rgba(40,0,6,.3);transition:transform 1.15s cubic-bezier(.42,0,.2,1)}' +
     '#inv-ov .card .gan{width:15cqw;border-width:2px}' +
     '#inv-ov .card .sh{font-family:"Tiro Devanagari Hindi",serif;color:#B05A00;font-size:4.6cqw}' +
-    '#inv-ov .card .nm{font-family:Parisienne,cursive;color:' + C.maroon + ';font-size:10cqw;line-height:1.1}' +
+    '#inv-ov .card .nm{font-family:"Great Vibes",cursive;color:' + C.maroon + ';font-size:10cqw;line-height:1.1}' +
     '#inv-ov .card .r{display:flex;align-items:center;gap:8px}#inv-ov .card .r i{width:44px;height:1px;background:' + C.orange + '}#inv-ov .card .r b{width:7px;height:7px;background:' + C.orange + ';transform:rotate(45deg)}' +
     '#inv-ov.risen .card{transform:translateY(-' + RISE * 100 + '%)}' +
     '#inv-ov .pocket{position:absolute;inset:0;border-radius:4px;background:' + C.ivory + ';clip-path:polygon(0 30%,50% 57%,100% 30%,100% 100%,0 100%);filter:drop-shadow(0 -2px 3px rgba(60,20,0,.25))}' +

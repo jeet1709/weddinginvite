@@ -69,10 +69,12 @@
     '#inv-ov .flap .face:before{content:"";position:absolute;inset:0;border-radius:inherit;background:linear-gradient(180deg,#9A1628,' + C.maroon + ');clip-path:polygon(0 0,100% 0,100% 30%,50% 60%,0 30%)}' +
     '#inv-ov .flap .back{transform:rotateX(180deg)}' +
     '#inv-ov .flap .back:before{background:linear-gradient(0deg,#6E0A18,#560915);clip-path:polygon(0 100%,100% 100%,100% 70%,50% 40%,0 70%)}' +
-    '#inv-ov .ftext{position:relative;display:flex;flex-direction:column;align-items:center;gap:.9cqw;padding-top:4cqw;text-align:center}' +
-    '#inv-ov .ttag{font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.7cqw;line-height:1.2}' +
-    '#inv-ov .tmono{font-family:"Great Vibes",cursive;color:' + C.white + ';font-size:9.5cqw;line-height:1.05;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
-    '#inv-ov .tname{font-family:Marcellus,serif;color:' + C.gold + ';font-size:2.9cqw;letter-spacing:.3em;text-transform:uppercase;line-height:1.3}' +
+    '#inv-ov .ftext{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:4.6cqw;text-align:center;line-height:1}' +
+    '#inv-ov .ttag{display:flex;align-items:center;gap:2cqw;font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.4cqw;letter-spacing:.02em}' +
+    '#inv-ov .ttag:before,#inv-ov .ttag:after{content:"";width:7cqw;height:1px;background:linear-gradient(90deg,transparent,' + C.gold + ')}#inv-ov .ttag:after{transform:scaleX(-1)}' +
+    '#inv-ov .tmono{margin:2.8cqw 0 1.8cqw;font-family:"Great Vibes",cursive;color:' + C.white + ';font-size:11cqw;line-height:.9;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
+    '#inv-ov .tname{display:flex;flex-direction:column;align-items:center;gap:1.6cqw;font-family:Marcellus,serif;color:' + C.gold + ';font-size:2.7cqw;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase}' +
+    '#inv-ov .tname:before{content:"";width:5cqw;height:5cqw;max-width:9px;max-height:9px;background:' + C.gold + ';transform:rotate(45deg) scale(.55)}' +
     '#inv-ov.open .flap{transform:rotateX(180deg)}' +
     '#inv-ov.flapback .flap{z-index:-1}' +
     '#inv-ov .seal{position:absolute;left:50%;top:60%;width:15%;aspect-ratio:1;margin:-7.5% 0 0 -7.5%;z-index:5;transition:transform .4s ' + OUT + ',opacity .4s,filter .4s}' +

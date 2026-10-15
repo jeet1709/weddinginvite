@@ -101,6 +101,14 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   font-size: clamp(1.8rem, 4vw, 2.6rem);
   margin-bottom: 1rem;
   color: #fff4d6;
+  text-shadow: 0 2px 6px rgba(40,0,6,0.45);
+}
+/* "Our Story": gold, larger, with a soft glow */
+.section-title-highlight {
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  color: #ffd77a;
+  text-shadow: 0 2px 6px rgba(40,0,6,0.5), 0 0 22px rgba(244,163,0,0.45);
+  margin-bottom: 0.5rem;
 }
 
 /* ============ Live falling petals ============ */
@@ -230,7 +238,7 @@ body.intro-open .mute-toggle {
 .nav-links a:hover { color: var(--color-accent); }
 
 /* ---- Hero: the invitation in a gold-lined arch ---- */
-.hero { position: relative; width: 100%; padding: 2.25rem 1rem 3rem; }
+.hero { position: relative; width: 100%; padding: 2.25rem 1rem 1.5rem; }
 .arch {
   position: relative;
   max-width: 560px;
@@ -467,9 +475,19 @@ body.intro-open .mute-toggle {
 
 /* ---- Generic section spacing ---- */
 section {
-  padding: 5.5rem 1.5rem;
+  padding: 2.5rem 1.5rem 2.75rem;
   max-width: var(--max-width);
   margin: 0 auto;
+}
+/* A small gold rule-diamond-rule between sections, so the breaks read as
+   deliberate rather than as empty red space. */
+.site-content > section::before {
+  content: '';
+  display: block;
+  width: min(220px, 60%);
+  height: 12px;
+  margin: 0 auto 2.25rem;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 220 12' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='l'%3E%3Cstop offset='0' stop-color='%23f4a300' stop-opacity='0'/%3E%3Cstop offset='1' stop-color='%23f4a300'/%3E%3C/linearGradient%3E%3ClinearGradient id='r'%3E%3Cstop offset='0' stop-color='%23f4a300'/%3E%3Cstop offset='1' stop-color='%23f4a300' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect x='0' y='5.5' width='96' height='1' fill='url(%23l)'/%3E%3Crect x='124' y='5.5' width='96' height='1' fill='url(%23r)'/%3E%3Cpath d='M110 0 L116 6 L110 12 L104 6Z' fill='%23f4a300'/%3E%3Ccircle cx='100' cy='6' r='1.3' fill='%23f4a300'/%3E%3Ccircle cx='120' cy='6' r='1.3' fill='%23f4a300'/%3E%3C/svg%3E") center / 100% 100% no-repeat;
 }
 
 /* ---- Countdown ---- */
@@ -579,7 +597,7 @@ section {
 
 /* ---- Couple photo card ---- */
 .photo-card {
-  margin: 2rem auto 2.25rem;
+  margin: 1rem auto 1.75rem;
   max-width: 340px;
 }
 .photo-frame {
@@ -872,7 +890,7 @@ section {
 
 @media (max-width: 560px) {
   body { font-size: 17px; }
-  section { padding: 4rem 1.25rem; }
+  section { padding: 2rem 1.25rem 2.25rem; }
   .site-nav { padding: 0.75rem 1rem; }
   .nav-links { gap: 0.9rem; }
   .festivity-card { height: 300px; }

@@ -5,6 +5,7 @@
 
      InvitationOverlay.show({
        ganesha, monogram, names, tagline, subtitle, headline, tapHint,
+       buttonLabel,
        onTap,     // called synchronously inside the tap — start music here,
                   // browsers only allow unmuted audio within the gesture
        onReveal,  // overlay starts fading: reveal the site underneath now,
@@ -89,10 +90,11 @@
     '#inv-ov .below{display:flex;flex-direction:column;align-items:center;gap:clamp(6px,1.4vh,14px);text-align:center;transition:opacity .4s,transform .5s ' + OUT + '}' +
     '#inv-ov .div{display:flex;align-items:center;gap:10px;color:' + C.gold + ';font-size:11px;letter-spacing:.5em}#inv-ov .div i{width:56px;height:1px;background:' + C.gold + ';opacity:.6}' +
     '#inv-ov .yi{font-family:"Great Vibes",cursive;color:' + C.white + ';font-size:clamp(42px,7.4vh,72px);line-height:1;text-shadow:0 3px 14px rgba(40,0,6,.4)}' +
-    '#inv-ov .tip{color:' + C.gold + ';font-size:clamp(10px,1.4vh,13px);letter-spacing:.38em;text-transform:uppercase;padding:0 8vw}' +
+    '#inv-ov .btn{margin-top:6px;border:0;cursor:pointer;border-radius:999px;padding:clamp(12px,1.8vh,16px) clamp(34px,7vw,56px);background:linear-gradient(180deg,#FFD98A,' + C.orange + ' 60%,#D88900);color:' + C.maroon + ';font-family:Marcellus,serif;font-size:clamp(12px,1.6vh,15px);letter-spacing:.32em;text-transform:uppercase;box-shadow:0 8px 20px rgba(40,0,6,.4),inset 0 1px 0 rgba(255,255,255,.6);animation:inv-glow 2.2s ease-in-out infinite}' +
+    '@keyframes inv-glow{0%,100%{box-shadow:0 8px 20px rgba(40,0,6,.4),0 0 0 0 rgba(246,198,107,.5),inset 0 1px 0 rgba(255,255,255,.6)}50%{box-shadow:0 8px 20px rgba(40,0,6,.4),0 0 0 10px rgba(246,198,107,0),inset 0 1px 0 rgba(255,255,255,.6)}}' +
     '#inv-ov.tapped .below{opacity:0;transform:translateY(12px)}#inv-ov.tapped .ring{opacity:0;animation:none}' +
     '#inv-ov.gone{opacity:0;transform:scale(1.25);pointer-events:none}' +
-    '@media (prefers-reduced-motion:reduce){#inv-ov .pt,#inv-ov .env,#inv-ov .ring{animation:none}}';
+    '@media (prefers-reduced-motion:reduce){#inv-ov .pt,#inv-ov .env,#inv-ov .ring,#inv-ov .btn{animation:none}}';
 
   function build(o) {
     var petals = '', pcols = [C.orange, C.gold, '#E0566A'];
@@ -118,7 +120,7 @@
         '<div class="below">' +
           '<div class="div"><i></i>✦ ✦ ✦<i></i></div>' +
           '<div class="yi">' + esc(o.headline) + '</div>' +
-          '<div class="tip">' + esc(o.tapHint) + '</div>' +
+          '<button class="btn" type="button">' + esc(o.buttonLabel) + '</button>' +
         '</div>' +
       '</div>';
   }
@@ -126,7 +128,7 @@
   var DEFAULTS = {
     ganesha: '', monogram: 'A & S', names: 'Anushka & Saurabh',
     tagline: 'A little love. A little filmy.', subtitle: 'An invitation to our forever',
-    headline: 'You’re Invited', tapHint: 'Tap the envelope to break the seal',
+    headline: 'You’re Invited', tapHint: 'Tap the envelope to break the seal', buttonLabel: 'Open Invitation',
   };
 
   function show(opts) {
@@ -196,6 +198,7 @@
 
     var env = el.querySelector('.env');
     env.addEventListener('click', open);
+    el.querySelector('.btn').addEventListener('click', open);
     env.addEventListener('keydown', function (e) {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }
     });

@@ -319,6 +319,7 @@
       subtitle: intro.subtitle,
       headline: intro.headline,
       tapHint: intro.tapHint,
+      buttonLabel: intro.buttonLabel,
       onTap: () => { if (music) music.play().catch(() => { /* autoplay declined; silent */ }); },
       onReveal: reveal,
     });

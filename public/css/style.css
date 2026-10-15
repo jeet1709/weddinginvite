@@ -593,7 +593,7 @@ section {
 
 /* ---- Story ---- */
 .story-section { text-align: center; }
-.story-text { font-size: 1.25rem; font-style: italic; font-weight: 600; color: #fff4d6; }
+.story-text { font-size: 1.25rem; font-style: italic; font-weight: 600; color: #fff4d6; margin-bottom: 0; }
 
 /* ---- Couple photo card ---- */
 .photo-card {

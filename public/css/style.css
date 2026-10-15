@@ -882,6 +882,8 @@ section {
   text-align: center;
   padding: 2.5rem 1.5rem 3rem;
   color: #fff4d6;
+  /* the warm gold glow the Om sat in on the earlier footer band */
+  background: radial-gradient(ellipse 60% 220px at 50% 150px, rgba(244,163,0,0.25), transparent 70%);
 }
 .footer-om {
   display: block;
@@ -903,7 +905,7 @@ section {
     0 0 0 6px rgba(255,255,255,0.35),
     0 0 0 8px rgba(244,163,0,0.45);
 }
-.footer-names { font-family: var(--font-script); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
+.footer-names { font-family: var(--font-monogram); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
 .footer-hashtag { color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
 .footer-note { color: rgba(255,244,214,0.6); font-style: italic; font-size: 0.9rem; }
 

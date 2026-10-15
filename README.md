@@ -88,7 +88,7 @@ press Enter. The countdown stays in the page underneath for screen
 readers.
 
 Background music (`intro.musicUrl`,
-`public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
+`public/assets/media/song.mp3`) starts on the same tap gesture
 that opens the envelope — calling `.play()` synchronously inside that click
 handler is what lets browsers allow audio to start unmuted without a
 separate permission prompt. The `<audio>` element and the mute button
@@ -109,7 +109,7 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
 | `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
-| `media/jashn-e-bahaara.mp3` | Background music (`intro.musicUrl`) |
+| `media/song.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining homepage ornament — the red damask ground, the falling petals,
 the rose sprays and gold hairlines on the opening envelope — is drawn in

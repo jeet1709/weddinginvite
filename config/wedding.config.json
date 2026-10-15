@@ -41,7 +41,10 @@
     "mapQuery": "Community Center IIT Roorkee",
     "countdownLabel": "Counting down to our forever"
   },
-  "story": "Our best college project? Each other. Our final submission? A lifetime together.",
+  "story": [
+    "Our best college project? Each other.",
+    "Our final submission? A lifetime together."
+  ],
   "schedule": [
     {
       "id": "haldi",

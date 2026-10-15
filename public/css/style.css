@@ -593,7 +593,19 @@ section {
 
 /* ---- Story ---- */
 .story-section { text-align: center; }
-.story-text { font-size: 1.25rem; font-style: italic; font-weight: 600; color: #fff4d6; margin-bottom: 0; }
+.story-text { margin: 0 auto; max-width: 30rem; }
+.story-line { display: block; font-size: 1.3rem; line-height: 1.45; color: #fff4d6; }
+.story-line + .story-line { margin-top: 0.9rem; }
+.story-q { font-style: italic; font-weight: 500; color: rgba(255,244,214,0.92); }
+.story-a {
+  display: inline-block;
+  font-weight: 700;
+  color: #ffd77a;
+  text-shadow: 0 1px 2px rgba(40,0,6,0.5);
+}
+@media (max-width: 420px) {
+  .story-line { font-size: 1.2rem; }
+}
 
 /* ---- Couple photo card ---- */
 .photo-card {
@@ -630,8 +642,8 @@ section {
   margin-top: 1rem;
   font-family: var(--font-body);
   font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: 0.08em;
+  font-size: clamp(1.9rem, 7.5vw, 2.4rem);
+  letter-spacing: 0.04em;
   color: #ffd77a;
   text-shadow: 0 1px 2px rgba(40,0,6,0.55), 0 0 14px rgba(244,163,0,0.35);
 }

@@ -115,11 +115,24 @@
   }
 
   function populateStory(cfg) {
-    const hasStory = cfg.story && cfg.story.trim();
+    // `story` is a string or an array of lines. Each line renders on its
+    // own row; a "Question? Answer." line is split so the answer can be
+    // set apart from the question.
+    const lines = (Array.isArray(cfg.story) ? cfg.story : [cfg.story || ''])
+      .map((l) => String(l).trim()).filter(Boolean);
+    const hasStory = lines.length > 0;
     const photo = cfg.couple && cfg.couple.photo;
 
-    if (hasStory) $('#storyText').textContent = cfg.story;
-    else $('#storyText').hidden = true;
+    if (hasStory) {
+      $('#storyText').innerHTML = lines.map((line) => {
+        const m = /^(.*?\?)\s+(.+)$/.exec(line);
+        return m
+          ? `<span class="story-line"><span class="story-q">${escapeHtml(m[1])}</span> <span class="story-a">${escapeHtml(m[2])}</span></span>`
+          : `<span class="story-line">${escapeHtml(line)}</span>`;
+      }).join('');
+    } else {
+      $('#storyText').hidden = true;
+    }
 
     if (photo) {
       const img = $('#couplePhoto');

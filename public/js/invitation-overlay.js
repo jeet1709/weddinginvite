@@ -23,6 +23,9 @@
   var C = { site: '#B21E30', deep: '#6B0C18', maroon: '#7E0D1D', orange: '#F5A300', gold: '#F6C66B', ivory: '#F8EEDC', white: '#FFF8EE' };
   var EASE = 'cubic-bezier(.65,0,.35,1)', OUT = 'cubic-bezier(.22,1,.36,1)';
 
+  // How far the card rises out of the envelope, as a fraction of its own height.
+  var RISE = 0.8;
+
   var T = { melt: 220, open: 450, flapBack: 800, rise: 950, reveal: 2250, remove: 2900 };
 
   function esc(s) {
@@ -43,7 +46,7 @@
     '#inv-ov .col{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(8px,1.8vh,22px);padding:3vh 0;z-index:2}' +
     '#inv-ov .gan{width:clamp(44px,7vh,64px);aspect-ratio:118/146;border-radius:50% 50% 8px 8px/40% 40% 8px 8px;border:3px solid ' + C.orange + ';overflow:hidden;background:#fff;box-shadow:0 4px 12px rgba(40,0,6,.4)}' +
     '#inv-ov .gan img{width:100%;height:100%;object-fit:cover;display:block}' +
-    '#inv-ov .env{position:relative;width:min(92vw,620px,calc((100vh - 230px) * 1.42));aspect-ratio:1.42;container-type:inline-size;cursor:pointer;perspective:1400px;animation:inv-float 3.9s ease-in-out infinite;outline:none}' +
+    '#inv-ov .env{position:relative;width:min(92vw,620px,calc((100vh - 230px) * 1.42));aspect-ratio:1.42;container-type:inline-size;cursor:pointer;perspective:1400px;animation:inv-float 3.9s ease-in-out infinite;outline:none;transition:transform .7s ' + OUT + '}' +
     '@media (max-aspect-ratio:3/4){#inv-ov .env{aspect-ratio:1.25;width:min(92vw,calc((100vh - 230px) * 1.25))}}' +
     '#inv-ov .env:focus-visible .frame{box-shadow:0 22px 50px rgba(40,0,6,.5),0 0 0 3px ' + C.gold + '}' +
     '@keyframes inv-float{0%,100%{translate:0 -5px}50%{translate:0 5px}}' +
@@ -57,7 +60,7 @@
     '#inv-ov .card .sh{font-family:"Tiro Devanagari Hindi",serif;color:#B05A00;font-size:4.6cqw}' +
     '#inv-ov .card .nm{font-family:"Great Vibes",cursive;color:' + C.maroon + ';font-size:10cqw;line-height:1.1}' +
     '#inv-ov .card .r{display:flex;align-items:center;gap:8px}#inv-ov .card .r i{width:44px;height:1px;background:' + C.orange + '}#inv-ov .card .r b{width:7px;height:7px;background:' + C.orange + ';transform:rotate(45deg)}' +
-    '#inv-ov.risen .card{transform:translateY(-80%)}' +
+    '#inv-ov.risen .card{transform:translateY(-' + RISE * 100 + '%)}' +
     '#inv-ov .pocket{position:absolute;inset:0;border-radius:4px;background:' + C.ivory + ';clip-path:polygon(0 30%,50% 57%,100% 30%,100% 100%,0 100%);filter:drop-shadow(0 -2px 3px rgba(60,20,0,.25))}' +
     '#inv-ov .pocket:before{content:"";position:absolute;inset:0;background:repeating-conic-gradient(from 0deg at 50% 57%,rgba(200,140,60,.10) 0 3deg,transparent 3deg 9deg)}' +
     '#inv-ov .flap{position:absolute;left:0;top:0;right:0;height:100%;transform-origin:50% 0;transform-style:preserve-3d;transition:transform .65s ' + EASE + ';z-index:4}' +
@@ -146,6 +149,28 @@
     el.innerHTML = build(o);
     var started = false;
 
+    // The risen card sticks out above the envelope by most of its own
+    // height, which on short phones (and wide desktops, where the envelope
+    // is large) would push it past the top of the screen. At tap time,
+    // measure where envelope + risen card will sit, then slide the
+    // envelope down — and shrink it if the pair is taller than the screen —
+    // so both are fully visible, centred in the viewport. The text below
+    // the envelope fades out at the same moment, freeing that space.
+    function fitRisenCard() {
+      var env = el.querySelector('.env');
+      var card = el.querySelector('.card');
+      var e = env.getBoundingClientRect();
+      var c = card.getBoundingClientRect();
+      var margin = Math.max(12, window.innerHeight * 0.03);
+      var top = Math.min(e.top, c.top - c.height * RISE);
+      var bottom = e.bottom;
+      var scale = Math.min(1, (window.innerHeight - 2 * margin) / (bottom - top));
+      var originY = ((top + bottom) / 2 - e.top);
+      var dy = window.innerHeight / 2 - (top + bottom) / 2;
+      env.style.transformOrigin = '50% ' + originY + 'px';
+      env.style.transform = 'translateY(' + dy.toFixed(1) + 'px) scale(' + scale.toFixed(3) + ')';
+    }
+
     function open() {
       if (started) return;
       started = true;
@@ -156,6 +181,7 @@
       var at = function (ms, fn) { setTimeout(fn, ms); };
       var go = function () {
         el.classList.add('tapped');
+        fitRisenCard();
         el.querySelector('.seal').classList.add('press');
         el.querySelector('.rip').classList.add('go');
         at(T.melt, function () { el.classList.add('melt'); });

@@ -58,7 +58,9 @@ open. Tapping the envelope:
 1. presses and melts the seal (0–0.6s)
 2. opens the flap (0.45–1.1s)
 3. lifts the invitation card — Ganesha, ॥ श्री गणेशाय नमः ॥, the names —
-   out of the envelope (0.95–1.75s), then holds a short beat
+   out of the envelope (0.95–1.75s), then holds a short beat. As the tap
+   lands, the envelope slides (and if needed shrinks) so the envelope and
+   the risen card both fit fully on screen, on any phone or desktop
 4. fades and gently scales the overlay away while the homepage fades in
    and settles underneath it (2.25–2.9s), then removes the overlay
 

@@ -346,6 +346,144 @@
   }
 
   /* ============ Countdown ============ */
+  /* ============ Scratch to reveal the countdown ============
+     A gold foil drawn on a <canvas> over the countdown. Scratching erases
+     it (destination-out strokes); once about half is cleared the rest fades
+     away. Enter/Space on the focused foil reveals it outright, and the
+     countdown underneath stays in the DOM for screen readers throughout. */
+  function setupScratch() {
+    const canvas = $('#scratchFoil');
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext('2d');
+    const BRUSH = 26; // px radius, CSS pixels
+    let revealed = false;
+    let drawing = false;
+    let last = null;
+    let strokes = 0;
+
+    function paint() {
+      const dpr = window.devicePixelRatio || 1;
+      const w = canvas.clientWidth;
+      const h = canvas.clientHeight;
+      if (!w || !h) return;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = 'source-over';
+
+      const g = ctx.createLinearGradient(0, 0, w, h);
+      g.addColorStop(0, '#f9dd8a');
+      g.addColorStop(0.35, '#e2a92c');
+      g.addColorStop(0.55, '#fbe3a0');
+      g.addColorStop(0.8, '#cf8e1c');
+      g.addColorStop(1, '#f2c45e');
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+
+      // fine diagonal foil grain
+      ctx.strokeStyle = 'rgba(255,255,255,0.18)';
+      ctx.lineWidth = 1;
+      for (let x = -h; x < w; x += 7) {
+        ctx.beginPath(); ctx.moveTo(x, h); ctx.lineTo(x + h, 0); ctx.stroke();
+      }
+      // a few sparkles
+      ctx.fillStyle = 'rgba(255,255,255,0.75)';
+      for (let i = 0; i < 26; i++) {
+        const x = (Math.sin(i * 91.7) * 0.5 + 0.5) * w;
+        const y = (Math.sin(i * 47.3 + 1) * 0.5 + 0.5) * h;
+        ctx.beginPath(); ctx.arc(x, y, 1 + (i % 3) * 0.6, 0, Math.PI * 2); ctx.fill();
+      }
+      // inset frame
+      ctx.strokeStyle = 'rgba(122,13,29,0.45)';
+      ctx.setLineDash([5, 5]);
+      ctx.strokeRect(10, 10, w - 20, h - 20);
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#7a0d1d';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = `${Math.min(30, w / 11)}px "Great Vibes", cursive`;
+      ctx.fillText('Scratch to reveal', w / 2, h / 2 - 12);
+      ctx.font = `600 ${Math.min(12, w / 30)}px Marcellus, serif`;
+      ctx.fillText('✦  THE COUNTDOWN TO OUR FOREVER  ✦', w / 2, h / 2 + 22);
+    }
+
+    function point(e) {
+      const r = canvas.getBoundingClientRect();
+      return { x: e.clientX - r.left, y: e.clientY - r.top };
+    }
+
+    function scratch(from, to) {
+      ctx.globalCompositeOperation = 'destination-out';
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.lineWidth = BRUSH * 2;
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.stroke();
+      if (++strokes % 6 === 0 && clearedRatio() > 0.5) reveal();
+    }
+
+    // Sample the alpha channel on a coarse grid — cheap enough to run while
+    // scratching.
+    function clearedRatio() {
+      const { width, height } = canvas;
+      const data = ctx.getImageData(0, 0, width, height).data;
+      const step = Math.max(4, Math.round(width / 60)) * 4;
+      let clear = 0;
+      let total = 0;
+      for (let i = 3; i < data.length; i += step * 4) {
+        total++;
+        if (data[i] < 40) clear++;
+      }
+      return total ? clear / total : 0;
+    }
+
+    function reveal() {
+      if (revealed) return;
+      revealed = true;
+      canvas.classList.add('is-revealed');
+      canvas.setAttribute('aria-hidden', 'true');
+      canvas.tabIndex = -1;
+      setTimeout(() => canvas.remove(), 800);
+    }
+
+    canvas.addEventListener('pointerdown', (e) => {
+      if (revealed) return;
+      drawing = true;
+      canvas.setPointerCapture(e.pointerId);
+      last = point(e);
+      scratch(last, { x: last.x + 0.1, y: last.y });
+    });
+    canvas.addEventListener('pointermove', (e) => {
+      if (!drawing || revealed) return;
+      const p = point(e);
+      scratch(last, p);
+      last = p;
+    });
+    const stop = () => { drawing = false; last = null; if (!revealed && clearedRatio() > 0.5) reveal(); };
+    canvas.addEventListener('pointerup', stop);
+    canvas.addEventListener('pointercancel', stop);
+    canvas.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); reveal(); }
+    });
+
+    paint();
+    // Repaint once the script fonts are in, and if the box changes size
+    // before it's been scratched (rotation, resize).
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!strokes) paint(); });
+    if (window.ResizeObserver) {
+      let lastW = canvas.clientWidth;
+      new ResizeObserver(() => {
+        if (revealed || canvas.clientWidth === lastW) return;
+        lastW = canvas.clientWidth;
+        strokes = 0;
+        paint();
+      }).observe(canvas);
+    }
+  }
+
   function setupCountdown(cfg) {
     const { wedding } = cfg;
     if (wedding.countdownLabel) $('#countdownKicker').textContent = wedding.countdownLabel;
@@ -474,6 +612,7 @@
       // Config failed to load — still show the overlay so the page opens.
     }
     setupOpening(state.config, music);
+    setupScratch();
     setupScrollReveal();
     setupPetals();
   }

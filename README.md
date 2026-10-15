@@ -80,6 +80,13 @@ families", the couple's names with their parents, the invitation line,
 the celebration dates (spanning the whole schedule), the place, and a
 "Let the celebrations begin" button down to the countdown.
 
+The countdown ("Counting down to our forever", `wedding.countdownLabel`)
+is a **scratch card**: a gold foil `<canvas>` covers the countdown and
+When/Where until the guest scratches about half of it away (finger or
+mouse), then the rest fades out. Keyboard users can focus the foil and
+press Enter. The countdown stays in the page underneath for screen
+readers.
+
 Background music (`intro.musicUrl`,
 `public/assets/media/jashn-e-bahaara.mp3`) starts on the same tap gesture
 that opens the envelope — calling `.play()` synchronously inside that click

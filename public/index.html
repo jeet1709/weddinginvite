@@ -8,7 +8,7 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%AA%94%3C/text%3E%3C/svg%3E" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&family=Yeseva+One&family=Tiro+Devanagari+Sanskrit&family=Tiro+Devanagari+Hindi&family=Marcellus&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Playfair+Display:wght@500;600;700&family=Great+Vibes&family=Yeseva+One&family=Tiro+Devanagari+Sanskrit&family=Tiro+Devanagari+Hindi&family=Marcellus&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -72,6 +72,9 @@
     <section class="countdown-section" id="countdown">
       <div class="reveal countdown-inner">
         <p class="section-kicker" id="countdownKicker">Counting Down to the Muhurtham</p>
+        <!-- Scratch to reveal: a gold foil canvas sits over the countdown and
+             When/Where until the guest scratches enough of it away. -->
+        <div class="scratch" id="countdownScratch">
         <div class="countdown-grid" id="countdownGrid">
           <div class="countdown-cell"><span class="countdown-num" id="cdDays">00</span><span class="countdown-label">Days</span></div>
           <div class="countdown-cell"><span class="countdown-num" id="cdHours">00</span><span class="countdown-label">Hours</span></div>
@@ -88,6 +91,8 @@
             <span class="glance-label">Where</span>
             <span class="glance-value" id="glanceWhere"></span>
           </div>
+        </div>
+          <canvas class="scratch-foil" id="scratchFoil" tabindex="0" role="button" aria-label="Scratch to reveal the countdown, or press Enter"></canvas>
         </div>
         <div class="countdown-actions">
           <button class="ghost-button" id="addToCalendarBtn" type="button">+ Add to Calendar</button>

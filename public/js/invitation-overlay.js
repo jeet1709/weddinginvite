@@ -4,7 +4,7 @@
    its own:
 
      InvitationOverlay.show({
-       ganesha, monogram, names, tagline, subtitle, headline, tapHint,
+       ganesha, monogram, names, tagline, headline, tapHint,
        buttonLabel,
        onTap,     // called synchronously inside the tap — start music here,
                   // browsers only allow unmuted audio within the gesture
@@ -14,9 +14,9 @@
      });
 
    Sequence after a tap: seal presses and melts (0–0.6s) → flap opens
-   (0.45–1.1s) → the invitation card rises out of the envelope (0.95–1.75s)
-   → a short beat to read it → the overlay fades and gently scales up while
-   the homepage fades in beneath it (2.25–2.9s). Fonts live in index.html's
+   (0.45–1.1s) → the invitation card glides up out of the envelope
+   (0.95–2.45s) → a short beat to read it → the overlay fades and gently
+   scales up while the homepage fades in beneath it (3.05–3.7s). Fonts live in index.html's
    Google Fonts link. */
 (function () {
   'use strict';
@@ -27,7 +27,7 @@
   // How far the card rises out of the envelope, as a fraction of its own height.
   var RISE = 0.8;
 
-  var T = { melt: 220, open: 450, flapBack: 800, rise: 950, reveal: 2250, remove: 2900 };
+  var T = { melt: 220, open: 450, flapBack: 800, rise: 950, reveal: 3050, remove: 3700 };
 
   function esc(s) {
     return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
@@ -56,7 +56,7 @@
     '#inv-ov .inner{position:relative;width:100%;height:100%;border-radius:4px;perspective:1400px}' +
     '#inv-ov .liner{position:absolute;inset:0;border-radius:4px;background:' + C.maroon + ';overflow:hidden}' +
     '#inv-ov .liner:after{content:"";position:absolute;inset:0;opacity:.25;background-image:repeating-linear-gradient(45deg,' + C.gold + ' 0 1px,transparent 1px 16px),repeating-linear-gradient(-45deg,' + C.gold + ' 0 1px,transparent 1px 16px)}' +
-    '#inv-ov .card{position:absolute;left:8%;right:8%;top:6%;height:88%;background:' + C.ivory + ';border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4%;gap:1.2cqw;container-type:inline-size;box-shadow:0 -4px 14px rgba(40,0,6,.3);transition:transform .8s ' + OUT + '}' +
+    '#inv-ov .card{position:absolute;left:8%;right:8%;top:6%;height:88%;background:' + C.ivory + ';border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:4%;gap:1.2cqw;container-type:inline-size;box-shadow:0 -4px 14px rgba(40,0,6,.3);transition:transform 1.5s cubic-bezier(.42,0,.2,1)}' +
     '#inv-ov .card .gan{width:15cqw;border-width:2px}' +
     '#inv-ov .card .sh{font-family:"Tiro Devanagari Hindi",serif;color:#B05A00;font-size:4.6cqw}' +
     '#inv-ov .card .nm{font-family:"Great Vibes",cursive;color:' + C.maroon + ';font-size:10cqw;line-height:1.1}' +
@@ -73,7 +73,6 @@
     '#inv-ov .ttag{font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.7cqw;line-height:1.2}' +
     '#inv-ov .tmono{font-family:"Great Vibes",cursive;color:' + C.white + ';font-size:9.5cqw;line-height:1.05;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
     '#inv-ov .tname{font-family:Marcellus,serif;color:' + C.gold + ';font-size:2.9cqw;letter-spacing:.3em;text-transform:uppercase;line-height:1.3}' +
-    '#inv-ov .tsub{font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.white + ';opacity:.9;font-size:3.5cqw;line-height:1.2}' +
     '#inv-ov.open .flap{transform:rotateX(180deg)}' +
     '#inv-ov.flapback .flap{z-index:-1}' +
     '#inv-ov .seal{position:absolute;left:50%;top:60%;width:15%;aspect-ratio:1;margin:-7.5% 0 0 -7.5%;z-index:5;transition:transform .4s ' + OUT + ',opacity .4s,filter .4s}' +
@@ -114,7 +113,7 @@
           '<div class="liner"></div>' +
           '<div class="card">' + gan + '<div class="sh">॥ श्री गणेशाय नमः ॥</div><div class="r"><i></i><b></b><i></i></div><div class="nm">' + esc(o.names) + '</div></div>' +
           '<div class="pocket"></div>' +
-          '<div class="flap"><div class="face front"><div class="ftext"><div class="ttag">' + esc(o.tagline) + '</div><div class="tmono">' + esc(o.monogram) + '</div><div class="tname">' + esc(o.names) + '</div><div class="tsub">' + esc(o.subtitle) + '</div></div></div><div class="face back"></div></div>' +
+          '<div class="flap"><div class="face front"><div class="ftext"><div class="ttag">' + esc(o.tagline) + '</div><div class="tmono">' + esc(o.monogram) + '</div><div class="tname">' + esc(o.names) + '</div></div></div><div class="face back"></div></div>' +
           '<div class="seal"><div class="wax">' + esc(String(o.monogram || '').replace(/\s+/g, '')) + '</div></div><div class="ring"></div><div class="rip"></div>' +
         '</div></div></div>' +
         '<div class="below">' +
@@ -127,7 +126,7 @@
 
   var DEFAULTS = {
     ganesha: '', monogram: 'A & S', names: 'Anushka & Saurabh',
-    tagline: 'A little love. A little filmy.', subtitle: 'An invitation to our forever',
+    tagline: 'A little love. A little filmy.',
     headline: 'You’re Invited', tapHint: 'Tap the envelope to break the seal', buttonLabel: 'Open Invitation',
   };
 

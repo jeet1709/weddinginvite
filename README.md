@@ -35,7 +35,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 | Section | Notes |
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
-| `intro` | The opening overlay's text: `tagline`, `subtitle`, `headline`, `buttonLabel`, `tapHint` (screen-reader label); plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
+| `intro` | The opening overlay's text: `tagline`, `headline`, `buttonLabel`, `tapHint` (screen-reader label); plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
 | `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically) |
 | `hero` | The homepage invitation: `invocation` (श्री गणेशाय नमः), `preTitle`, `tagline` (the invitation line), `place`, `ctaLabel`; `blessingLine` is shown in the footer. The date range ("4–5 December 2026") is worked out from `schedule` |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
@@ -50,8 +50,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 
 `public/js/invitation-overlay.js` draws a full-screen "tap to open"
 invitation over the site: falling petals and a large gold-framed envelope
-whose top flap carries the tagline, A & S monogram, names and "An
-invitation to our forever", sealed with an A&S wax seal. The flap has a
+whose top flap carries the tagline, A & S monogram and names, sealed with an A&S wax seal. The flap has a
 separate plain inside face, so the text never shows mirrored as it flips
 open. Below it: "You're Invited" and an Open Invitation button. Tapping
 the envelope or the button:
@@ -59,15 +58,15 @@ the envelope or the button:
 1. presses and melts the seal (0–0.6s)
 2. opens the flap (0.45–1.1s)
 3. lifts the invitation card — Ganesha, ॥ श्री गणेशाय नमः ॥, the names —
-   out of the envelope (0.95–1.75s), then holds a short beat. As the tap
+   slowly out of the envelope (0.95–2.45s), then holds a short beat. As the tap
    lands, the envelope slides (and if needed shrinks) so the envelope and
    the risen card both fit fully on screen, on any phone or desktop
 4. fades and gently scales the overlay away while the homepage fades in
-   and settles underneath it (2.25–2.9s), then removes the overlay
+   and settles underneath it (3.05–3.7s), then removes the overlay
 
 Music starts on the tap itself (browsers only allow unmuted audio inside
 the gesture). The overlay's text comes from `intro` (`tagline`,
-`subtitle`, `headline`, `buttonLabel`; `tapHint` is the envelope's
+`headline`, `buttonLabel`; `tapHint` is the envelope's
 screen-reader label), the names/monogram from
 `couple`, and the Ganesha image from `branding.ganeshLogo`. It was adapted
 from the standalone `website-integration/` drop-in (kept locally, not in

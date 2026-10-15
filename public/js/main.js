@@ -316,7 +316,6 @@
       monogram: couple && couple.monogram,
       names: couple && `${couple.bride.name} & ${couple.groom.name}`,
       tagline: intro.tagline,
-      subtitle: intro.subtitle,
       headline: intro.headline,
       tapHint: intro.tapHint,
       buttonLabel: intro.buttonLabel,

@@ -66,6 +66,28 @@
       "subtitle": "Baarat, Jaimala & Saat Phere",
       "location": "Community Center, IIT Roorkee",
       "dressCode": "Traditional",
+      "palette": [
+        {
+          "name": "Wine",
+          "color": "#71263b"
+        },
+        {
+          "name": "Emerald",
+          "color": "#025b44"
+        },
+        {
+          "name": "Navy",
+          "color": "#182b55"
+        },
+        {
+          "name": "Plum",
+          "color": "#552a55"
+        },
+        {
+          "name": "Teal",
+          "color": "#0a7e81"
+        }
+      ],
       "quote": "The sacred vows, with your blessings.",
       "art": "assets/scenes/shaadi.jpg",
       "artText": "bottom",

@@ -186,6 +186,7 @@
               <p class="festivity-back-row"><strong>When</strong>${escapeHtml(dateLabel)} · ${escapeHtml(item.time || '')}</p>
               ${item.location ? `<p class="festivity-back-row"><strong>Where</strong>${escapeHtml(item.location)}</p>` : ''}
               ${item.dressCode ? `<p class="festivity-back-row"><strong>Dress Code</strong>${escapeHtml(item.dressCode)}</p>` : ''}
+              ${Array.isArray(item.palette) && item.palette.length ? `<div class="festivity-palette" aria-label="Colour palette">${item.palette.map((c) => `<span class="palette-chip"><span class="palette-dot" style="background:${escapeAttr(c.color)}"></span>${escapeHtml(c.name || '')}</span>`).join('')}</div>` : ''}
               ${item.quote ? `<p class="festivity-quote">${escapeHtml(item.quote)}</p>` : ''}
             </div>
           </div>

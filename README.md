@@ -58,11 +58,11 @@ the envelope or the button:
 1. presses and melts the seal (0–0.6s)
 2. opens the flap (0.45–1.1s)
 3. lifts the invitation card — Ganesha, ॥ श्री गणेशाय नमः ॥, the names —
-   slowly out of the envelope (0.95–2.45s), then holds a short beat. As the tap
+   out of the envelope (0.95–2.1s), then holds a short beat. As the tap
    lands, the envelope slides (and if needed shrinks) so the envelope and
    the risen card both fit fully on screen, on any phone or desktop
 4. fades and gently scales the overlay away while the homepage fades in
-   and settles underneath it (3.05–3.7s), then removes the overlay
+   and settles underneath it (2.7–3.35s), then removes the overlay
 
 Music starts on the tap itself (browsers only allow unmuted audio inside
 the gesture). The overlay's text comes from `intro` (`tagline`,

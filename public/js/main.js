@@ -415,7 +415,7 @@
       ctx.fillStyle = '#7a0d1d';
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = `${Math.min(30, w / 11)}px "Great Vibes", cursive`;
+      ctx.font = `${Math.min(30, w / 11)}px Parisienne, cursive`;
       ctx.fillText('Scratch to reveal', w / 2, h / 2 - 12);
       ctx.font = `600 ${Math.min(12, w / 30)}px Marcellus, serif`;
       ctx.fillText('✦  THE COUNTDOWN TO OUR FOREVER  ✦', w / 2, h / 2 + 22);

@@ -36,12 +36,12 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
 | `intro` | The opening overlay's text: `tagline`, `headline`, `buttonLabel`, `tapHint` (screen-reader label); plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
-| `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically). `monogramImage` — the A & S monogram image (transparent PNG) used in the menu, and `monogramImageOnGold` — a dark copy for the gold wax seal. Leave them out to fall back to the text monogram |
+| `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically). `sealImage` — the A & S seal image (transparent PNG) on the envelope, and `monogramImage` — the menu logo (currently the same seal). Leave them out to fall back to the text monogram |
 | `hero` | The homepage invitation: `invocation` (श्री गणेशाय नमः), `preTitle`, `tagline` (the invitation line), `place`, `ctaLabel`; `blessingLine` is shown in the footer. The date range ("4–5 December 2026") is worked out from `schedule` |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional — a string or a list of lines, each shown on its own row. A "Question? Answer." line sets the answer apart in bold gold. Leave `""` or `[]` to hide it |
 | `schedule` | Optional `art` (a 9:16 image shown uncropped on the card front), `artText` (`top`/`bottom` — where the painting's blank band for text is) and `artTone` (`light`/`dark` — that band's colour). Each day of celebration (Haldi, Mehndi, Sangeet, the Wedding, ...) as a flip card. `id` picks the icon (`haldi`, `mehndi`, `sangeet`, `wedding` — anything else falls back to a generic flower icon). `subtitle` and `quote` are the flavour text shown on the card. Optional `palette` — a list of `{ "name", "color" }` — shows dress-code colour swatches under the Dress Code on the back of the card (names are used only as hover/screen-reader labels; `dressCode` text is optional alongside it) |
-| `travel` | The "How to reach" itinerary panel: `kicker`, `title`, a `start` step, then `options` listed as step 2 with "or" between them, and `arriveBy` (`label`, `time`, `date`) as the closing line. Steps take a `title` and optional `detail`; `icon` (`plane`, `train`, `car`, `pin`) sets each step's marker (step 2 uses its first option's icon). Omit `travel` to hide the section and its menu link |
+| `travel` | The "How to reach" itinerary panel: `kicker`, optional `title` (heading under the kicker; leave out to hide it), a `start` step, then `options` listed as step 2 with "or" between them, and `arriveBy` (`label`, `time`, `date`) as the closing line. Steps take a `title` and optional `detail`; `icon` (`plane`, `train`, `car`, `pin`) sets each step's marker (step 2 uses its first option's icon). Omit `travel` to hide the section and its menu link |
 | `rsvp` | `googleFormUrl` — your Google Form share link (`forms.gle/...`). Toggle `enabled` to hide the section entirely. `deadline` (optional — shows "Kindly respond by …"; leave it out to hide that line), `contactName`/`contactPhone` (shown as a "prefer to call?" fallback) |
 | `accommodations` | Optional hotel recommendations — omit/empty to hide |
 | `registry` | Set `enabled: true` and add `links` to show a registry section |
@@ -110,7 +110,7 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
 | `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
-| `brand/monogram-gold.png`, `brand/monogram-maroon.png` | The A & S monogram (trimmed from the supplied full artwork; maroon copy for the wax seal) |
+| `brand/seal-AS.png` | The A & S seal: envelope seal and menu logo (trimmed and resized from the supplied artwork) |
 | `media/song.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining homepage ornament — the red damask ground, the falling petals,

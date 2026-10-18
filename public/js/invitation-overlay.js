@@ -74,7 +74,8 @@
     '@media (max-aspect-ratio:3/4){#inv-ov .ftext{padding-top:9cqw;gap:3.6cqw}}' +
     '#inv-ov .ttag{display:flex;align-items:center;gap:2cqw;font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.4cqw;letter-spacing:.02em}' +
     '#inv-ov .ttag:before,#inv-ov .ttag:after{content:"";width:7cqw;height:1px;background:linear-gradient(90deg,transparent,' + C.gold + ')}#inv-ov .ttag:after{transform:scaleX(-1)}' +
-    '#inv-ov .wax img{position:relative;width:64%;height:auto;display:block}' +
+    '#inv-ov .seal.seal-img{width:21%;margin:-10.5% 0 0 -10.5%}#inv-ov .seal.seal-img~.ring,#inv-ov .seal.seal-img~.rip{width:19%;margin:-9.5% 0 0 -9.5%}' +
+    '#inv-ov .wax.has-img{background:none;box-shadow:none;filter:drop-shadow(0 8px 14px rgba(50,0,8,.45))}#inv-ov .wax.has-img:before{display:none}#inv-ov .wax img{position:relative;width:100%;height:100%;display:block}' +
     '#inv-ov .tname{display:flex;flex-direction:column;align-items:center;gap:1.6cqw;font-family:Marcellus,serif;color:' + C.gold + ';font-size:3.4cqw;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase}' +
     '#inv-ov .tname:before{content:"";width:2.6cqw;height:2.6cqw;background:' + C.gold + ';transform:rotate(45deg) scale(.55)}' +
     '#inv-ov.open .flap{transform:rotateX(180deg)}' +
@@ -121,7 +122,7 @@
           '<div class="card">' + gan + '<div class="sh">॥ श्री गणेशाय नमः ॥</div><div class="r"><i></i><b></b><i></i></div><div class="nm">' + esc(o.names) + '</div></div>' +
           '<div class="pocket"></div>' +
           '<div class="flap"><div class="face front"><div class="ftext"><div class="ttag">' + esc(o.tagline) + '</div><div class="tname">' + esc(o.names) + '</div></div></div><div class="face back"></div></div>' +
-          '<div class="seal"><div class="wax">' + sealHtml + '</div></div><div class="ring"></div><div class="rip"></div>' +
+          '<div class="seal' + (o.sealImage ? ' seal-img' : '') + '"><div class="wax' + (o.sealImage ? ' has-img' : '') + '">' + sealHtml + '</div></div><div class="ring"></div><div class="rip"></div>' +
         '</div></div></div>' +
         '<div class="below">' +
           '<div class="div"><i></i>✦ ✦ ✦<i></i></div>' +

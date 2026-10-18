@@ -234,7 +234,7 @@ body.intro-open .mute-toggle {
   color: var(--color-accent);
   flex-shrink: 0;
 }
-.nav-monogram img { display: block; height: 34px; width: auto; }
+.nav-monogram img { display: block; height: 40px; width: auto; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.35)); }
 .nav-links {
   display: flex;
   gap: 1.25rem;

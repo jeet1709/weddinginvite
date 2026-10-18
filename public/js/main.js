@@ -231,7 +231,9 @@
     const pad = (n) => String(n).padStart(2, '0');
 
     if (t.kicker) $('#travelKicker').textContent = t.kicker;
-    if (t.title) $('#travelTitle').textContent = t.title;
+    // the heading is optional: leave `title` out to show just the kicker
+    $('#travelTitle').textContent = t.title || '';
+    $('#travelTitle').hidden = !t.title;
 
     const step = (n, iconName, body) => `
       <li class="itin-step">
@@ -379,7 +381,7 @@
     window.InvitationOverlay.show({
       ganesha: cfg && cfg.branding && cfg.branding.ganeshLogo,
       monogram: couple && couple.monogram,
-      sealImage: cfg && cfg.branding && cfg.branding.monogramImageOnGold,
+      sealImage: cfg && cfg.branding && cfg.branding.sealImage,
       names: couple && `${couple.bride.name} & ${couple.groom.name}`,
       tagline: intro.tagline,
       headline: intro.headline,

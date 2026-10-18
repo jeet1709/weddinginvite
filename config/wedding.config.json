@@ -22,8 +22,8 @@
   },
   "branding": {
     "ganeshLogo": "assets/wedding-ganesh-logo.jpg",
-    "monogramImage": "assets/brand/monogram-gold.png",
-    "monogramImageOnGold": "assets/brand/monogram-maroon.png"
+    "monogramImage": "assets/brand/seal-AS.png",
+    "sealImage": "assets/brand/seal-AS.png"
   },
   "hero": {
     "invocation": "श्री गणेशाय नमः",
@@ -116,6 +116,30 @@
       "artTone": "dark"
     }
   ],
+  "travel": {
+    "kicker": "Getting there",
+    "start": {
+      "icon": "plane",
+      "title": "Fly to Delhi"
+    },
+    "options": [
+      {
+        "icon": "train",
+        "title": "Morning Jan Shatabdi",
+        "detail": "6:45 AM from New Delhi (NDLS) to Roorkee"
+      },
+      {
+        "icon": "car",
+        "title": "Carpool or Uber",
+        "detail": "Share a ride, or book an Uber"
+      }
+    ],
+    "arriveBy": {
+      "label": "Kindly plan to arrive by",
+      "time": "12 noon",
+      "date": "2026-12-04"
+    }
+  },
   "rsvp": {
     "enabled": true,
     "googleFormUrl": "https://forms.gle/fJpFPPjkCuxC4QBa8",

@@ -107,7 +107,7 @@
 
     const directionsUrl = buildMapUrl(wedding.mapQuery || wedding.address || wedding.venueName);
     $('#heroDirectionsBtn').href = directionsUrl;
-    $('#rsvpDirectionsBtn').href = directionsUrl;
+    $('#travelDirectionsBtn').href = directionsUrl;
 
     $('#footerNames').textContent = `${couple.bride.name} & ${couple.groom.name}`;
     $('#footerHashtag').textContent = couple.hashtag || '';
@@ -655,8 +655,6 @@
       });
     };
     $('#addToCalendarBtn').addEventListener('click', handler);
-    const rsvpBtn = $('#rsvpAddCalendarBtn');
-    if (rsvpBtn) rsvpBtn.addEventListener('click', handler);
   }
 
   /* ============ Live falling petals ============ */

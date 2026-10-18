@@ -104,6 +104,11 @@ h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
   color: #fff4d6;
   text-shadow: 0 2px 6px rgba(40,0,6,0.45);
 }
+/* gold section title (e.g. "Will You Join Us?") */
+.section-title-gold {
+  color: #ffd77a;
+  text-shadow: 0 2px 6px rgba(40,0,6,0.5), 0 0 18px rgba(244,163,0,0.35);
+}
 /* "Our Story": gold, larger, with a soft glow */
 .section-title-highlight {
   font-size: clamp(2.2rem, 7vw, 3rem);
@@ -754,6 +759,7 @@ section {
    "arrive by" line at the foot. Deliberately quiet: ivory type, small
    gold line-weight icons, no badges or tilted stamps. */
 .travel-section { text-align: center; max-width: 600px; }
+.travel-actions { margin-top: 1.75rem; display: flex; justify-content: center; }
 .itinerary {
   margin: 1.5rem auto 0;
   padding: 2rem 1.75rem 1.6rem;
@@ -840,13 +846,7 @@ section {
 .rsvp-section { max-width: 640px; }
 .rsvp-inner { text-align: center; }
 .rsvp-deadline { color: #fff4d6; font-weight: 600; font-size: 1.05rem; margin-bottom: 1.75rem; }
-.rsvp-actions {
-  display: flex;
-  gap: 0.85rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 2rem;
-}
+.rsvp-section .section-title { margin-bottom: 1.75rem; }
 .rsvp-cta-card {
   background: linear-gradient(165deg, var(--color-surface), #fff6e1);
   border: 1px solid rgba(200,148,31,0.35);

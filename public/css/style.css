@@ -1,3 +1,14 @@
+/* Great Vibes' capital "A" reads as a lowercase "a" ("anushka"). This face
+   holds only a capital A (from Allura, SIL Open Font License, subset to
+   that one glyph); listed before Great Vibes, it supplies just the A and
+   Great Vibes renders every other letter. */
+@font-face {
+  font-family: 'Script Cap A';
+  src: url('../assets/fonts/script-cap-a.woff2') format('woff2');
+  unicode-range: U+0041;
+  font-display: swap;
+}
+
 /* ============ Theme tokens (overridden at runtime from config) ============ */
 :root {
   --color-primary: #c1121f;
@@ -11,6 +22,7 @@
   --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
   --font-script: 'Parisienne', cursive;
   --font-monogram: 'Great Vibes', cursive; /* the "A & S" monogram keeps its original face */
+  --font-names: 'Script Cap A', 'Great Vibes', cursive; /* Great Vibes with a true capital A */
   --font-display: 'Yeseva One', 'Playfair Display', serif;
   --font-body: 'Cormorant Garamond', Georgia, serif;
   --max-width: 780px;
@@ -1036,7 +1048,7 @@ section {
     0 0 0 6px rgba(255,255,255,0.35),
     0 0 0 8px rgba(244,163,0,0.45);
 }
-.footer-names { font-family: var(--font-monogram); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
+.footer-names { font-family: var(--font-names); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
 .footer-hashtag { color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 0.75rem; }
 .footer-note { color: rgba(255,244,214,0.6); font-style: italic; font-size: 0.9rem; }
 

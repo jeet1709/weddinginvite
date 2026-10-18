@@ -89,7 +89,7 @@ press Enter. The countdown stays in the page underneath for screen
 readers.
 
 Background music (`intro.musicUrl`,
-`public/assets/media/song.mp3`) starts on the same tap gesture
+`public/assets/media/mohabbatein-theme.mp3`) starts on the same tap gesture
 that opens the envelope — calling `.play()` synchronously inside that click
 handler is what lets browsers allow audio to start unmuted without a
 separate permission prompt. The `<audio>` element and the mute button
@@ -111,7 +111,7 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
 | `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
 | `brand/seal-AS.png` | The A & S seal: envelope seal and menu logo (trimmed and resized from the supplied artwork) |
-| `media/song.mp3` | Background music (`intro.musicUrl`) |
+| `media/mohabbatein-theme.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining ornament — the red damask ground, the falling petals, the
 envelope, the gold framing and the section dividers — is drawn in CSS/SVG rather

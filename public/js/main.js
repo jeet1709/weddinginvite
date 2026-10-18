@@ -377,7 +377,6 @@
     window.InvitationOverlay.show({
       ganesha: cfg && cfg.branding && cfg.branding.ganeshLogo,
       monogram: couple && couple.monogram,
-      monogramImage: cfg && cfg.branding && cfg.branding.monogramImage,
       sealImage: cfg && cfg.branding && cfg.branding.monogramImageOnGold,
       names: couple && `${couple.bride.name} & ${couple.groom.name}`,
       tagline: intro.tagline,

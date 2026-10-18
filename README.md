@@ -36,7 +36,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 |---|---|
 | `couple` | `bride`/`groom` name + `parents` line (e.g. "Daughter of ..."), `monogram` (spaces are stripped for the round badges, so "A & S" renders as "A&S"), `hashtag`, `photo` (path under `public/`, e.g. `/assets/roka1.jpeg`) and `photoCaption` |
 | `intro` | The opening overlay's text: `tagline`, `headline`, `buttonLabel`, `tapHint` (screen-reader label); plus `musicUrl` — see "The opening screen" and "Homepage & background music" below. Names come from `couple` |
-| `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically). `monogramImage` — the A & S monogram image (transparent PNG) used on the envelope flap and in the menu, and `monogramImageOnGold` — a dark copy for the gold wax seal. Leave them out to fall back to the text monogram |
+| `branding` | `ganeshLogo` — the Ganesha mark shown in the footer. Line art on a white background works best (the white is blended out automatically). `monogramImage` — the A & S monogram image (transparent PNG) used in the menu, and `monogramImageOnGold` — a dark copy for the gold wax seal. Leave them out to fall back to the text monogram |
 | `hero` | The homepage invitation: `invocation` (श्री गणेशाय नमः), `preTitle`, `tagline` (the invitation line), `place`, `ctaLabel`; `blessingLine` is shown in the footer. The date range ("4–5 December 2026") is worked out from `schedule` |
 | `wedding` | `date` (`YYYY-MM-DD`), `time` (24h `HH:MM`) — drives the countdown to the muhurtham; `venueName`/`venueCity`/`address`/`mapQuery` drive the "When & Where" glance and Directions buttons in the countdown band; `countdownLabel` is the text above the countdown |
 | `story` | Optional — a string or a list of lines, each shown on its own row. A "Question? Answer." line sets the answer apart in bold gold. Leave `""` or `[]` to hide it |
@@ -51,7 +51,7 @@ Edit it and refresh the browser; no restart or rebuild needed. Fields:
 
 `public/js/invitation-overlay.js` draws a full-screen "tap to open"
 invitation over the site: falling petals and a large gold-framed envelope
-whose top flap carries the tagline, A & S monogram and names, sealed with an A&S wax seal. The flap has a
+whose top flap carries the tagline and names, sealed with an A&S wax seal. The flap has a
 separate plain inside face, so the text never shows mirrored as it flips
 open. Below it: "You're Invited" and an Open Invitation button. Tapping
 the envelope or the button:
@@ -110,7 +110,7 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 | `wedding-ganesh-logo.jpg` | Ganesha mark in the footer (`branding.ganeshLogo`) |
 | `roka1.jpeg` | The framed couple photo in "Our Story" (`couple.photo`) |
 | `scenes/*.jpg` | Caricature scenes on the festivity card fronts (`schedule[].art`) |
-| `brand/monogram-gold.png`, `brand/monogram-maroon.png` | The A & S monogram (trimmed from the supplied artwork; maroon copy for the wax seal) |
+| `brand/monogram-gold.png`, `brand/monogram-maroon.png` | The A & S monogram (trimmed from the supplied full artwork; maroon copy for the wax seal) |
 | `media/song.mp3` | Background music (`intro.musicUrl`) |
 
 The remaining homepage ornament — the red damask ground, the falling petals,

@@ -225,37 +225,38 @@
     const t = cfg.travel;
     const navLink = $('a[data-nav-optional="travel"]');
     if (!t || !t.start) { if (navLink) navLink.hidden = true; return; }
-    const icon = (name) => `<span class="route-icon" aria-hidden="true">${TRAVEL_ICONS[name] || TRAVEL_ICONS.pin}</span>`;
+    const icon = (name) => `<span class="itin-icon" aria-hidden="true">${TRAVEL_ICONS[name] || TRAVEL_ICONS.pin}</span>`;
+    const pad = (n) => String(n).padStart(2, '0');
 
     if (t.kicker) $('#travelKicker').textContent = t.kicker;
     if (t.title) $('#travelTitle').textContent = t.title;
 
-    const options = (t.options || []).map((o, i) => `
-      ${i ? '<span class="route-or" aria-hidden="true">or</span>' : ''}
-      <div class="route-option">
-        ${icon(o.icon)}
-        <span class="route-title">${escapeHtml(o.title || '')}</span>
-        ${o.detail ? `<span class="route-detail">${escapeHtml(o.detail)}</span>` : ''}
-      </div>`).join('');
+    const step = (n, iconName, body) => `
+      <li class="itin-step">
+        <span class="itin-marker">${icon(iconName)}</span>
+        <div class="itin-body"><span class="itin-no">${pad(n)}</span>${body}</div>
+      </li>`;
+    const line = (o) => `
+      <span class="itin-title">${escapeHtml(o.title || '')}</span>
+      ${o.detail ? `<span class="itin-detail">${escapeHtml(o.detail)}</span>` : ''}`;
+
+    const opts = t.options || [];
+    let html = step(1, t.start.icon, line(t.start));
+    if (opts.length) {
+      html += step(2, opts[0].icon, opts.map((o, i) => `
+        ${i ? '<span class="itin-or">or</span>' : ''}
+        <div class="itin-option">${line(o)}</div>`).join(''));
+    }
+    $('#travelRoute').innerHTML = html;
 
     const a = t.arriveBy || {};
-    const arriveDate = a.date ? formatDisplayDate(a.date, { weekday: 'long', day: 'numeric', month: 'long' }) : '';
-
-    $('#travelRoute').innerHTML = `
-      <li class="route-stop">
-        ${icon(t.start.icon)}
-        <span class="route-title">${escapeHtml(t.start.title || '')}</span>
-        ${t.start.detail ? `<span class="route-detail">${escapeHtml(t.start.detail)}</span>` : ''}
-      </li>
-      ${options ? `<li class="route-stop route-fork"><span class="sr-only">Then, either:</span>${options}</li>` : ''}
-      ${a.time ? `<li class="route-stop route-arrive">
-        <div class="arrive-stamp">
-          ${icon('pin')}
-          <span class="arrive-label">${escapeHtml(a.label || 'Reach by')}</span>
-          <strong class="arrive-time">${escapeHtml(a.time)}</strong>
-          ${arriveDate ? `<span class="arrive-date">${escapeHtml(arriveDate)}</span>` : ''}
-        </div>
-      </li>` : ''}`;
+    if (a.time) {
+      const d = a.date ? formatDisplayDate(a.date, { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+      $('#travelArrive').innerHTML = `
+        <span class="itin-arrive-label">${escapeHtml(a.label || 'Please arrive by')}</span>
+        <span class="itin-arrive-when">${escapeHtml(a.time)}${d ? ` <span class="itin-dot">·</span> ${escapeHtml(d)}` : ''}</span>`;
+      $('#travelArrive').hidden = false;
+    }
     $('#travel').hidden = false;
   }
 

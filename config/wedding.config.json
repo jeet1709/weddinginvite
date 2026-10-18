@@ -9,7 +9,7 @@
       "parents": "Son of Babita & Shiv"
     },
     "monogram": "A & S",
-    "hashtag": "#SauRabDiAnushka",
+    "hashtag": "#SauRabDiAnu",
     "photo": "assets/roka1.jpeg",
     "photoCaption": "#Pyaar Dosti Hai"
   },
@@ -125,17 +125,17 @@
       {
         "icon": "train",
         "title": "Morning Jan Shatabdi",
-        "detail": "6:45 AM · NDLS → Roorkee"
+        "detail": "6:45 AM from New Delhi (NDLS) to Roorkee"
       },
       {
         "icon": "car",
         "title": "Carpool or Uber",
-        "detail": "Share a ride or book an Uber"
+        "detail": "Share a ride, or book an Uber"
       }
     ],
     "arriveBy": {
-      "label": "Make sure you reach by",
-      "time": "12 PM",
+      "label": "Kindly plan to arrive by",
+      "time": "12 noon",
       "date": "2026-12-04"
     }
   },

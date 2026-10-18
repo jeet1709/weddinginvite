@@ -21,7 +21,7 @@
   --color-green: #1f7a3d;
   --font-heading: 'Playfair Display', 'Cormorant Garamond', serif;
   --font-script: 'Parisienne', cursive;
-  --font-monogram: 'Great Vibes', cursive; /* the "A & S" monogram keeps its original face */
+  --font-monogram: 'Script Cap A', 'Great Vibes', cursive; /* Great Vibes, with a true capital A */
   --font-names: 'Script Cap A', 'Great Vibes', cursive; /* Great Vibes with a true capital A */
   --font-display: 'Yeseva One', 'Playfair Display', serif;
   --font-body: 'Cormorant Garamond', Georgia, serif;

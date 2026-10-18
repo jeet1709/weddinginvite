@@ -72,13 +72,13 @@
     '#inv-ov .ftext{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:4.6cqw;text-align:center;line-height:1}' +
     '#inv-ov .ttag{display:flex;align-items:center;gap:2cqw;font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.4cqw;letter-spacing:.02em}' +
     '#inv-ov .ttag:before,#inv-ov .ttag:after{content:"";width:7cqw;height:1px;background:linear-gradient(90deg,transparent,' + C.gold + ')}#inv-ov .ttag:after{transform:scaleX(-1)}' +
-    '#inv-ov .tmono{position:relative;left:-.45cqw;margin:3.65cqw 0 .95cqw;font-family:"Great Vibes",cursive;color:' + C.white + ';font-size:11cqw;line-height:.9;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
+    '#inv-ov .tmono{position:relative;left:-.45cqw;margin:3.65cqw 0 .95cqw;font-family:"Script Cap A","Great Vibes",cursive;color:' + C.white + ';font-size:11cqw;line-height:.9;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
     '#inv-ov .tname{display:flex;flex-direction:column;align-items:center;gap:1.6cqw;font-family:Marcellus,serif;color:' + C.gold + ';font-size:2.7cqw;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase}' +
     '#inv-ov .tname:before{content:"";width:2.6cqw;height:2.6cqw;background:' + C.gold + ';transform:rotate(45deg) scale(.55)}' +
     '#inv-ov.open .flap{transform:rotateX(180deg)}' +
     '#inv-ov.flapback .flap{z-index:-1}' +
     '#inv-ov .seal{position:absolute;left:50%;top:60%;width:15%;aspect-ratio:1;margin:-7.5% 0 0 -7.5%;z-index:5;transition:transform .4s ' + OUT + ',opacity .4s,filter .4s}' +
-    '#inv-ov .wax{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#FFE09A,' + C.orange + ' 55%,#C47A00 100%);box-shadow:0 8px 18px rgba(50,0,8,.5),inset 0 -4px 8px rgba(120,60,0,.35);display:flex;align-items:center;justify-content:center;position:relative;font-family:"Great Vibes",cursive;font-size:5cqw;color:' + C.maroon + '}' +
+    '#inv-ov .wax{width:100%;height:100%;border-radius:50%;background:radial-gradient(circle at 38% 32%,#FFE09A,' + C.orange + ' 55%,#C47A00 100%);box-shadow:0 8px 18px rgba(50,0,8,.5),inset 0 -4px 8px rgba(120,60,0,.35);display:flex;align-items:center;justify-content:center;position:relative;font-family:"Script Cap A","Great Vibes",cursive;font-size:5cqw;color:' + C.maroon + '}' +
     '#inv-ov .wax:before{content:"";position:absolute;inset:10%;border-radius:50%;border:1px dashed rgba(122,13,29,.45)}' +
     '#inv-ov .seal.press{animation:inv-press .25s ' + EASE + '}' +
     '@keyframes inv-press{50%{transform:scale(.86)}}' +

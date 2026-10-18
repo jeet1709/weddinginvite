@@ -1,29 +1,3 @@
 node_modules/
 dist/
 .DS_Store
-
-# Design-reference-only images, not used by the site (see README) — one of
-# them carries another couple's names, so keep it out of a public repo.
-public/assets/HomepageBackground.jpg
-public/assets/Shiv-Parvati-Vivah.jpeg
-ScreenRecording_09-12-2026 19-16-55_1.MP4
-
-# Root-level originals — already copied into public/assets/media/, which is
-# what the site actually serves. Keeping duplicates out of git history.
-# Anchored with a leading slash: an unanchored pattern here would also
-# match the served copies under public/assets/media/ by filename alone.
-/WeddingInvite.mp4
-/jashn-e-bahaara.mp3
-/invitationopeining.mp4
-/Screenshot *.png
-/wedding_invite_v2.mp4
-/wedding_invite_v3.mp4
-
-# Claude Design project export (design explorations, reference screenshots,
-# personal uploads) — source material only, not part of the site.
-/Wedding invite config issues/
-/website-integration/
-/song.mp3
-/monogram-AS-2a.png
-/monogram-AS-2a-full.png
-/seal-AS.png

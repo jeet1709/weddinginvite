@@ -113,15 +113,10 @@ Leave `musicUrl` as `""` to disable the music; the mute button hides itself.
 | `brand/seal-AS.png` | The A & S seal: envelope seal and menu logo (trimmed and resized from the supplied artwork) |
 | `media/song.mp3` | Background music (`intro.musicUrl`) |
 
-The remaining homepage ornament — the red damask ground, the falling petals,
-the rose sprays and gold hairlines on the opening envelope — is drawn in
-CSS/SVG rather than exported as images, which keeps it crisp at any size,
+The remaining ornament — the red damask ground, the falling petals, the
+envelope, the gold framing and the section dividers — is drawn in CSS/SVG rather
+than exported as images, which keeps it crisp at any size,
 recolours with the `theme` palette, and adds nothing to page weight.
-
-`HomepageBackground.jpg` and `Shiv-Parvati-Vivah.jpeg` are kept as **design
-references only** and are not loaded by the page. (The homepage background
-carries another couple's names, so it is recreated in code rather than used
-as a backdrop.)
 
 ### Why a link instead of an embedded form?
 
@@ -154,8 +149,7 @@ maintain.
 
 The site has no database or server-side secrets — RSVPs go straight to your
 Google Form — so it deploys as a plain **static site**. `npm run build`
-assembles everything (`public/` + `config/`, minus the two reference-only
-images) into `dist/`; that folder is the entire deployable site.
+assembles everything (`public/` + `config/`) into `dist/`; that folder is the entire deployable site.
 
 ```bash
 npm run build
@@ -171,8 +165,11 @@ Then upload `dist/` to any free static host:
   these at the `dist/` folder (or run their CLI's deploy command against it).
 
 **This repo is already wired to GitHub Pages** via
-`.github/workflows/deploy.yml`: every push to `main` runs `npm run build` and
-publishes `dist/`. The live site is hosted from the **`pyar-dosti-hai`** branch (the workflow there deploys on every push to it; `main` keeps the earlier video version). Updating the live invite is just
+`.github/workflows/deploy.yml`, which runs `npm run build` and publishes
+`dist/`. The live site is hosted from the **`pyar-dosti-hai`** branch: the
+workflow on that branch deploys on every push to it. (`main` keeps the
+earlier video version, and its own copy of the workflow deploys on pushes to
+`main` — which would replace the live site.) Updating the live invite is just
 
 ```bash
 git add -A && git commit -m "Update details" && git push

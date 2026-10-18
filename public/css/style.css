@@ -81,21 +81,6 @@ body:not(.intro-open) {
 
 img { max-width: 100%; display: block; }
 
-/* Visually hidden but present for screen readers/SEO — used where a video
-   or image already carries the same information visually (e.g. the hero
-   video already shows the names/date), so sighted users see the richer
-   version while the text stays available to everyone else. */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
 a { color: inherit; }
 h1, h2, h3 { font-family: var(--font-heading); font-weight: 600; margin: 0; }
 
@@ -403,43 +388,8 @@ body.intro-open .mute-toggle {
   mix-blend-mode: multiply;
 }
 .ganesh-mark.small { width: 74px; height: 74px; margin-bottom: 1rem; }
-/* Monogram roundel: double gold ring, kumkum-red fill.
-   `white-space: nowrap` + line-height 1 keep "A&S" on one line and optically
-   centred — without them the script face wraps and sits low in the circle. */
-.monogram-badge {
-  width: 86px;
-  height: 86px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-script);
-  font-size: 2.05rem;
-  line-height: 1;
-  white-space: nowrap;
-  letter-spacing: 0.01em;
-  color: #fff4d6;
-  background: radial-gradient(circle at 35% 30%, #e0473a, var(--color-primary) 55%, #7a0b12 100%);
-  box-shadow:
-    0 0 0 3px var(--color-accent),
-    0 0 0 6px rgba(255,255,255,0.65),
-    0 0 0 8px rgba(244,163,0,0.55),
-    0 8px 18px -8px rgba(74,16,16,0.6);
-  margin: 0 auto 1.75rem;
-  /* nudge the script baseline to the optical centre of the circle */
-  padding-bottom: 0.14em;
-}
-.monogram-badge.small {
-  width: 62px;
-  height: 62px;
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
-}
 
-/* These fields (names/parents/tagline/date) now live only as .sr-only text
-   in the hero — the video already shows them. They resurface visually
-   here in the countdown band instead, alongside the When/Where glance,
-   so no dedicated hero typography rules are needed any more. */
+/* When | Where under the countdown */
 .hero-glance {
   display: flex;
   align-items: center;
@@ -475,20 +425,6 @@ body.intro-open .mute-toggle {
   flex-wrap: wrap;
 }
 
-.scroll-cue {
-  position: absolute;
-  bottom: 1.25rem;
-  z-index: 2;
-  color: var(--color-accent);
-  opacity: 0.9;
-}
-.scroll-dot { animation: scrollDot 1.8s ease-in-out infinite; }
-@keyframes scrollDot {
-  0% { transform: translateY(0); opacity: 1; }
-  60% { transform: translateY(14px); opacity: 0; }
-  61% { transform: translateY(0); opacity: 0; }
-  100% { transform: translateY(0); opacity: 1; }
-}
 
 /* ---- Generic section spacing ---- */
 section {
@@ -1019,12 +955,6 @@ section {
   font-style: italic;
   color: rgba(255,244,214,0.92);
   font-size: 1rem;
-}
-.site-footer .monogram-badge {
-  box-shadow:
-    0 0 0 3px var(--color-accent),
-    0 0 0 6px rgba(255,255,255,0.35),
-    0 0 0 8px rgba(244,163,0,0.45);
 }
 .footer-names { font-family: var(--font-names); font-size: 2.2rem; color: #fff4d6; margin-bottom: 0.4rem; }
 .footer-hashtag { color: var(--color-accent); letter-spacing: 0.05em; margin-bottom: 0.75rem; }

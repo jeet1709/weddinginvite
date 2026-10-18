@@ -87,6 +87,8 @@
     const monogramFull = couple.monogram || `${couple.bride.name} & ${couple.groom.name}`;
 
     $('#navMonogram').textContent = monogramFull;
+    const monoImg = cfg.branding && cfg.branding.monogramImage;
+    if (monoImg) $('#navMonogram').innerHTML = `<img src="${escapeAttr(monoImg)}" alt="${escapeAttr(monogramFull)}" />`;
     $('#heroPreTitle').textContent = hero.preTitle || '';
 
     $('#brideName').textContent = couple.bride.name;
@@ -375,6 +377,8 @@
     window.InvitationOverlay.show({
       ganesha: cfg && cfg.branding && cfg.branding.ganeshLogo,
       monogram: couple && couple.monogram,
+      monogramImage: cfg && cfg.branding && cfg.branding.monogramImage,
+      sealImage: cfg && cfg.branding && cfg.branding.monogramImageOnGold,
       names: couple && `${couple.bride.name} & ${couple.groom.name}`,
       tagline: intro.tagline,
       headline: intro.headline,

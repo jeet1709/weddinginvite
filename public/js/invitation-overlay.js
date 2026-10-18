@@ -4,7 +4,8 @@
    its own:
 
      InvitationOverlay.show({
-       ganesha, monogram, names, tagline, headline, tapHint,
+       ganesha, monogram, monogramImage, sealImage, names, tagline,
+       headline, tapHint,
        buttonLabel,
        onTap,     // called synchronously inside the tap — start music here,
                   // browsers only allow unmuted audio within the gesture
@@ -48,7 +49,7 @@
     '#inv-ov .gan{width:clamp(44px,7vh,64px);aspect-ratio:118/146;border-radius:50% 50% 8px 8px/40% 40% 8px 8px;border:3px solid ' + C.orange + ';overflow:hidden;background:#fff;box-shadow:0 4px 12px rgba(40,0,6,.4)}' +
     '#inv-ov .gan img{width:100%;height:100%;object-fit:cover;display:block}' +
     '#inv-ov .env{position:relative;width:min(92vw,620px,calc((100vh - 230px) * 1.42));aspect-ratio:1.42;container-type:inline-size;cursor:pointer;perspective:1400px;animation:inv-float 3.9s ease-in-out infinite;outline:none;transition:transform .7s ' + OUT + '}' +
-    '@media (max-aspect-ratio:3/4){#inv-ov .env{aspect-ratio:1.25;width:min(92vw,calc((100vh - 230px) * 1.25))}}' +
+    '@media (max-aspect-ratio:3/4){#inv-ov .env{aspect-ratio:1.25;width:min(92vw,calc((100vh - 230px) * 1.25))}#inv-ov .tmono.has-img{margin:2.4cqw 0 1.4cqw}#inv-ov .tmono img{height:15cqw}}' +
     '#inv-ov .env:focus-visible .frame{box-shadow:0 22px 50px rgba(40,0,6,.5),0 0 0 3px ' + C.gold + '}' +
     '@keyframes inv-float{0%,100%{translate:0 -5px}50%{translate:0 5px}}' +
     '#inv-ov.tapped .env{animation-play-state:paused}' +
@@ -73,6 +74,8 @@
     '#inv-ov .ttag{display:flex;align-items:center;gap:2cqw;font-family:"Cormorant Garamond",serif;font-style:italic;color:' + C.gold + ';font-size:3.4cqw;letter-spacing:.02em}' +
     '#inv-ov .ttag:before,#inv-ov .ttag:after{content:"";width:7cqw;height:1px;background:linear-gradient(90deg,transparent,' + C.gold + ')}#inv-ov .ttag:after{transform:scaleX(-1)}' +
     '#inv-ov .tmono{position:relative;left:-.45cqw;margin:3.65cqw 0 .95cqw;font-family:"Script Cap A","Great Vibes",cursive;color:' + C.white + ';font-size:11cqw;line-height:.9;text-shadow:0 3px 12px rgba(40,0,6,.4)}' +
+    '#inv-ov .tmono.has-img{left:0;margin:1.8cqw 0 1cqw;line-height:0;text-shadow:none}#inv-ov .tmono img{display:block;height:11.5cqw;width:auto;margin:0 auto;filter:drop-shadow(0 3px 8px rgba(40,0,6,.45))}' +
+    '#inv-ov .wax img{position:relative;width:64%;height:auto;display:block}' +
     '#inv-ov .tname{display:flex;flex-direction:column;align-items:center;gap:1.6cqw;font-family:Marcellus,serif;color:' + C.gold + ';font-size:2.7cqw;letter-spacing:.32em;text-indent:.32em;text-transform:uppercase}' +
     '#inv-ov .tname:before{content:"";width:2.6cqw;height:2.6cqw;background:' + C.gold + ';transform:rotate(45deg) scale(.55)}' +
     '#inv-ov.open .flap{transform:rotateX(180deg)}' +
@@ -106,6 +109,12 @@
     }
     var sky = [[7, 9, '50% 50% 0 0'], [4, 13, '2px 2px 0 0'], [12, 6, '0'], [9, 14, '50% 50% 0 0'], [14, 8, '0'], [9, 14, '50% 50% 0 0'], [12, 6, '0'], [4, 13, '2px 2px 0 0'], [7, 9, '50% 50% 0 0']]
       .map(function (s) { return '<i style="width:' + s[0] + 'vw;height:' + s[1] + 'vh;border-radius:' + s[2] + '"></i>'; }).join('');
+    var monoHtml = o.monogramImage
+      ? '<div class="tmono has-img"><img src="' + esc(o.monogramImage) + '" alt="' + esc(o.monogram) + '"></div>'
+      : '<div class="tmono">' + esc(o.monogram) + '</div>';
+    var sealHtml = o.sealImage
+      ? '<img src="' + esc(o.sealImage) + '" alt="">'
+      : esc(String(o.monogram || '').replace(/\s+/g, ''));
     var gan = o.ganesha ? '<div class="gan"><img src="' + esc(o.ganesha) + '" alt=""></div>' : '';
 
     return '<div class="rays"></div><div class="lat"></div>' + petals +
@@ -115,8 +124,8 @@
           '<div class="liner"></div>' +
           '<div class="card">' + gan + '<div class="sh">॥ श्री गणेशाय नमः ॥</div><div class="r"><i></i><b></b><i></i></div><div class="nm">' + esc(o.names) + '</div></div>' +
           '<div class="pocket"></div>' +
-          '<div class="flap"><div class="face front"><div class="ftext"><div class="ttag">' + esc(o.tagline) + '</div><div class="tmono">' + esc(o.monogram) + '</div><div class="tname">' + esc(o.names) + '</div></div></div><div class="face back"></div></div>' +
-          '<div class="seal"><div class="wax">' + esc(String(o.monogram || '').replace(/\s+/g, '')) + '</div></div><div class="ring"></div><div class="rip"></div>' +
+          '<div class="flap"><div class="face front"><div class="ftext"><div class="ttag">' + esc(o.tagline) + '</div>' + monoHtml + '<div class="tname">' + esc(o.names) + '</div></div></div><div class="face back"></div></div>' +
+          '<div class="seal"><div class="wax">' + sealHtml + '</div></div><div class="ring"></div><div class="rip"></div>' +
         '</div></div></div>' +
         '<div class="below">' +
           '<div class="div"><i></i>✦ ✦ ✦<i></i></div>' +
@@ -127,7 +136,7 @@
   }
 
   var DEFAULTS = {
-    ganesha: '', monogram: 'A & S', names: 'Anushka & Saurabh',
+    ganesha: '', monogram: 'A & S', monogramImage: '', sealImage: '', names: 'Anushka & Saurabh',
     tagline: 'A little love. A little filmy.',
     headline: 'You’re Invited', tapHint: 'Tap the envelope to break the seal', buttonLabel: 'Open Invitation',
   };

@@ -21,7 +21,9 @@
     "musicUrl": "assets/media/song.mp3"
   },
   "branding": {
-    "ganeshLogo": "assets/wedding-ganesh-logo.jpg"
+    "ganeshLogo": "assets/wedding-ganesh-logo.jpg",
+    "monogramImage": "assets/brand/monogram-gold.png",
+    "monogramImageOnGold": "assets/brand/monogram-maroon.png"
   },
   "hero": {
     "invocation": "श्री गणेशाय नमः",

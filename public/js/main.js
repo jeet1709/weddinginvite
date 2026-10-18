@@ -424,6 +424,8 @@
     if (!canvas || !canvas.getContext) return;
     const ctx = canvas.getContext('2d');
     const BRUSH = 26; // px radius, CSS pixels
+    const FOIL_TITLE = 'Scratch to reveal';
+    const FOIL_SUB = 'THE COUNTDOWN TO OUR FOREVER';
     let revealed = false;
     let drawing = false;
     let last = null;
@@ -467,13 +469,37 @@
       ctx.strokeRect(10, 10, w - 20, h - 20);
       ctx.setLineDash([]);
 
-      ctx.fillStyle = '#7a0d1d';
+      // Type in the page's own faces: the section-title serif, engraved
+      // into the foil (a light 1px highlight under maroon), then a small
+      // tracked-caps line between two fine rules.
+      const titleSize = Math.min(32, w / 11);
+      const subSize = Math.min(12.5, w / 29);
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
-      ctx.font = `${Math.min(30, w / 11)}px Parisienne, cursive`;
-      ctx.fillText('Scratch to reveal', w / 2, h / 2 - 12);
-      ctx.font = `600 ${Math.min(12, w / 30)}px Marcellus, serif`;
-      ctx.fillText('✦  THE COUNTDOWN TO OUR FOREVER  ✦', w / 2, h / 2 + 22);
+
+      ctx.font = `600 ${titleSize}px "Playfair Display", Georgia, serif`;
+      ctx.fillStyle = 'rgba(255,248,225,0.7)';
+      ctx.fillText(FOIL_TITLE, w / 2, h / 2 - 12 + 1);
+      ctx.fillStyle = '#6e0b19';
+      ctx.fillText(FOIL_TITLE, w / 2, h / 2 - 12);
+
+      ctx.font = `700 ${subSize}px "Cormorant Garamond", Georgia, serif`;
+      if ('letterSpacing' in ctx) ctx.letterSpacing = `${(subSize * 0.24).toFixed(1)}px`;
+      const subY = h / 2 + titleSize * 0.55 + 8;
+      const subW = ctx.measureText(FOIL_SUB).width;
+      ctx.fillStyle = 'rgba(110,11,25,0.85)';
+      ctx.fillText(FOIL_SUB, w / 2, subY);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+
+      const rule = Math.min(44, (w - subW) / 2 - 26);
+      if (rule > 8) {
+        ctx.strokeStyle = 'rgba(110,11,25,0.55)';
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(w / 2 - subW / 2 - 12 - rule, subY); ctx.lineTo(w / 2 - subW / 2 - 12, subY);
+        ctx.moveTo(w / 2 + subW / 2 + 12, subY); ctx.lineTo(w / 2 + subW / 2 + 12 + rule, subY);
+        ctx.stroke();
+      }
     }
 
     function point(e) {
@@ -540,7 +566,14 @@
     paint();
     // Repaint once the script fonts are in, and if the box changes size
     // before it's been scratched (rotation, resize).
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(() => { if (!strokes) paint(); });
+    // Canvas text doesn't trigger web-font loading by itself, so load the two
+    // faces explicitly, then repaint (unless the guest has started scratching).
+    if (document.fonts && document.fonts.load) {
+      Promise.all([
+        document.fonts.load('600 32px "Playfair Display"', FOIL_TITLE),
+        document.fonts.load('700 13px "Cormorant Garamond"', FOIL_SUB),
+      ]).then(() => { if (!strokes) paint(); }).catch(() => {});
+    }
     if (window.ResizeObserver) {
       let lastW = canvas.clientWidth;
       new ResizeObserver(() => {

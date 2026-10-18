@@ -9,7 +9,7 @@
       "parents": "Son of Babita & Shiv"
     },
     "monogram": "A & S",
-    "hashtag": "#AnushkaWedsSaurabh",
+    "hashtag": "#SauRabDiAnushka",
     "photo": "assets/roka1.jpeg",
     "photoCaption": "#Pyaar Dosti Hai"
   },
@@ -70,8 +70,8 @@
           "color": "#b9a3e3"
         },
         {
-          "name": "Mint Green",
-          "color": "#a8e6cf"
+          "name": "Peach",
+          "color": "#ffbe98"
         }
       ],
       "quote": "Turmeric, laughter and the very first blessings.",
@@ -114,6 +114,31 @@
       "artTone": "dark"
     }
   ],
+  "travel": {
+    "kicker": "Getting there",
+    "title": "How to reach Roorkee",
+    "start": {
+      "icon": "plane",
+      "title": "Fly to Delhi"
+    },
+    "options": [
+      {
+        "icon": "train",
+        "title": "Morning Jan Shatabdi",
+        "detail": "6:45 AM · NDLS → Roorkee"
+      },
+      {
+        "icon": "car",
+        "title": "Carpool or Uber",
+        "detail": "Share a ride or book an Uber"
+      }
+    ],
+    "arriveBy": {
+      "label": "Make sure you reach by",
+      "time": "12 PM",
+      "date": "2026-12-04"
+    }
+  },
   "rsvp": {
     "enabled": true,
     "deadline": "2026-11-15",

@@ -34,6 +34,7 @@
       <div class="nav-links">
         <a href="#story" data-nav-optional="story">Our Story</a>
         <a href="#festivities">Festivities</a>
+        <a href="#travel" data-nav-optional="travel">Travel</a>
         <a href="#rsvp">RSVP</a>
       </div>
     </nav>
@@ -126,6 +127,17 @@
     </section>
 
     <!-- RSVP -->
+    <!-- How to reach: a journey route — start, a fork of travel options,
+         and an "arrive by" stamp. Filled from config `travel`; hidden if
+         that's missing. -->
+    <section class="travel-section" id="travel" hidden>
+      <div class="reveal">
+        <p class="section-kicker" id="travelKicker">Getting there</p>
+        <h2 class="section-title" id="travelTitle">How to reach Roorkee</h2>
+      </div>
+      <ol class="route reveal" id="travelRoute"></ol>
+    </section>
+
     <section class="rsvp-section" id="rsvp">
       <div class="reveal rsvp-inner">
         <p class="section-kicker">Kindly Reply</p>

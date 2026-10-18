@@ -213,6 +213,52 @@
     });
   }
 
+  /* ============ How to reach (journey route) ============ */
+  const TRAVEL_ICONS = {
+    plane: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M21 16v-2l-8-5V3.5a1.5 1.5 0 0 0-3 0V9l-8 5v2l8-2.5V19l-2 1.5V22l3.5-1 3.5 1v-1.5L13 19v-5.5l8 2.5z"/></svg>`,
+    train: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2c-4 0-8 .5-8 4v9.5A3.5 3.5 0 0 0 7.5 19L6 20.5v.5h2.2l2-2h3.6l2 2H18v-.5L16.5 19a3.5 3.5 0 0 0 3.5-3.5V6c0-3.5-3.6-4-8-4zM7.5 17a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM11 10H6V6h5v4zm2 0V6h5v4h-5zm3.5 7a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"/></svg>`,
+    car: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.92 6.01A1.5 1.5 0 0 0 17.5 5h-11c-.66 0-1.21.42-1.42 1.01L3 12v8a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-1h12v1a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-8l-2.08-5.99zM6.5 16a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm11 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zM5 11l1.5-4.5h11L19 11H5z"/></svg>`,
+    pin: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2a7 7 0 0 0-7 7c0 5.25 7 13 7 13s7-7.75 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>`,
+  };
+
+  function populateTravel(cfg) {
+    const t = cfg.travel;
+    const navLink = $('a[data-nav-optional="travel"]');
+    if (!t || !t.start) { if (navLink) navLink.hidden = true; return; }
+    const icon = (name) => `<span class="route-icon" aria-hidden="true">${TRAVEL_ICONS[name] || TRAVEL_ICONS.pin}</span>`;
+
+    if (t.kicker) $('#travelKicker').textContent = t.kicker;
+    if (t.title) $('#travelTitle').textContent = t.title;
+
+    const options = (t.options || []).map((o, i) => `
+      ${i ? '<span class="route-or" aria-hidden="true">or</span>' : ''}
+      <div class="route-option">
+        ${icon(o.icon)}
+        <span class="route-title">${escapeHtml(o.title || '')}</span>
+        ${o.detail ? `<span class="route-detail">${escapeHtml(o.detail)}</span>` : ''}
+      </div>`).join('');
+
+    const a = t.arriveBy || {};
+    const arriveDate = a.date ? formatDisplayDate(a.date, { weekday: 'long', day: 'numeric', month: 'long' }) : '';
+
+    $('#travelRoute').innerHTML = `
+      <li class="route-stop">
+        ${icon(t.start.icon)}
+        <span class="route-title">${escapeHtml(t.start.title || '')}</span>
+        ${t.start.detail ? `<span class="route-detail">${escapeHtml(t.start.detail)}</span>` : ''}
+      </li>
+      ${options ? `<li class="route-stop route-fork"><span class="sr-only">Then, either:</span>${options}</li>` : ''}
+      ${a.time ? `<li class="route-stop route-arrive">
+        <div class="arrive-stamp">
+          ${icon('pin')}
+          <span class="arrive-label">${escapeHtml(a.label || 'Reach by')}</span>
+          <strong class="arrive-time">${escapeHtml(a.time)}</strong>
+          ${arriveDate ? `<span class="arrive-date">${escapeHtml(arriveDate)}</span>` : ''}
+        </div>
+      </li>` : ''}`;
+    $('#travel').hidden = false;
+  }
+
   function populateAccommodations(cfg) {
     const list = cfg.accommodations || [];
     if (!list.length) return;
@@ -614,6 +660,7 @@
       populateHero(cfg);
       populateStory(cfg);
       populateFestivities(cfg);
+      populateTravel(cfg);
       populateAccommodations(cfg);
       populateRegistry(cfg);
       populateRsvpSection(cfg);

@@ -295,6 +295,8 @@
 
     if (rsvp.deadline) {
       $('#rsvpDeadline').textContent = `Kindly respond by ${formatDisplayDate(rsvp.deadline)}`;
+    } else {
+      $('#rsvpDeadline').hidden = true;
     }
 
     $('#rsvpOpenLink').href = rsvp.googleFormUrl;

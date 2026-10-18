@@ -116,34 +116,8 @@
       "artTone": "dark"
     }
   ],
-  "travel": {
-    "kicker": "Getting there",
-    "title": "How to reach Roorkee",
-    "start": {
-      "icon": "plane",
-      "title": "Fly to Delhi"
-    },
-    "options": [
-      {
-        "icon": "train",
-        "title": "Morning Jan Shatabdi",
-        "detail": "6:45 AM from New Delhi (NDLS) to Roorkee"
-      },
-      {
-        "icon": "car",
-        "title": "Carpool or Uber",
-        "detail": "Share a ride, or book an Uber"
-      }
-    ],
-    "arriveBy": {
-      "label": "Kindly plan to arrive by",
-      "time": "12 noon",
-      "date": "2026-12-04"
-    }
-  },
   "rsvp": {
     "enabled": true,
-    "deadline": "2026-11-15",
     "googleFormUrl": "https://forms.gle/fJpFPPjkCuxC4QBa8",
     "contactName": "The Family",
     "contactPhone": ""
